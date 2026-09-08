@@ -1,0 +1,781 @@
+:root{
+
+    --white:#FFFFFF;
+
+    --paper:#FAF8FD;
+
+    --lilac-100:#F1E9FB;
+
+    --lilac-300:#E4D9F7;
+
+    --lilac-500:#C9AEEE;
+
+    --violet-500:#7C3AED;
+
+    --violet-600:#6423C7;
+
+    --violet-800:#4C1D8C;
+
+    --violet-900:#33146B;
+
+    --eggplant-900:#241533;
+
+    --eggplant-700:#4A3563;
+
+    --eggplant-500:#6E5A88;
+
+    --shadow:0 12px 30px -14px rgba(76, 29, 140, 0.28);
+
+    --shadow-sm:0 4px 14px -8px rgba(76, 29, 140, 0.24);
+
+    --radius:16px;
+
+}
+
+
+/* ================= CONFIGURAÇÕES GERAIS ================= */
+
+*{
+
+    box-sizing:border-box;
+
+    margin:0;
+
+    padding:0;
+
+}
+
+
+body{
+
+    font-family:'Manrope', sans-serif;
+
+    background:var(--paper);
+
+    color:var(--eggplant-900);
+
+    -webkit-font-smoothing:antialiased;
+
+}
+
+
+a{
+
+    color:inherit;
+
+    text-decoration:none;
+
+}
+
+
+/* ================= NAV ================= */
+
+.nav{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:20px 48px;
+
+    background:var(--white);
+
+    border-bottom:1px solid var(--lilac-300);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:50;
+
+}
+
+
+.nav-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:44px;
+
+}
+
+
+/* ================= LOGO ================= */
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-family:'Space Grotesk', sans-serif;
+
+    font-weight:700;
+
+    font-size:20px;
+
+    color:var(--eggplant-900);
+
+}
+
+
+.logo-mark{
+
+    width:34px;
+
+    height:34px;
+
+    border-radius:9px;
+
+    background:linear-gradient(
+        135deg,
+        var(--violet-500),
+        var(--violet-800)
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+.logo span.dim{
+
+    color:var(--violet-500);
+
+}
+
+
+/* ================= MENU ================= */
+
+.nav-links{
+
+    display:flex;
+
+    gap:32px;
+
+}
+
+
+.nav-links a{
+
+    font-size:14.5px;
+
+    font-weight:600;
+
+    color:var(--eggplant-500);
+
+    padding:6px 2px;
+
+    border-bottom:2px solid transparent;
+
+    transition:.15s;
+
+}
+
+
+.nav-links a:hover{
+
+    color:var(--violet-600);
+
+}
+
+
+.nav-links a.active{
+
+    color:var(--eggplant-900);
+
+    border-color:var(--violet-500);
+
+}
+
+
+/* ================= BUSCA ================= */
+
+.nav-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+
+.search-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    background:var(--paper);
+
+    border:1px solid var(--lilac-300);
+
+    border-radius:10px;
+
+    padding:8px 14px;
+
+    font-size:13.5px;
+
+    color:var(--eggplant-500);
+
+    width:220px;
+
+}
+
+
+.search-box svg{
+
+    flex-shrink:0;
+
+}
+
+
+/* ================= AVATAR ================= */
+
+.avatar{
+
+    width:38px;
+
+    height:38px;
+
+    border-radius:50%;
+
+    background:var(--violet-800);
+
+    color:var(--white);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-family:'Space Grotesk', sans-serif;
+
+    font-weight:600;
+
+    font-size:14px;
+
+    border:2px solid var(--lilac-300);
+
+}
+
+
+/* ================= LAYOUT ================= */
+
+.page{
+
+    max-width:1320px;
+
+    margin:0 auto;
+
+    padding:40px 48px 100px;
+
+}
+
+
+.page-head{
+
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    margin-bottom:28px;
+
+    flex-wrap:wrap;
+
+}
+
+
+.eyebrow{
+
+    display:block;
+
+    font-family:'JetBrains Mono', monospace;
+
+    font-size:12.5px;
+
+    color:var(--violet-600);
+
+    letter-spacing:.02em;
+
+    margin-bottom:8px;
+
+}
+
+
+.page-title{
+
+    font-family:'Space Grotesk', sans-serif;
+
+    font-size:34px;
+
+    font-weight:700;
+
+    color:var(--eggplant-900);
+
+}
+
+
+.page-sub{
+
+    font-size:14.5px;
+
+    color:var(--eggplant-500);
+
+    margin-top:6px;
+
+}
+
+
+/* ================= QUANTIDADE DE AVISOS ================= */
+
+.notice-count{
+
+    background:var(--lilac-100);
+
+    border:1px solid var(--lilac-300);
+
+    border-radius:100px;
+
+    padding:8px 14px;
+
+    font-family:'JetBrains Mono', monospace;
+
+    font-size:11.5px;
+
+    color:var(--violet-600);
+
+}
+
+
+/* ================= AVISO FIXADO ================= */
+
+.pinned-card{
+
+    background:var(--white);
+
+    border:1px solid var(--lilac-300);
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow-sm);
+
+    margin-bottom:42px;
+
+    transition:transform .18s ease, box-shadow .18s ease;
+
+}
+
+
+.pinned-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:var(--shadow);
+
+}
+
+
+.pinned-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:11px 16px;
+
+    background:var(--lilac-100);
+
+    border-bottom:1px solid var(--lilac-300);
+
+}
+
+
+.pinned-label{
+
+    font-family:'JetBrains Mono', monospace;
+
+    font-size:11.5px;
+
+    font-weight:600;
+
+    color:var(--violet-600);
+
+}
+
+
+.pinned-date{
+
+    font-family:'JetBrains Mono', monospace;
+
+    font-size:11.5px;
+
+    color:var(--eggplant-500);
+
+}
+
+
+.pinned-content{
+
+    padding:26px;
+
+}
+
+
+.pinned-content h2{
+
+    font-family:'Space Grotesk', sans-serif;
+
+    font-size:22px;
+
+    font-weight:600;
+
+    color:var(--eggplant-900);
+
+    margin-bottom:10px;
+
+}
+
+
+.pinned-content p{
+
+    max-width:800px;
+
+    font-size:14px;
+
+    line-height:1.65;
+
+    color:var(--eggplant-500);
+
+}
+
+
+/* ================= AUTOR ================= */
+
+.notice-author{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    margin-top:20px;
+
+    font-size:12.5px;
+
+    color:var(--eggplant-500);
+
+}
+
+
+.mini-avatar{
+
+    width:26px;
+
+    height:26px;
+
+    border-radius:50%;
+
+    background:var(--violet-800);
+
+    color:var(--white);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-family:'Space Grotesk', sans-serif;
+
+    font-size:10px;
+
+    font-weight:700;
+
+}
+
+
+/* ================= SEÇÃO ================= */
+
+.notice-section{
+
+    margin-top:10px;
+
+}
+
+
+.section-title{
+
+    margin-bottom:20px;
+
+}
+
+
+.section-title span{
+
+    display:block;
+
+    font-family:'JetBrains Mono', monospace;
+
+    font-size:12px;
+
+    color:var(--violet-600);
+
+    margin-bottom:5px;
+
+}
+
+
+.section-title h2{
+
+    font-family:'Space Grotesk', sans-serif;
+
+    font-size:22px;
+
+    font-weight:600;
+
+    color:var(--eggplant-900);
+
+}
+
+
+/* ================= GRID DE AVISOS ================= */
+
+.notice-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(3, 1fr);
+
+    gap:22px;
+
+}
+
+
+/* ================= CARD DE AVISO ================= */
+
+.notice-card{
+
+    background:var(--white);
+
+    border:1px solid var(--lilac-300);
+
+    border-radius:14px;
+
+    padding:20px;
+
+    box-shadow:var(--shadow-sm);
+
+    display:flex;
+
+    flex-direction:column;
+
+    min-height:240px;
+
+    transition:transform .18s ease, box-shadow .18s ease;
+
+}
+
+
+.notice-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:var(--shadow);
+
+}
+
+
+/* ================= TOPO DO CARD ================= */
+
+.notice-card-top{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    margin-bottom:18px;
+
+}
+
+
+.notice-type{
+
+    background:var(--lilac-100);
+
+    color:var(--violet-600);
+
+    border-radius:100px;
+
+    padding:5px 10px;
+
+    font-family:'JetBrains Mono', monospace;
+
+    font-size:10px;
+
+    font-weight:600;
+
+}
+
+
+.notice-date{
+
+    font-family:'JetBrains Mono', monospace;
+
+    font-size:10.5px;
+
+    color:var(--eggplant-500);
+
+}
+
+
+/* ================= CONTEÚDO DO CARD ================= */
+
+.notice-card h3{
+
+    font-family:'Space Grotesk', sans-serif;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    color:var(--eggplant-900);
+
+    line-height:1.35;
+
+    margin-bottom:10px;
+
+}
+
+
+.notice-card p{
+
+    font-size:13px;
+
+    line-height:1.6;
+
+    color:var(--eggplant-500);
+
+}
+
+
+/* ================= RODAPÉ DO CARD ================= */
+
+.notice-footer{
+
+    margin-top:auto;
+
+    padding-top:16px;
+
+    border-top:1px solid var(--lilac-100);
+
+    font-size:11.5px;
+
+    color:var(--eggplant-500);
+
+}
+
+
+/* ================= RESPONSIVIDADE ================= */
+
+@media(max-width:1100px){
+
+    .notice-grid{
+
+        grid-template-columns:repeat(2, 1fr);
+
+    }
+
+}
+
+
+@media(max-width:980px){
+
+    .nav{
+
+        padding:16px 20px;
+
+    }
+
+    .nav-links{
+
+        display:none;
+
+    }
+
+    .page{
+
+        padding:28px 20px 70px;
+
+    }
+
+}
+
+
+@media(max-width:620px){
+
+    .search-box{
+
+        display:none;
+
+    }
+
+    .page-title{
+
+        font-size:28px;
+
+    }
+
+    .notice-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .pinned-content{
+
+        padding:20px;
+
+    }
+
+    .pinned-content h2{
+
+        font-size:20px;
+
+    }
+
+    .notice-card{
+
+        min-height:auto;
+
+    }
+
+}

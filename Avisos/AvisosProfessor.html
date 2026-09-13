@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Women — Gerenciar Avisos</title>
+    <link rel="stylesheet" href="AvisosProfessor.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+</head>
+<body>
+    !NAV!
+    <nav class="nav">
+        <div class="nav-left">     
+            <a href="../Inicio/Inicio.html" class="logo">
+                <div class="logo-mark">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M12 6.5c0-2.2 1.6-3.6 3.3-4"
+                            stroke="#B9F0C8"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                        />
+                        <ellipse
+                            cx="15.6"
+                            cy="2.6"
+                            rx="1.9"
+                            ry="1.1"
+                            fill="#7ED89A"
+                            transform="rotate(-28 15.6 2.6)"
+                        />
+                        <circle
+                            cx="12"
+                            cy="14"
+                            r="7.2"
+                            fill="#F1E9FB"
+                        />
+                        <path
+                            d="M8.7 18.4l3.3-2.1 3.3 2.1"
+                            stroke="#6423C7"
+                            stroke-width="1.4"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                    </svg>
+                </div>
+                For<span class="dim">Women</span>
+            </a>
+
+            <!-- menu -->
+            <div class="nav-links">
+
+                <a href="../Inicio/Inicio.html">
+                    Início
+                </a>
+
+                <a href="../videoPlayer - For Women/index.html">
+                    Aulas
+                </a>
+
+                <a href="../atividades/atividadesAluno.html">
+                    Atividades
+                </a>
+
+                <a href="AvisosProfessor.html" class="active">
+                    Avisos
+                </a>
+
+            </div>
+        </div>
+
+        <div class="nav-right">
+
+            <div class="profile-type">
+                PROFESSOR
+            </div>
+
+            <div class="avatar">
+                PV
+            </div>
+
+        </div>
+
+    </nav>
+     <main class="page">
+        <div class="page-head">
+            <div>
+                <span class="eyebrow">
+                    COMUNICAÇÃO
+                </span>
+                <h1 class="page-title">
+                    Gerenciar avisos
+                </h1>
+
+                <p class="page-sub">
+                    Crie avisos e mantenha as alunas informadas sobre as novidades do programa.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="content-grid">
+
+
+            <!-Prencher->
+
+            <section class="create-notice-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="card-label">
+                            NOVO AVISO
+                        </span>
+
+                        <h2>
+                            Criar comunicado
+                        </h2>
+
+                    </div>
+
+
+                    <div class="create-icon">
+                        ✎
+                    </div>
+
+                </div>
+
+
+                <form id="formAviso">
+
+
+                    <!-- TÍTULO -->
+
+                    <div class="form-group">
+
+                        <label for="titulo">
+                            Título do aviso
+                        </label>
+
+                        <input
+                            type="text"
+                            id="titulo"
+                            placeholder="Ex: Aula cancelada"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- MENSAGEM -->
+
+                    <div class="form-group">
+
+                        <label for="mensagem">
+                            Mensagem
+                        </label>
+
+                        <textarea
+                            id="mensagem"
+                            rows="7"
+                            placeholder="Escreva aqui o comunicado para as alunas..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- PÚBLICO -->
+
+                    <div class="form-group">
+
+                        <label for="publico">
+                            Público
+                        </label>
+
+                        <select id="publico">
+
+                            <option>
+                                Todas as alunas
+                            </option>
+
+                            <option>
+                                Turma A
+                            </option>
+
+                            <option>
+                                Turma B
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- FIXAR -->
+
+                    <label class="checkbox-group">
+
+                        <input
+                            type="checkbox"
+                            id="fixado"
+                        >
+
+                        <span class="custom-checkbox"></span>
+
+                        <div>
+
+                            <strong>
+                                Fixar este aviso
+                            </strong>
+
+                            <p>
+                                O aviso ficará destacado na página inicial das alunas.
+                            </p>
+
+                        </div>
+
+                    </label>
+
+
+                    <!-- BOTÃO -->
+
+                    <button
+                        type="submit"
+                        class="publish-button"
+                    >
+
+                        Publicar aviso →
+
+                    </button>
+
+
+                </form>
+
+
+            </section>
+
+
+            <!-- ================= SIDEBAR ================= -->
+
+            <aside>
+
+
+                <div class="sidebar-card">
+
+                    <div class="sidebar-title">
+                        📢 Sobre os avisos
+                    </div>
+
+
+                    <p class="sidebar-text">
+
+                        Os avisos publicados serão exibidos para as alunas na área de avisos.
+
+                    </p>
+
+
+                    <div class="info-item">
+
+                        <span>
+                            📌
+                        </span>
+
+                        <p>
+                            Avisos fixados aparecem em destaque.
+                        </p>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <span>
+                            👥
+                        </span>
+
+                        <p>
+                            Escolha o público que receberá o comunicado.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ESTATÍSTICAS -->
+
+                <div class="sidebar-card">
+
+                    <div class="sidebar-title">
+                        📊 Resumo
+                    </div>
+
+
+                    <div class="stat-row">
+
+                        <span>
+                            Avisos publicados
+                        </span>
+
+                        <strong id="totalAvisos">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-row">
+
+                        <span>
+                            Avisos fixados
+                        </span>
+
+                        <strong id="totalFixados">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+            </aside>
+
+
+        </div>
+
+
+        <!-- AVISOS PUBLICADOS  -->
+
+        <section class="published-section">
+
+
+            <div class="section-head">
+
+                <div>
+
+                    <span class="eyebrow">
+                        HISTÓRICO
+                    </span>
+
+                    <h2 class="section-title">
+                        Avisos publicados
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- AVISOS CRIADOS APARECERÃO AQUI -->
+
+            <div
+                class="notice-grid"
+                id="listaAvisos"
+            >
+
+
+                <!-- EXEMPLO DE AVISO -->
+
+                <article class="notice-card">
+
+                    <div class="notice-card-top">
+
+                        <span class="notice-type pinned">
+                            📌 FIXADO
+                        </span>
+
+                        <span class="notice-date">
+                            Exemplo
+                        </span>
+
+                    </div>
+
+
+                    <h3>
+                        Nenhum aviso criado ainda
+                    </h3>
+
+
+                    <p>
+                        Os avisos criados pelos professores aparecerão nesta área.
+                    </p>
+
+
+                    <div class="notice-footer">
+
+                        <span>
+                            👩‍🏫 Professor
+                        </span>
+
+                    </div>
+
+
+                </article>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <script src="AvisosProfessor.js"></script>
+
+</body>
+
+</html>

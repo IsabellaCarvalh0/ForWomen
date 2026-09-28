@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For Women — Assistir aula</title>
+  <link rel="stylesheet" href="assistir.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-left">
+    <div class="logo"><div class="logo-mark">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M12 6.5c0-2.2 1.6-3.6 3.3-4" stroke="#B9F0C8" stroke-width="1.6" stroke-linecap="round"/>
+        <ellipse cx="15.6" cy="2.6" rx="1.9" ry="1.1" fill="#7ED89A" transform="rotate(-28 15.6 2.6)"/>
+        <circle cx="12" cy="14" r="7.2" fill="#F1E9FB"/>
+        <path d="M8.7 18.4l3.3-2.1 3.3 2.1" stroke="#6423C7" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg></div>For<span class="dim">Women</span></div>
+    <div class="nav-links">
+      <a href="#">Início</a><a href="aulas.html" class="active">Aulas</a><a href="#">Avisos</a><a href="#">Comunidade</a>
+    </div>
+  </div>
+  <div class="avatar">MC</div>
+</nav>
+
+<div class="page">
+  <div class="breadcrumb mono" onclick="location.href='index.html'">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg>
+    voltar para aulas
+  </div>
+
+  <div class="grid">
+    <main>
+      <div class="player">
+        <div class="editor-bar">
+          <div class="traffic"><span></span><span></span><span></span></div>
+          <div class="editor-file mono" id="file"></div>
+        </div>
+        <div class="screen" id="screen"></div>
+      </div>
+
+      <div class="lesson-head">
+        <div>
+          <span class="eyebrow mono" id="eyebrow"></span>
+          <h1 id="title"></h1>
+          <div class="teacher"><div class="mini-avatar" id="ini"></div><span id="inst"></span></div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="prev">← Anterior</button>
+          <button class="btn done" id="done">✓ Marcar como concluída</button>
+          <button class="btn primary" id="next">Próxima aula →</button>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" data-tab="sobre">sobre.md</div>
+        <div class="tab" data-tab="materiais">materiais/</div>
+        <div class="tab" data-tab="notas">anotacoes.txt</div>
+      </div>
+      <div class="panel active" id="sobre">
+        <p>Nesta aula, a professora apresenta o conteúdo passo a passo, com exemplos para você acompanhar e reproduzir no seu próprio computador.</p>
+        <p>Pause sempre que precisar e leve suas dúvidas para o encontro presencial de terça ou quinta, das 13h às 15h, no IFMG Sabará.</p>
+      </div>
+      <div class="panel" id="materiais">
+        <div class="file"><b>slides_aula.pdf</b><span>baixar</span></div>
+        <div class="file"><b>exercicios.zip</b><span>baixar</span></div>
+        <div class="file"><b>codigo_exemplo.txt</b><span>baixar</span></div>
+      </div>
+      <div class="panel" id="notas">
+        <textarea placeholder="// escreva aqui suas anotações desta aula..."></textarea>
+      </div>
+    </main>
+
+    <aside class="side">
+      <div class="side-title">Todas as aulas</div>
+      <div class="side-sub mono" id="prog"></div>
+      <div class="track"><div id="trackfill"></div></div>
+      <div id="list"></div>
+    </aside>
+  </div>
+</div>
+<script src="assistir.js"></script>
+</body>
+</html>

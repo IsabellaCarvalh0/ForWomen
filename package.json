@@ -1,0 +1,24 @@
+{
+  "name": "forwomen",
+  "version": "1.0.0",
+  "description": "Site de apoio ao ensino de programação para mulheres participantes do projeto ForWomen, do IFMG campus Sabará.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IsabellaCarvalh0/ForWomen.git"
+  },
+  "keywords": [],
+  "author": "Isabella Carvalho. Gabrielle Reis, Pierre Vinícius, João Pedro Gomes e Gabriel Sousa",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/IsabellaCarvalh0/ForWomen/issues"
+  },
+  "homepage": "https://github.com/IsabellaCarvalh0/ForWomen#readme",
+  "dependencies": {
+    "ejs": "^6.0.1"
+  }
+}

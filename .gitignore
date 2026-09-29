@@ -1,0 +1,8 @@
+tarefas_iptv.pdf
+ForWomen_Projeto_de_Navegacao.pdf
+
+# Senhas e dados de conexão: cada pessoa tem o seu, nunca vai para o Git
+.env
+
+# Bibliotecas instaladas pelo npm: recriadas com "npm install"
+node_modules/

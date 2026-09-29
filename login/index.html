@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>For Women — Entrar</title>
+
+    <link rel="stylesheet" href="login.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+</head>
+
+
+<body>
+
+    <main class="caixa-login">
+
+
+        <!-- ================= LOGO ================= -->
+
+        <div class="logo">
+
+            <div class="logo-mark">
+
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+
+                    <path
+                        d="M12 6.5c0-2.2 1.6-3.6 3.3-4"
+                        stroke="#B9F0C8"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                    />
+
+                    <ellipse
+                        cx="15.6"
+                        cy="2.6"
+                        rx="1.9"
+                        ry="1.1"
+                        fill="#7ED89A"
+                        transform="rotate(-28 15.6 2.6)"
+                    />
+
+                    <circle cx="12" cy="14" r="7.2" fill="#F1E9FB"/>
+
+                    <path
+                        d="M8.7 18.4l3.3-2.1 3.3 2.1"
+                        stroke="#6423C7"
+                        stroke-width="1.4"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+
+                </svg>
+
+            </div>
+
+            For<span class="dim">Women</span>
+
+        </div>
+
+
+        <h1>Entrar na plataforma</h1>
+
+        <p class="subtitulo">
+            Use o e-mail e a senha do programa para acessar suas aulas.
+        </p>
+
+
+        <!-- ================= MENSAGEM DE ERRO ================= -->
+        <!-- Preenchida pelo script do final da página, conforme o
+             endereço recebido do servidor (ex.: /login?erro=invalido) -->
+
+        <div id="mensagem" class="mensagem" hidden></div>
+
+
+        <!-- ================= FORMULÁRIO ================= -->
+        <!-- Os dados são enviados para a rota POST /entrar do servidor -->
+
+        <form action="/entrar" method="POST">
+
+            <label for="email">E-mail</label>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="seuemail@forwomen.com"
+                autocomplete="username"
+                required
+            >
+
+            <label for="senha">Senha</label>
+
+            <input
+                type="password"
+                id="senha"
+                name="senha"
+                placeholder="sua senha"
+                autocomplete="current-password"
+                required
+            >
+
+            <button type="submit">
+                Entrar
+            </button>
+
+        </form>
+
+
+        <!-- ================= LOGINS DE TESTE ================= -->
+        <!-- Provisório: sai quando o cadastro no banco de dados estiver pronto -->
+
+        <div class="teste">
+
+            <strong>Logins de teste</strong>
+
+            <span>Aluna: aluna@forwomen.com · aluna123</span>
+
+            <span>Professor: professor@forwomen.com · professor123</span>
+
+        </div>
+
+
+    </main>
+
+
+    <script>
+        // Mostra um aviso conforme o motivo enviado pelo servidor no endereço.
+        const parametros = new URLSearchParams(window.location.search);
+
+        const avisos = {
+            invalido: "E-mail ou senha incorretos. Tente novamente.",
+            campos: "Preencha o e-mail e a senha.",
+            sessao: "Faça login para acessar essa página.",
+            servidor: "Não foi possível conectar ao banco de dados. Tente de novo em instantes.",
+            saiu: "Você saiu da plataforma."
+        };
+
+        const motivo = parametros.get("erro") || parametros.get("mensagem");
+        const caixa = document.getElementById("mensagem");
+
+        if (motivo && avisos[motivo]) {
+            caixa.textContent = avisos[motivo];
+            caixa.hidden = false;
+
+            // "saiu" não é erro: usa o estilo neutro
+            if (motivo === "saiu") {
+                caixa.classList.add("neutra");
+            }
+        }
+    </script>
+
+</body>
+
+</html>

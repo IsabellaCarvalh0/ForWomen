@@ -40,6 +40,14 @@ const banco = require("./banco/conexao");    // conexão com o PostgreSQL (Supab
 const app = express();                        // objeto principal: representa o nosso servidor
 const PORTA = process.env.PORTA || 3000;      // porta de rede (vem do .env; 3000 se faltar)
 
+// Configuração do motor de templates EJS
+app.set("view engine", "ejs");
+app.set("views", [
+  path.join(__dirname, "atividades"),
+  path.join(__dirname, "atividade professor"),
+  __dirname
+]);
+
 
 /* --------------------------------------------------------------------------
    3. PÁGINAS DE DESTINO DE CADA TIPO DE USUÁRIO
@@ -73,16 +81,44 @@ const PAGINA_DO_PROFESSOR = "/chamada/chamada.html"; // área do professor
  *
  * Retorna o usuário encontrado ou undefined.
  */
+// Usuários de teste para desenvolvimento local ou quando o banco estiver indisponível
+const USUARIOS_TESTE = [
+  {
+    id: 1,
+    nome: "Ana Clara Ferreira",
+    email: "aluna@forwomen.com",
+    senha_hash: bcrypt.hashSync("aluna123", 10),
+    tipo: "aluna"
+  },
+  {
+    id: 2,
+    nome: "Pierre Vinícius",
+    email: "professor@forwomen.com",
+    senha_hash: bcrypt.hashSync("professor123", 10),
+    tipo: "professor"
+  }
+];
+
 async function buscarUsuarioPorEmail(email) {
 
   const emailLimpo = email.toLowerCase().trim();
 
-  const resultado = await banco.query(
-    "SELECT id, nome, email, senha_hash, tipo FROM usuarios WHERE email = $1",
-    [emailLimpo]
-  );
+  // Tenta consultar o banco de dados PostgreSQL (Supabase)
+  try {
+    const resultado = await banco.query(
+      "SELECT id, nome, email, senha_hash, tipo FROM usuarios WHERE email = $1",
+      [emailLimpo]
+    );
 
-  return resultado.rows[0];   // primeira linha encontrada (undefined se não achou)
+    if (resultado && resultado.rows && resultado.rows.length > 0) {
+      return resultado.rows[0];   // usuário encontrado no banco
+    }
+  } catch (erroBanco) {
+    console.warn("Aviso: Conexão com o banco falhou (" + erroBanco.message + "). Verificando usuários de teste locais...");
+  }
+
+  // Fallback: se o banco falhar ou não encontrar, busca na lista de usuários de teste
+  return USUARIOS_TESTE.find(u => u.email === emailLimpo);
 }
 
 
@@ -154,6 +190,11 @@ app.use(function (req, res, next) {
   // Troca "/videoPlayer - For Women/..." por "/aulas/..."
   if (req.url.startsWith("/" + PASTA_AULAS + "/")) {
     req.url = "/aulas" + req.url.slice(PASTA_AULAS.length + 1);
+  }
+
+  // Normaliza o endereço da pasta com espaço "atividade professor" para "/atividade-professor"
+  if (req.url.startsWith("/atividade professor")) {
+    req.url = "/atividade-professor" + req.url.slice("/atividade professor".length);
   }
 
   next();
@@ -264,11 +305,22 @@ app.get("/api/usuario", exigirLogin, function (req, res) {
 // Área da aluna (o professor também pode consultar estas páginas)
 app.use("/Inicio", exigirLogin, express.static(path.join(__dirname, "Inicio")));
 app.use("/aulas", exigirLogin, express.static(path.join(__dirname, PASTA_AULAS)));
-app.use("/atividades", exigirLogin, express.static(path.join(__dirname, "atividades")));
 app.use("/Avisos", exigirLogin, express.static(path.join(__dirname, "Avisos")));
+
+// Renderização dinâmica das atividades em EJS (aluna)
+app.get(["/atividades", "/atividades/atividadesAluno.html", "/atividades/atividadesAluno.ejs", "/atividades/index.html"], exigirLogin, function (req, res) {
+  res.render("atividadesAluno", { usuario: req.session.usuario });
+});
+app.use("/atividades", exigirLogin, express.static(path.join(__dirname, "atividades")));
 
 // Área exclusiva do professor
 app.use("/chamada", exigirProfessor, express.static(path.join(__dirname, "chamada")));
+
+// Renderização dinâmica das atividades em EJS (professor)
+app.get(["/atividade-professor", "/atividade-professor/atividadeProfessor.html", "/atividade-professor/atividadeProfessor.ejs"], exigirProfessor, function (req, res) {
+  res.render("atividadeProfessor", { usuario: req.session.usuario });
+});
+app.use("/atividade-professor", exigirProfessor, express.static(path.join(__dirname, "atividade professor")));
 
 
 /* --------------------------------------------------------------------------

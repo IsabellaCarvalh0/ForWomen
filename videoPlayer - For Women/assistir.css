@@ -85,3 +85,40 @@
     .grid{grid-template-columns:1fr;} .side{position:static;}
     .nav{padding:16px 20px;} .nav-links{display:none;} .page{padding:24px 20px 70px;}
   }
+
+
+/* ================= BOTÃO SAIR & PERFIL NO NAV ================= */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.user-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--violet-600);
+    background: var(--lilac-100);
+    padding: 4px 10px;
+    border-radius: 100px;
+}
+.btn-sair {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--eggplant-500);
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--lilac-300);
+    background: transparent;
+    cursor: pointer;
+    transition: .15s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn-sair:hover {
+    color: var(--violet-600);
+    border-color: var(--violet-500);
+    background: var(--lilac-100);
+}

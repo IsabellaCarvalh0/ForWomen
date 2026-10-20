@@ -42,23 +42,43 @@ CREATE TABLE IF NOT EXISTS usuarios (
     -- caso algum código tente gravar um tipo diferente por engano.
     tipo VARCHAR(20) NOT NULL CHECK (tipo IN ('aluna', 'professor')),
 
+    -- Turma à qual a aluna pertence (ex: 'Turma A', 'Turma B').
+    turma VARCHAR(50) DEFAULT 'Turma A',
+
     -- Data e hora do cadastro, preenchida sozinha pelo banco.
     criado_em TIMESTAMP NOT NULL DEFAULT NOW()
 
 );
 
+-- Garante a coluna turma caso a tabela já tenha sido criada anteriormente
+ALTER TABLE usuarios ADD COLUMN IF NOT EXISTS turma VARCHAR(50) DEFAULT 'Turma A';
+
 
 -- --------------------------------------------------------------------------
--- CONSULTAS ÚTEIS (para conferir os dados no SQL Editor do Supabase)
+-- TABELA: aulas
+-- Guarda as videoaulas publicadas pelos professores.
 -- --------------------------------------------------------------------------
 
--- Ver todos os cadastros (sem mostrar o hash inteiro):
--- SELECT id, nome, email, tipo, criado_em FROM usuarios ORDER BY id;
+CREATE TABLE IF NOT EXISTS aulas (
+    id SERIAL PRIMARY KEY,
+    titulo VARCHAR(180) NOT NULL,
+    video_url VARCHAR(500) NOT NULL,
+    descricao TEXT,
+    turma VARCHAR(50) NOT NULL DEFAULT 'Todas as turmas',
+    duracao_minutos INTEGER NOT NULL DEFAULT 15,
+    professor_nome VARCHAR(120) NOT NULL,
+    professor_avatar VARCHAR(10) DEFAULT 'PV',
+    professor_id INTEGER REFERENCES usuarios(id),
+    materiais TEXT,
+    criado_em TIMESTAMP NOT NULL DEFAULT NOW()
+);
 
--- Contar quantos usuários existem de cada tipo:
--- SELECT tipo, COUNT(*) AS quantidade FROM usuarios GROUP BY tipo;
 
+-- --------------------------------------------------------------------------
+-- TABELA: avisos
 -- Tabela avisos dos professores
+-- --------------------------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS avisos (
     id SERIAL PRIMARY KEY,
     titulo VARCHAR(150) NOT NULL,

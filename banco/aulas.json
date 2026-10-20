@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "titulo": "Aula 1 — Introdução à Programação",
+    "video_url": "https://youtu.be/gMxQ8vxH9Vk?si=mN6VVb8IdJDIMMHu",
+    "descricao": "Nesta aula introdutória, conhecemos os conceitos fundamentais de lógica e algoritmos, entendendo como computadores interpretam instruções para iniciar sua jornada na programação.",
+    "turma": "Todas as turmas",
+    "duracao_minutos": 16,
+    "professor_nome": "Pierre Vinícius",
+    "professor_avatar": "PV",
+    "materiais": "slides_introducao.pdf, exercicios_logica.zip",
+    "criado_em": "2026-08-01T14:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "titulo": "Aula 2 — Variáveis e Tipos de Dados",
+    "video_url": "https://youtu.be/FmTO2EPatZQ?si=Cp6LU0jKRc8qZZSS",
+    "descricao": "Entenda como armazenar informações na memória, os diferentes tipos de dados primitivos (números, textos, booleanos) e boas práticas de nomenclatura.",
+    "turma": "Todas as turmas",
+    "duracao_minutos": 18,
+    "professor_nome": "João Pedro",
+    "professor_avatar": "JP",
+    "materiais": "guia_variaveis.pdf, exemplos_codigo.txt",
+    "criado_em": "2026-08-05T14:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "titulo": "Aula 3 — Seletores CSS na Prática",
+    "video_url": "https://youtu.be/MLkMO-_gzGc?si=fThumGyf-1kz0kPX",
+    "descricao": "Aprenda a estilizar elementos HTML utilizando seletores de tag, classe e ID. Conheça a hierarquia de especificidade e como organizar suas folhas de estilo.",
+    "turma": "Turma A",
+    "duracao_minutos": 14,
+    "professor_nome": "Isabella Carvalho",
+    "professor_avatar": "IC",
+    "materiais": "resumo_seletores.pdf, exercicio_estilizacao.zip",
+    "criado_em": "2026-08-10T14:00:00.000Z"
+  },
+  {
+    "id": 4,
+    "titulo": "Aula 4 — Flexbox do Zero",
+    "video_url": "https://youtu.be/Z4CbaGCEsTY?si=9wWUojOGQ7RBaD_I",
+    "descricao": "Descubra o poder do CSS Flexbox para alinhar e distribuir elementos na tela. Aprenda display flex, justify-content, align-items e flex-direction com exemplos visuais.",
+    "turma": "Turma A",
+    "duracao_minutos": 20,
+    "professor_nome": "Isabella Carvalho",
+    "professor_avatar": "IC",
+    "materiais": "cheatsheet_flexbox.pdf, template_cards.html",
+    "criado_em": "2026-08-15T14:00:00.000Z"
+  },
+  {
+    "id": 5,
+    "titulo": "Aula 5 — Layouts Responsivos",
+    "video_url": "https://youtu.be/2IV08sP9m3U?si=K2eevtm_-dK0FKCF",
+    "descricao": "Construa interfaces modernas que se adaptam perfeitamente a computadores, tablets e celulares usando Media Queries e unidades relativas como rem e %.",
+    "turma": "Turma A",
+    "duracao_minutos": 19,
+    "professor_nome": "Gabrielle Luiza",
+    "professor_avatar": "GL",
+    "materiais": "slides_responsividade.pdf, codigo_media_queries.css",
+    "criado_em": "2026-08-20T14:00:00.000Z"
+  },
+  {
+    "id": 6,
+    "titulo": "Aula 6 — Laços For e While",
+    "video_url": "https://youtu.be/n5ETibjJcAE?si=D5qHKjEnpXI2EGlm",
+    "descricao": "Automatize repetições e iterações de coleções utilizando estruturas de repetição for e while. Aprenda a evitar loops infinitos e a controlar fluxos com break e continue.",
+    "turma": "Turma B",
+    "duracao_minutos": 18,
+    "professor_nome": "Gabriel Sousa",
+    "professor_avatar": "GS",
+    "materiais": "slides_lacos.pdf, lista_exercicios_lacos.zip",
+    "criado_em": "2026-08-22T14:00:00.000Z"
+  },
+  {
+    "id": 7,
+    "titulo": "Aula 7 — List Comprehensions",
+    "video_url": "https://youtu.be/M2zL6LnQwkw?si=Waoi-CUMcD6dkSDr",
+    "descricao": "Aprenda formas elegantes e eficientes para filtrar, transformar e gerar novas coleções de dados escrevendo código conciso e legível.",
+    "turma": "Turma B",
+    "duracao_minutos": 21,
+    "professor_nome": "Pierre Vinícius",
+    "professor_avatar": "PV",
+    "materiais": "guia_list_comprehension.pdf, exemplos_avancados.txt",
+    "criado_em": "2026-08-25T14:00:00.000Z"
+  },
+  {
+    "id": 8,
+    "titulo": "Aula 8 — Exercícios Práticos",
+    "video_url": "https://youtu.be/duOIpyQ7c84?si=mS7VYaix11dsI6V7",
+    "descricao": "Coloque todo o conhecimento em prática resolvendo desafios reais com suporte dos professores. Passo a passo para depurar e testar seu código.",
+    "turma": "Turma B",
+    "duracao_minutos": 16,
+    "professor_nome": "João Pedro",
+    "professor_avatar": "JP",
+    "materiais": "enunciados_exercicios.pdf, resolucoes.zip",
+    "criado_em": "2026-08-28T14:00:00.000Z"
+  },
+  {
+    "id": 9,
+    "titulo": "Aula 9 — Projeto: Agenda de Contatos",
+    "video_url": "https://youtu.be/xsjPfMmWBxM?si=MVt6oKm9LaX-MTHA",
+    "descricao": "Desenvolva do início ao fim um projeto funcional aplicando lógica, manipulação de dados e interface. Um passo fundamental para consolidar seu aprendizado.",
+    "turma": "Todas as turmas",
+    "duracao_minutos": 45,
+    "professor_nome": "Gabrielle Luiza",
+    "professor_avatar": "GL",
+    "materiais": "projeto_agenda_completo.zip, documentacao_projeto.pdf",
+    "criado_em": "2026-09-01T14:00:00.000Z"
+  }
+]

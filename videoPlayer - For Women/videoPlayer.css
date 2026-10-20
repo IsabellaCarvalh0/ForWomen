@@ -340,3 +340,305 @@ ul{list-style:none;}
     .video-grid{grid-template-columns:1fr;}
     .search-box{display:none;}
 }
+
+
+/* ================= COMPONENTES ADICIONAIS: PERFIL, FILTROS E MODAL ================= */
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.user-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--violet-600);
+    background: var(--lilac-100);
+    padding: 4px 10px;
+    border-radius: 100px;
+}
+.btn-sair {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--eggplant-500);
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--lilac-300);
+    background: transparent;
+    cursor: pointer;
+    transition: .15s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn-sair:hover {
+    color: var(--violet-600);
+    border-color: var(--violet-500);
+    background: var(--lilac-100);
+}
+
+/* ================= BOTÃO ADICIONAR AULA ================= */
+.btn-criar-aula {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--violet-600), var(--violet-800));
+    color: var(--white);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(100, 35, 199, 0.3);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-criar-aula:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(100, 35, 199, 0.4);
+}
+
+/* ================= FILTROS DE TURMA ================= */
+.turma-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+.turma-pill {
+    padding: 8px 16px;
+    border-radius: 100px;
+    background: var(--white);
+    border: 1px solid var(--lilac-300);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--eggplant-700);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+.turma-pill:hover {
+    border-color: var(--violet-500);
+    color: var(--violet-600);
+}
+.turma-pill.active {
+    background: var(--violet-600);
+    color: var(--white);
+    border-color: var(--violet-600);
+    font-weight: 600;
+}
+
+/* ================= CARD BADGE TURMA & BOTÃO EXCLUIR ================= */
+.badge-turma {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(36, 21, 51, 0.85);
+    backdrop-filter: blur(4px);
+    color: var(--white);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 100px;
+    z-index: 2;
+}
+
+.card-btn-delete {
+    background: transparent;
+    border: none;
+    color: var(--eggplant-500);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: .15s;
+    font-size: 12px;
+}
+.card-btn-delete:hover {
+    color: #e11d48;
+    background: #ffe4e6;
+}
+
+/* ================= MODAL NOVO VÍDEO ================= */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(36, 21, 51, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    padding: 20px;
+}
+.modal-backdrop.ativo {
+    opacity: 1;
+    visibility: visible;
+}
+.modal-dialog {
+    background: var(--white);
+    border-radius: 20px;
+    max-width: 620px;
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 48px -12px rgba(76, 29, 140, 0.35);
+    border: 1px solid var(--lilac-300);
+    transform: translateY(20px);
+    transition: transform 0.25s ease;
+    overflow: hidden;
+}
+.modal-backdrop.ativo .modal-dialog {
+    transform: translateY(0);
+}
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 22px 28px 16px;
+    border-bottom: 1px solid var(--lilac-300);
+}
+.modal-header h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--eggplant-900);
+}
+.modal-header .subtitulo-modal {
+    font-size: 13px;
+    color: var(--eggplant-500);
+    margin-top: 4px;
+}
+.btn-fechar {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
+    color: var(--eggplant-500);
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 4px 8px;
+    transition: .15s;
+}
+.btn-fechar:hover {
+    background: var(--lilac-100);
+    color: var(--eggplant-900);
+}
+.modal-body {
+    padding: 24px 28px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.form-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+.form-grupo label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--eggplant-700);
+}
+.form-grupo input,
+.form-grupo select,
+.form-grupo textarea {
+    padding: 11px 14px;
+    border: 1px solid var(--lilac-300);
+    border-radius: 10px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    color: var(--eggplant-900);
+    background: var(--paper);
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.form-grupo input:focus,
+.form-grupo select:focus,
+.form-grupo textarea:focus {
+    border-color: var(--violet-500);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+    background: var(--white);
+}
+.form-grupo textarea {
+    resize: vertical;
+    min-height: 85px;
+}
+.form-dica {
+    font-size: 11.5px;
+    color: var(--eggplant-500);
+    font-family: 'JetBrains Mono', monospace;
+}
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 28px;
+    border-top: 1px solid var(--lilac-300);
+    background: var(--paper);
+}
+.btn-cancelar {
+    padding: 10px 18px;
+    background: transparent;
+    border: 1px solid var(--lilac-300);
+    border-radius: 10px;
+    color: var(--eggplant-700);
+    font-weight: 600;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: .15s;
+}
+.btn-cancelar:hover {
+    background: var(--lilac-100);
+}
+.btn-salvar {
+    padding: 10px 22px;
+    background: var(--violet-600);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.btn-salvar:hover {
+    background: var(--violet-800);
+}
+
+/* ================= EMPTY STATE ================= */
+.empty-state {
+    grid-column: 1 / -1;
+    background: var(--white);
+    border: 1px dashed var(--lilac-300);
+    border-radius: 16px;
+    padding: 48px 24px;
+    text-align: center;
+    color: var(--eggplant-500);
+}
+.empty-state svg {
+    margin-bottom: 12px;
+    stroke: var(--violet-500);
+}
+.empty-state h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--eggplant-900);
+    font-size: 18px;
+    margin-bottom: 6px;
+}

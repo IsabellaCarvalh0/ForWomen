@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Women — Atividades</title>
+
+    <link rel="stylesheet" href="atividadesAluno.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <%
+      const atividadesIniciais = [
+        {
+          id: 1,
+          titulo: "Introdução à Programação",
+          descricao: "Resolva os exercícios sobre lógica de programação, variáveis e estruturas condicionais em JavaScript.",
+          professor: "Pierre Vinícius",
+          prazo: "2026-08-30",
+          prazoFormatado: "30/08/2026",
+          material: "https://developer.mozilla.org/pt-BR/docs/Web/JavaScript",
+          instrucoes: "Implemente as funções solicitadas no arquivo exercicios.js e envie o link do seu repositório no GitHub ou faça o upload do arquivo com a resolução."
+        },
+        {
+          id: 2,
+          titulo: "Criando uma página com CSS",
+          descricao: "Desenvolva uma página utilizando HTML e CSS seguindo os conceitos de semântica e estilização apresentados em aula.",
+          professor: "Isabella Carvalho",
+          prazo: "2026-09-02",
+          prazoFormatado: "02/09/2026",
+          material: "https://developer.mozilla.org/pt-BR/docs/Learn/CSS",
+          instrucoes: "Crie a estrutura básica com tags semânticas (<nav>, <main>, <section>, <footer>) e aplique cores, fontes e espaçamentos adequados."
+        },
+        {
+          id: 3,
+          titulo: "Exercícios de Flexbox",
+          descricao: "Pratique a utilização de Flexbox criando diferentes layouts para uma página responsiva e moderna.",
+          professor: "Isabella Carvalho",
+          prazo: "2026-08-25",
+          prazoFormatado: "25/08/2026",
+          material: "https://css-tricks.com/snippets/css/a-guide-to-flexbox/",
+          instrucoes: "Utilize display: flex, justify-content, align-items e flex-wrap para organizar os cards da página."
+        }
+      ];
+      const lista = typeof atividades !== 'undefined' ? atividades : atividadesIniciais;
+    %>
+
+    <!-- ================= BARRA DE NAVEGAÇÃO ================= -->
+    <nav class="nav">
+        <div class="nav-left">
+            <!-- LOGO -->
+            <a href="../Inicio/index.html" class="logo">
+                <div class="logo-mark">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 6.5c0-2.2 1.6-3.6 3.3-4" stroke="#B9F0C8" stroke-width="1.6" stroke-linecap="round" />
+                        <ellipse cx="15.6" cy="2.6" rx="1.9" ry="1.1" fill="#7ED89A" transform="rotate(-28 15.6 2.6)" />
+                        <circle cx="12" cy="14" r="7.2" fill="#F1E9FB" />
+                        <path d="M8.7 18.4l3.3-2.1 3.3 2.1" stroke="#6423C7" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                For<span class="dim">Women</span>
+            </a>
+
+            <!-- LINKS -->
+            <div class="nav-links">
+                <a href="../Inicio/index.html">Início</a>
+                <a href="../videoPlayer - For Women/videoPlayer.html">Aulas</a>
+                <a href="atividadesAluno.ejs" class="active">Atividades</a>
+                <a href="../Avisos/Avisos.html">Avisos</a>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <div class="search-box">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="7" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input type="text" id="campoBusca" placeholder="buscar atividade..." aria-label="Buscar atividade">
+            </div>
+            <div class="avatar" title="Minha Conta">IC</div>
+        </div>
+    </nav>
+
+    <!-- ================= CONTEÚDO PRINCIPAL ================= -->
+    <main class="page">
+        <header class="page-header">
+            <div class="header-info">
+                <span class="subtitulo">Área da Aluna • Atividades</span>
+                <h1>Suas atividades</h1>
+                <p class="descricao">Confira suas atividades, consulte os detalhes de cada tarefa e faça suas entregas dentro do prazo.</p>
+            </div>
+
+            <!-- ESTATÍSTICAS RÁPIDAS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-numero" id="statTotal">0</span>
+                    <span class="stat-label">Total</span>
+                </div>
+                <div class="stat-card pendente-stat">
+                    <span class="stat-numero" id="statPendentes">0</span>
+                    <span class="stat-label">Pendentes</span>
+                </div>
+                <div class="stat-card concluida-stat">
+                    <span class="stat-numero" id="statConcluidas">0</span>
+                    <span class="stat-label">Concluídas</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- BARRA DE FILTROS -->
+        <section class="filtros-container">
+            <div class="filtros">
+                <button type="button" class="filtro-btn ativo" data-filtro="todos">Todas</button>
+                <button type="button" class="filtro-btn" data-filtro="pendente">Pendentes</button>
+                <button type="button" class="filtro-btn" data-filtro="concluida">Concluídas</button>
+            </div>
+        </section>
+
+        <!-- LISTA DE ATIVIDADES -->
+        <section class="atividades-grid" id="listaAtividades">
+            <% lista.forEach(function(atv, index) { %>
+                <article class="atividade-card" data-id="<%= atv.id %>" data-status="pendente">
+                    <div class="atividade-topo">
+                        <h2><%= atv.titulo %></h2>
+                        <span class="status pendente">PENDENTE</span>
+                    </div>
+
+                    <p class="atividade-descricao"><%= atv.descricao %></p>
+
+                    <div class="informacoes">
+                        <span class="info-item">
+                            <span class="info-icone">👩‍🏫</span>
+                            <%= atv.professor %>
+                        </span>
+                        <span class="info-item">
+                            <span class="info-icone">📅</span>
+                            Entrega: <%= atv.prazoFormatado || atv.prazo %>
+                        </span>
+                    </div>
+
+                    <div class="card-acoes">
+                        <button type="button" class="btn-detalhes" onclick="abrirModalVisualizacao(<%= atv.id %>)">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            Visualizar atividade
+                        </button>
+                        <button type="button" class="botao btn-entregar" onclick="abrirModalEntrega(<%= atv.id %>)">
+                            Entregar atividade
+                        </button>
+                    </div>
+                </article>
+            <% }); %>
+        </section>
+
+        <!-- MENSAGEM CASO NÃO HAJA ATIVIDADES -->
+        <div id="semAtividades" class="empty-state" style="display: none;">
+            <div class="empty-icon">📝</div>
+            <h3>Nenhuma atividade encontrada</h3>
+            <p>Não há atividades correspondentes ao filtro selecionado no momento.</p>
+        </div>
+    </main>
+
+    <!-- ================= MODAL: VISUALIZAR ATIVIDADE ================= -->
+    <div class="modal-backdrop" id="modalVisualizar" aria-hidden="true">
+        <div class="modal-dialog" role="dialog" aria-labelledby="modalVisualizarTitulo">
+            <div class="modal-header">
+                <div class="modal-header-text">
+                    <span class="subtitulo" id="modalVisualizarSubtitulo">Detalhes da Atividade</span>
+                    <h2 id="modalVisualizarTitulo">Título da Atividade</h2>
+                </div>
+                <button type="button" class="btn-fechar" onclick="fecharModais()" aria-label="Fechar modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="detalhes-meta">
+                    <div class="meta-item">
+                        <span class="meta-rotulo">Status:</span>
+                        <span class="status pendente" id="modalVisualizarStatus">PENDENTE</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-rotulo">Professor(a):</span>
+                        <strong id="modalVisualizarProfessor">-</strong>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-rotulo">Prazo limite:</span>
+                        <strong id="modalVisualizarPrazo">-</strong>
+                    </div>
+                </div>
+
+                <div class="detalhe-secao">
+                    <h3>Descrição e Enunciado</h3>
+                    <p id="modalVisualizarDescricao"></p>
+                </div>
+
+                <div class="detalhe-secao">
+                    <h3>Orientações e Critérios</h3>
+                    <p id="modalVisualizarInstrucoes">Siga as boas práticas ensinadas em aula, organize seu código com clareza e comente partes relevantes para avaliação.</p>
+                </div>
+
+                <div class="detalhe-secao" id="secaoMaterial">
+                    <h3>Material de Apoio</h3>
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="link-material" id="modalVisualizarMaterial">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        Acessar documentação / material complementar
+                    </a>
+                </div>
+
+                <!-- BLOCO DE ENTREGA JÁ REALIZADA (QUANDO CONCLUÍDA) -->
+                <div class="entrega-info-box" id="blocoEntregaRealizada" style="display: none;">
+                    <div class="entrega-info-header">
+                        <span class="entrega-check">✓</span>
+                        <h4>Atividade já entregue!</h4>
+                    </div>
+                    <p><strong>Data da entrega:</strong> <span id="dataEntregaRealizada">-</span></p>
+                    <p id="pLinkEntrega"><strong>Link enviado:</strong> <a href="#" target="_blank" id="linkEntregaRealizada">-</a></p>
+                    <p id="pComentarioEntrega"><strong>Comentário:</strong> <span id="comentarioEntregaRealizada">-</span></p>
+                    <p id="pArquivoEntrega" style="display:none;"><strong>Arquivo:</strong> <span id="arquivoEntregaRealizada">-</span></p>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-secundario" onclick="fecharModais()">Fechar</button>
+                <button type="button" class="botao" id="btnModalAcaoEntrega" onclick="irParaEntrega()">Entregar atividade</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: ENTREGAR ATIVIDADE ================= -->
+    <div class="modal-backdrop" id="modalEntregar" aria-hidden="true">
+        <div class="modal-dialog" role="dialog" aria-labelledby="modalEntregarTitulo">
+            <div class="modal-header">
+                <div class="modal-header-text">
+                    <span class="subtitulo">Envio de Tarefa</span>
+                    <h2 id="modalEntregarTitulo">Entregar Atividade</h2>
+                </div>
+                <button type="button" class="btn-fechar" onclick="fecharModais()" aria-label="Fechar modal">&times;</button>
+            </div>
+
+            <form id="formEntrega" onsubmit="salvarEntrega(event)">
+                <input type="hidden" id="entregaAtividadeId">
+
+                <div class="modal-body">
+                    <div class="alerta-info">
+                        Preencha o link do seu projeto/repositório ou anexe seu arquivo de resolução com suas observações.
+                    </div>
+
+                    <div class="form-grupo">
+                        <label for="linkRepositorio">Link do Repositório ou Projeto (GitHub, CodePen, etc.) *</label>
+                        <input type="url" id="linkRepositorio" placeholder="https://github.com/seu-usuario/seu-projeto" required>
+                    </div>
+
+                    <div class="form-grupo">
+                        <label for="arquivoAtividade">Ou anexe um arquivo (opcional)</label>
+                        <input type="file" id="arquivoAtividade" class="input-file">
+                    </div>
+
+                    <div class="form-grupo">
+                        <label for="comentarioEntrega">Comentários ou observações (opcional)</label>
+                        <textarea id="comentarioEntrega" rows="3" placeholder="Descreva como resolveu, bibliotecas utilizadas ou eventuais dúvidas..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secundario" onclick="fecharModais()">Cancelar</button>
+                    <button type="submit" class="botao" id="btnConfirmarEntrega">Confirmar Entrega</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST DE NOTIFICAÇÃO -->
+    <div class="toast" id="toastNotificacao" role="alert" aria-live="polite"></div>
+
+    <script src="atividadesAluno.js"></script>
+</body>
+</html>

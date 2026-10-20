@@ -57,3 +57,21 @@ CREATE TABLE IF NOT EXISTS usuarios (
 
 -- Contar quantos usuários existem de cada tipo:
 -- SELECT tipo, COUNT(*) AS quantidade FROM usuarios GROUP BY tipo;
+
+-- Tabela avisos dos professores
+CREATE TABLE IF NOT EXISTS avisos (
+    id SERIAL PRIMARY KEY,
+    titulo VARCHAR(150) NOT NULL,
+    mensagem TEXT NOT NULL,
+
+    publico VARCHAR(30) NOT NULL
+        CHECK (publico IN ('todas', 'turma_a', 'turma_b')),
+
+    fixado BOOLEAN NOT NULL DEFAULT FALSE,
+
+    professor_id INTEGER NOT NULL
+        REFERENCES usuarios(id),
+
+    criado_em TIMESTAMP NOT NULL DEFAULT NOW(),
+    atualizado_em TIMESTAMP NOT NULL DEFAULT NOW()
+);

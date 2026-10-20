@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Women — Gerenciador de Atividades (Professor)</title>
+
+    <link rel="stylesheet" href="atividadeProfessor.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <%
+      const atividadesIniciais = [
+        {
+          id: 1,
+          titulo: "Introdução à Programação",
+          descricao: "Resolva os exercícios sobre lógica de programação, variáveis e estruturas condicionais em JavaScript.",
+          professor: "Pierre Vinícius",
+          prazo: "2026-08-30",
+          prazoFormatado: "30/08/2026",
+          material: "https://developer.mozilla.org/pt-BR/docs/Web/JavaScript",
+          instrucoes: "Implemente as funções solicitadas no arquivo exercicios.js e envie o link do seu repositório no GitHub ou faça o upload do arquivo com a resolução."
+        },
+        {
+          id: 2,
+          titulo: "Criando uma página com CSS",
+          descricao: "Desenvolva uma página utilizando HTML e CSS seguindo os conceitos de semântica e estilização apresentados em aula.",
+          professor: "Isabella Carvalho",
+          prazo: "2026-09-02",
+          prazoFormatado: "02/09/2026",
+          material: "https://developer.mozilla.org/pt-BR/docs/Learn/CSS",
+          instrucoes: "Crie a estrutura básica com tags semânticas (<nav>, <main>, <section>, <footer>) e aplique cores, fontes e espaçamentos adequados."
+        },
+        {
+          id: 3,
+          titulo: "Exercícios de Flexbox",
+          descricao: "Pratique a utilização de Flexbox criando diferentes layouts para uma página responsiva e moderna.",
+          professor: "Isabella Carvalho",
+          prazo: "2026-08-25",
+          prazoFormatado: "25/08/2026",
+          material: "https://css-tricks.com/snippets/css/a-guide-to-flexbox/",
+          instrucoes: "Utilize display: flex, justify-content, align-items e flex-wrap para organizar os cards da página."
+        }
+      ];
+      const lista = typeof atividades !== 'undefined' ? atividades : atividadesIniciais;
+    %>
+
+    <!-- ================= BARRA DE NAVEGAÇÃO ================= -->
+    <nav class="nav">
+        <div class="nav-left">
+            <a href="../chamada/chamada.html" class="logo">
+                <div class="logo-mark">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 6.5c0-2.2 1.6-3.6 3.3-4" stroke="#B9F0C8" stroke-width="1.6" stroke-linecap="round" />
+                        <ellipse cx="15.6" cy="2.6" rx="1.9" ry="1.1" fill="#7ED89A" transform="rotate(-28 15.6 2.6)" />
+                        <circle cx="12" cy="14" r="7.2" fill="#F1E9FB" />
+                        <path d="M8.7 18.4l3.3-2.1 3.3 2.1" stroke="#6423C7" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                For<span class="dim">Women</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="../chamada/chamada.html">Chamada</a>
+                <a href="../videoPlayer - For Women/videoPlayer.html">Aulas</a>
+                <a href="atividadeProfessor.ejs" class="active">Atividades</a>
+                <a href="../Avisos/Avisos.html">Avisos</a>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <div class="search-box">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="7" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input type="text" id="campoBusca" placeholder="buscar atividade..." aria-label="Buscar atividade">
+            </div>
+            <div class="avatar professor-avatar" title="Professor logado">P</div>
+        </div>
+    </nav>
+
+    <!-- ================= CONTEÚDO PRINCIPAL ================= -->
+    <main class="page">
+        <header class="page-header">
+            <div class="header-info">
+                <span class="subtitulo">Painel do Docente • Gestão de Tarefas</span>
+                <h1>Gerenciar Atividades</h1>
+                <p class="descricao">Crie novas atividades, edite enunciados ou prazos e exclua tarefas da turma com facilidade.</p>
+            </div>
+
+            <div class="header-actions">
+                <button type="button" class="botao btn-criar" onclick="abrirModalCriar()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Nova Atividade
+                </button>
+            </div>
+        </header>
+
+        <!-- ESTATÍSTICAS RÁPIDAS -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-numero" id="statTotalAtividades">0</span>
+                <span class="stat-label">Total de Atividades</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-numero" id="statProfessores">2</span>
+                <span class="stat-label">Professores Envolvidos</span>
+            </div>
+            <div class="stat-card stat-destaque">
+                <span class="stat-numero" id="statTotalEntregas">0</span>
+                <span class="stat-label">Entregas das Alunas</span>
+            </div>
+        </section>
+
+        <!-- TABELA / LISTA DE ATIVIDADES -->
+        <section class="painel-atividades">
+            <div class="painel-topo">
+                <h2>Atividades Cadastradas</h2>
+                <span class="badge-contador" id="contadorListadas">3 cadastradas</span>
+            </div>
+
+            <div class="atividades-lista" id="tabelaAtividades">
+                <% lista.forEach(function(atv) { %>
+                    <article class="card-professor" data-id="<%= atv.id %>">
+                        <div class="card-professor-conteudo">
+                            <div class="card-professor-header">
+                                <h3><%= atv.titulo %></h3>
+                                <span class="prazo-tag">📅 Entrega: <%= atv.prazoFormatado || atv.prazo %></span>
+                            </div>
+
+                            <p class="card-professor-desc"><%= atv.descricao %></p>
+
+                            <div class="card-professor-meta">
+                                <span>👩‍🏫 Responsável: <strong><%= atv.professor %></strong></span>
+                                <% if (atv.material) { %>
+                                    <span class="meta-link">🔗 Com material de apoio</span>
+                                <% } %>
+                            </div>
+                        </div>
+
+                        <div class="card-professor-acoes">
+                            <button type="button" class="btn-acao btn-editar" title="Editar atividade" onclick="abrirModalEditar(<%= atv.id %>)">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                                Editar
+                            </button>
+                            <button type="button" class="btn-acao btn-excluir" title="Excluir atividade" onclick="confirmarExclusao(<%= atv.id %>)">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                                Excluir
+                            </button>
+                        </div>
+                    </article>
+                <% }); %>
+            </div>
+
+            <!-- EMPTY STATE -->
+            <div id="semAtividadesProf" class="empty-state" style="display: none;">
+                <div class="empty-icon">📂</div>
+                <h3>Nenhuma atividade encontrada</h3>
+                <p>Clique em "+ Nova Atividade" acima para cadastrar a primeira tarefa da turma.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= MODAL: CRIAR OU EDITAR ATIVIDADE ================= -->
+    <div class="modal-backdrop" id="modalFormAtividade" aria-hidden="true">
+        <div class="modal-dialog" role="dialog" aria-labelledby="modalFormTitulo">
+            <div class="modal-header">
+                <div class="modal-header-text">
+                    <span class="subtitulo" id="modalFormSubtitulo">Formulário de Atividade</span>
+                    <h2 id="modalFormTitulo">Nova Atividade</h2>
+                </div>
+                <button type="button" class="btn-fechar" onclick="fecharModais()" aria-label="Fechar modal">&times;</button>
+            </div>
+
+            <form id="formAtividade" onsubmit="salvarAtividade(event)">
+                <input type="hidden" id="atividadeId">
+
+                <div class="modal-body">
+                    <div class="form-grupo">
+                        <label for="tituloAtividade">Título da Atividade *</label>
+                        <input type="text" id="tituloAtividade" placeholder="Ex: Exercícios de JavaScript e DOM" required>
+                    </div>
+
+                    <div class="form-linha">
+                        <div class="form-grupo flex-1">
+                            <label for="professorResponsavel">Professor(a) Responsável *</label>
+                            <input type="text" id="professorResponsavel" placeholder="Ex: Isabella Carvalho" required>
+                        </div>
+
+                        <div class="form-grupo flex-1">
+                            <label for="prazoEntrega">Data Limite de Entrega *</label>
+                            <input type="date" id="prazoEntrega" required>
+                        </div>
+                    </div>
+
+                    <div class="form-grupo">
+                        <label for="descricaoAtividade">Descrição Resumida (Enunciado) *</label>
+                        <textarea id="descricaoAtividade" rows="3" placeholder="Explique brevemente o objetivo da atividade..." required></textarea>
+                    </div>
+
+                    <div class="form-grupo">
+                        <label for="instrucoesAtividade">Orientações e Critérios de Avaliação</label>
+                        <textarea id="instrucoesAtividade" rows="3" placeholder="Instruções passo a passo para a aluna realizar a tarefa..."></textarea>
+                    </div>
+
+                    <div class="form-grupo">
+                        <label for="materialApoio">Link de Material de Apoio (opcional)</label>
+                        <input type="url" id="materialApoio" placeholder="https://developer.mozilla.org/...">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secundario" onclick="fecharModais()">Cancelar</button>
+                    <button type="submit" class="botao" id="btnSalvarAtividade">Salvar Atividade</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: CONFIRMAR EXCLUSÃO ================= -->
+    <div class="modal-backdrop" id="modalExcluir" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-pequeno" role="dialog" aria-labelledby="modalExcluirTitulo">
+            <div class="modal-header">
+                <h2 id="modalExcluirTitulo">Excluir Atividade</h2>
+                <button type="button" class="btn-fechar" onclick="fecharModais()" aria-label="Fechar modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p>Tem certeza de que deseja excluir permanentemente a atividade <strong id="nomeAtividadeExcluir">-</strong>?</p>
+                <p class="alerta-perigo">Esta ação não poderá ser desfeita e removerá a atividade também para as alunas.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-secundario" onclick="fecharModais()">Cancelar</button>
+                <button type="button" class="botao btn-perigo" id="btnConfirmarExclusao" onclick="executarExclusao()">Sim, excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST DE NOTIFICAÇÃO -->
+    <div class="toast" id="toastNotificacao" role="alert" aria-live="polite"></div>
+
+    <script src="atividadeProfessor.js"></script>
+</body>
+</html>

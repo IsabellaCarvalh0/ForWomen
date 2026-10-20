@@ -1087,5 +1087,125 @@ a{
         font-size:20px;
 
     }
+    
 
+}
+
+/* ===== Lista de avisos ===== */
+
+#listaAvisos {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 24px;
+}
+
+/* ===== Card de cada aviso ===== */
+
+.card-aviso {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-left: 5px solid #a855f7;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow-wrap: anywhere;
+}
+
+.card-aviso:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.1);
+}
+
+.card-aviso h3 {
+    color: #1e293b;
+    font-size: 18px;
+    margin: 0 0 12px;
+}
+
+.card-aviso p {
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 8px 0;
+    white-space: pre-wrap;
+}
+
+.card-aviso small {
+    display: block;
+    color: #94a3b8;
+    font-size: 12px;
+    margin-top: 16px;
+}
+
+/* ===== Etiqueta de aviso fixado ===== */
+
+.etiqueta-fixado {
+    display: inline-block;
+    background: #f3e8ff;
+    color: #7e22ce;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 20px;
+    margin-top: 8px;
+}
+
+/* ===== Botões de ação ===== */
+
+.acoes-aviso {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.acoes-aviso button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.acoes-aviso button:hover {
+    transform: translateY(-1px);
+}
+
+.acoes-aviso button:first-child {
+    background: #ede9fe;
+    color: #6d28d9;
+}
+
+.acoes-aviso button:first-child:hover {
+    background: #ddd6fe;
+}
+
+.acoes-aviso button:last-child {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.acoes-aviso button:last-child:hover {
+    background: #fecaca;
+}
+
+/* ===== Responsividade ===== */
+
+@media (max-width: 600px) {
+    .card-aviso {
+        padding: 16px;
+    }
+
+    .acoes-aviso {
+        flex-wrap: wrap;
+    }
+
+    .acoes-aviso button {
+        flex: 1;
+    }
 }

@@ -200,11 +200,35 @@ body{
     border-radius: 10px;
 }
 
-.info-item span{
+.info-item span,
+.info-item label{
     display: block;
     font-size: 13px;
     color: #777;
     margin-bottom: 5px;
+}
+
+.campo-chamada{
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #d9cbf2;
+    border-radius: 8px;
+    background-color: white;
+    color: #5f35b5;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.campo-chamada:focus{
+    outline: 2px solid #7C3AED;
+    outline-offset: 1px;
+}
+
+#mensagemChamada.erro{
+    background-color: #fdecec;
+    color: #b42318;
 }
 
 .info-item strong{

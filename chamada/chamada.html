@@ -49,13 +49,17 @@
     <div class="container-chamada">
         <div class="info-chamada">
             <div class="info-item">
-                <span>Turma:</span>
-                <strong>For Women 2026</strong>
+                <label for="selecionarTurma">Turma:</label>
+                <select id="selecionarTurma" class="campo-chamada">
+                    <option value="" disabled selected>Selecione a turma</option>
+                    <option value="Turma A">Turma A</option>
+                    <option value="Turma B">Turma B</option>
+                </select>
             </div>
 
             <div class="info-item">
-                <span>Data:</span>
-                <strong>27/08/2026</strong>
+                <label for="dataChamada">Data:</label>
+                <input type="date" id="dataChamada" class="campo-chamada">
             </div>
         </div>
         <div class="lista-alunas">
@@ -121,7 +125,7 @@
 
     </div>
 
-    <script src="script.js"></script>
+   <script src="chamada.js"></script>
 
 </body>
 

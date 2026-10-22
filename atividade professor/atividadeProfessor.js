@@ -40,6 +40,7 @@ const ATIVIDADES_PADRAO = [
 ];
 
 let idParaExcluir = null;
+let professorLogadoNome = "Pierre Vinícius";
 
 // --------------------------------------------------------------------------
 // INICIALIZAÇÃO
@@ -49,6 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
     inicializarStorage();
     renderizarPainel();
     configurarEventos();
+    fetch("/api/usuario").then(r => r.json()).then(u => { if (u && u.nome) professorLogadoNome = u.nome; }).catch(() => {});
 });
 
 function inicializarStorage() {
@@ -187,7 +189,7 @@ function abrirModalCriar() {
     document.getElementById("btnSalvarAtividade").textContent = "Criar Atividade";
 
     // Sugere professor padrão e data atual + 7 dias
-    document.getElementById("professorResponsavel").value = "Isabella Carvalho";
+    document.getElementById("professorResponsavel").value = professorLogadoNome;
     const dataFutura = new Date();
     dataFutura.setDate(dataFutura.getDate() + 7);
     document.getElementById("prazoEntrega").value = dataFutura.toISOString().split("T")[0];

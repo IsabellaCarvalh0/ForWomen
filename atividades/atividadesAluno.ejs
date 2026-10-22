@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Women — Atividades</title>
 
-    <link rel="stylesheet" href="atividadesAluno.css">
+    <link rel="stylesheet" href="/atividades/atividadesAluno.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -85,7 +85,7 @@
                 </svg>
                 <input type="text" id="campoBusca" placeholder="buscar atividade..." aria-label="Buscar atividade">
             </div>
-            <div class="avatar" title="Minha Conta">IC</div>
+            <div class="avatar" title="<%= (typeof usuario !== 'undefined' && usuario && usuario.nome) ? usuario.nome : 'Minha Conta' %>"><%= (typeof usuario !== 'undefined' && usuario && usuario.nome) ? usuario.nome.trim().split(/\s+/).map(n=>n[0]).slice(0,2).join('').toUpperCase() : 'IC' %></div>
             <a href="/sair" title="Encerrar sessão" style="font-size:13px; font-weight:600; color:var(--eggplant-500); padding:6px 12px; border-radius:8px; border:1px solid var(--lilac-300); text-decoration:none; margin-left:10px;">Sair</a>
         </div>
     </nav>
@@ -286,6 +286,6 @@
     <!-- TOAST DE NOTIFICAÇÃO -->
     <div class="toast" id="toastNotificacao" role="alert" aria-live="polite"></div>
 
-    <script src="atividadesAluno.js"></script>
+    <script src="/atividades/atividadesAluno.js"></script>
 </body>
 </html>

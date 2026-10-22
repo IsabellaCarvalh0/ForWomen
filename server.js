@@ -491,6 +491,10 @@ app.get(["/atividade-professor", "/atividade-professor/", "/atividade-professor/
 });
 app.use("/atividade-professor", exigirProfessor, express.static(path.join(__dirname, "atividade professor")));
 
+// Compatibilidade e fallbacks estáticos para arquivos de atividades
+app.use(exigirLogin, express.static(path.join(__dirname, "atividades")));
+app.use(exigirProfessor, express.static(path.join(__dirname, "atividade professor")));
+
 
 /* --------------------------------------------------------------------------
    10. PÁGINA NÃO ENCONTRADA (ERRO 404)

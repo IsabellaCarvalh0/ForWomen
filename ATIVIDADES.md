@@ -13,4 +13,4 @@ As atividades são visíveis para todas as alunas. Cada professor pode editar e 
 
 Dados antigos do localStorage não são importados automaticamente, pois não identificam com segurança a aluna ou o professor responsável.
 
-Validação automatizada: `node --test atividades-api.test.js`.
+

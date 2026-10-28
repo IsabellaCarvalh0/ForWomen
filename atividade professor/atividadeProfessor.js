@@ -3,41 +3,8 @@
    Criação, Edição, Exclusão e Listagem de Atividades
    ========================================================================== */
 
-const STORAGE_ATIVIDADES = "forwomen_atividades";
-const STORAGE_ENTREGAS = "forwomen_entregas";
-
-const ATIVIDADES_PADRAO = [
-    {
-        id: 1,
-        titulo: "Introdução à Programação",
-        descricao: "Resolva os exercícios sobre lógica de programação, variáveis e estruturas condicionais em JavaScript.",
-        professor: "Pierre Vinícius",
-        prazo: "2026-08-30",
-        prazoFormatado: "30/08/2026",
-        material: "https://developer.mozilla.org/pt-BR/docs/Web/JavaScript",
-        instrucoes: "Implemente as funções solicitadas no arquivo exercicios.js e envie o link do seu repositório no GitHub ou faça o upload do arquivo com a resolução."
-    },
-    {
-        id: 2,
-        titulo: "Criando uma página com CSS",
-        descricao: "Desenvolva uma página utilizando HTML e CSS seguindo os conceitos de semântica e estilização apresentados em aula.",
-        professor: "Isabella Carvalho",
-        prazo: "2026-09-02",
-        prazoFormatado: "02/09/2026",
-        material: "https://developer.mozilla.org/pt-BR/docs/Learn/CSS",
-        instrucoes: "Crie a estrutura básica com tags semânticas (<nav>, <main>, <section>, <footer>) e aplique cores, fontes e espaçamentos adequados."
-    },
-    {
-        id: 3,
-        titulo: "Exercícios de Flexbox",
-        descricao: "Pratique a utilização de Flexbox criando diferentes layouts para uma página responsiva e moderna.",
-        professor: "Isabella Carvalho",
-        prazo: "2026-08-25",
-        prazoFormatado: "25/08/2026",
-        material: "https://css-tricks.com/snippets/css/a-guide-to-flexbox/",
-        instrucoes: "Utilize display: flex, justify-content, align-items e flex-wrap para organizar os cards da página."
-    }
-];
+let atividadesBanco = [];
+let entregasBanco = {};
 
 let idParaExcluir = null;
 let professorLogadoNome = "Pierre Vinícius";
@@ -47,41 +14,36 @@ let professorLogadoNome = "Pierre Vinícius";
 // --------------------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", function () {
-    inicializarStorage();
-    renderizarPainel();
     configurarEventos();
-    fetch("/api/usuario").then(r => r.json()).then(u => { if (u && u.nome) professorLogadoNome = u.nome; }).catch(() => {});
+    requisitar("/api/usuario").then(u => { professorLogadoNome = u.nome; }).catch(erro => mostrarToast(erro.message));
+    renderizarPainel();
+    carregarDados();
+    window.addEventListener("focus", carregarDados);
 });
 
-function inicializarStorage() {
-    if (!localStorage.getItem(STORAGE_ATIVIDADES)) {
-        localStorage.setItem(STORAGE_ATIVIDADES, JSON.stringify(ATIVIDADES_PADRAO));
-    }
+async function requisitar(url, opcoes) {
+    const resposta = await fetch(url, opcoes);
+    if (resposta.status === 401) { window.location.href = "/login?erro=sessao"; throw new Error("Sua sessão expirou."); }
+    const dados = await resposta.json();
+    if (!resposta.ok) throw new Error(dados.erro || "Não foi possível salvar os dados.");
+    return dados;
 }
 
-function obterAtividades() {
+async function carregarDados() {
     try {
-        const dados = localStorage.getItem(STORAGE_ATIVIDADES);
-        return dados ? JSON.parse(dados) : ATIVIDADES_PADRAO;
-    } catch (e) {
-        console.error("Erro ao ler atividades:", e);
-        return ATIVIDADES_PADRAO;
+        const dados = await requisitar("/api/atividades");
+        atividadesBanco = dados.atividades;
+        entregasBanco = dados.entregas;
+        renderizarPainel();
+    } catch (erro) {
+        const container = document.getElementById("tabelaAtividades");
+        if (container && !atividadesBanco.length) container.textContent = erro.message;
+        mostrarToast(erro.message);
     }
 }
 
-function salvarListaAtividades(lista) {
-    localStorage.setItem(STORAGE_ATIVIDADES, JSON.stringify(lista));
-}
-
-function obterEntregas() {
-    try {
-        const dados = localStorage.getItem(STORAGE_ENTREGAS);
-        return dados ? JSON.parse(dados) : {};
-    } catch (e) {
-        console.error("Erro ao ler entregas:", e);
-        return {};
-    }
-}
+function obterAtividades() { return atividadesBanco; }
+function obterEntregas() { return entregasBanco; }
 
 // --------------------------------------------------------------------------
 // RENDERIZAÇÃO DO PAINEL
@@ -161,9 +123,9 @@ function renderizarPainel() {
     });
 
     // Atualiza contadores e estatísticas
-    const totalEntregas = Object.keys(entregas).length;
+    const totalEntregas = Object.values(entregas).reduce((soma, entrega) => soma + entrega.total, 0);
     document.getElementById("statTotalAtividades").textContent = lista.length;
-    document.getElementById("statProfessores").textContent = professoresSet.size || "1";
+    document.getElementById("statProfessores").textContent = professoresSet.size;
     document.getElementById("statTotalEntregas").textContent = totalEntregas;
 
     if (contadorListadas) {
@@ -228,7 +190,7 @@ function abrirModalEditar(id) {
     abrirModal("modalFormAtividade");
 }
 
-function salvarAtividade(event) {
+async function salvarAtividade(event) {
     event.preventDefault();
 
     const idInput = document.getElementById("atividadeId").value;
@@ -244,46 +206,20 @@ function salvarAtividade(event) {
         return;
     }
 
-    const prazoFormatado = formatarData(prazoRaw);
-    let lista = obterAtividades();
-
-    if (idInput) {
-        // MODO EDIÇÃO
-        const index = lista.findIndex(item => item.id === Number(idInput));
-        if (index !== -1) {
-            lista[index] = {
-                ...lista[index],
-                titulo,
-                professor,
-                prazo: prazoRaw,
-                prazoFormatado,
-                descricao,
-                instrucoes,
-                material
-            };
-            salvarListaAtividades(lista);
-            mostrarToast("Atividade atualizada com sucesso! ✨");
-        }
-    } else {
-        // MODO CRIAÇÃO
-        const novoId = lista.length > 0 ? Math.max(...lista.map(i => Number(i.id) || 0)) + 1 : 1;
-        const novaAtividade = {
-            id: novoId,
-            titulo,
-            professor,
-            prazo: prazoRaw,
-            prazoFormatado,
-            descricao,
-            instrucoes: instrucoes || "Siga as orientações passadas em aula e entregue a tarefa no prazo.",
-            material: material || ""
-        };
-        lista.push(novaAtividade);
-        salvarListaAtividades(lista);
-        mostrarToast("Atividade criada com sucesso! 🚀");
-    }
-
-    fecharModais();
-    renderizarPainel();
+    const botao = document.getElementById("btnSalvarAtividade");
+    if (botao.disabled) return;
+    botao.disabled = true;
+    try {
+        await requisitar(idInput ? "/api/atividades/" + idInput : "/api/atividades", {
+            method: idInput ? "PUT" : "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ titulo, professor, prazo: prazoRaw, descricao, instrucoes, material })
+        });
+        fecharModais();
+        await carregarDados();
+        mostrarToast(idInput ? "Atividade atualizada com sucesso!" : "Atividade criada com sucesso!");
+    } catch (erro) { mostrarToast(erro.message); }
+    finally { botao.disabled = false; }
 }
 
 // --------------------------------------------------------------------------
@@ -301,24 +237,18 @@ function confirmarExclusao(id) {
     abrirModal("modalExcluir");
 }
 
-function executarExclusao() {
-    if (!idParaExcluir) return;
-
-    let lista = obterAtividades();
-    lista = lista.filter(item => item.id !== Number(idParaExcluir));
-    salvarListaAtividades(lista);
-
-    // Opcional: limpa entregas associadas
-    const entregas = obterEntregas();
-    if (entregas[String(idParaExcluir)]) {
-        delete entregas[String(idParaExcluir)];
-        localStorage.setItem(STORAGE_ENTREGAS, JSON.stringify(entregas));
-    }
-
-    idParaExcluir = null;
-    fecharModais();
-    renderizarPainel();
-    mostrarToast("Atividade excluída com sucesso.");
+let excluindo = false;
+async function executarExclusao() {
+    if (!idParaExcluir || excluindo) return;
+    excluindo = true;
+    try {
+        await requisitar("/api/atividades/" + idParaExcluir, { method: "DELETE" });
+        idParaExcluir = null;
+        fecharModais();
+        await carregarDados();
+        mostrarToast("Atividade excluída com sucesso.");
+    } catch (erro) { mostrarToast(erro.message); }
+    finally { excluindo = false; }
 }
 
 // --------------------------------------------------------------------------
@@ -380,12 +310,7 @@ function configurarEventos() {
         });
     }
 
-    // Sincronização em tempo real entre abas
-    window.addEventListener("storage", function (e) {
-        if (e.key === STORAGE_ATIVIDADES || e.key === STORAGE_ENTREGAS) {
-            renderizarPainel();
-        }
-    });
+
 }
 
 // --------------------------------------------------------------------------

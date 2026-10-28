@@ -3,43 +3,8 @@
    Gerenciamento de visualização, entregas e filtros de atividades
    ========================================================================== */
 
-// Chaves de armazenamento compartilhado
-const STORAGE_ATIVIDADES = "forwomen_atividades";
-const STORAGE_ENTREGAS = "forwomen_entregas";
-
-// Atividades padrão (inicializadas se não houver dados no localStorage)
-const ATIVIDADES_PADRAO = [
-    {
-        id: 1,
-        titulo: "Introdução à Programação",
-        descricao: "Resolva os exercícios sobre lógica de programação, variáveis e estruturas condicionais em JavaScript.",
-        professor: "Pierre Vinícius",
-        prazo: "2026-08-30",
-        prazoFormatado: "30/08/2026",
-        material: "https://developer.mozilla.org/pt-BR/docs/Web/JavaScript",
-        instrucoes: "Implemente as funções solicitadas no arquivo exercicios.js e envie o link do seu repositório no GitHub ou faça o upload do arquivo com a resolução."
-    },
-    {
-        id: 2,
-        titulo: "Criando uma página com CSS",
-        descricao: "Desenvolva uma página utilizando HTML e CSS seguindo os conceitos de semântica e estilização apresentados em aula.",
-        professor: "Isabella Carvalho",
-        prazo: "2026-09-02",
-        prazoFormatado: "02/09/2026",
-        material: "https://developer.mozilla.org/pt-BR/docs/Learn/CSS",
-        instrucoes: "Crie a estrutura básica com tags semânticas (<nav>, <main>, <section>, <footer>) e aplique cores, fontes e espaçamentos adequados."
-    },
-    {
-        id: 3,
-        titulo: "Exercícios de Flexbox",
-        descricao: "Pratique a utilização de Flexbox criando diferentes layouts para uma página responsiva e moderna.",
-        professor: "Isabella Carvalho",
-        prazo: "2026-08-25",
-        prazoFormatado: "25/08/2026",
-        material: "https://css-tricks.com/snippets/css/a-guide-to-flexbox/",
-        instrucoes: "Utilize display: flex, justify-content, align-items e flex-wrap para organizar os cards da página."
-    }
-];
+let atividadesBanco = [];
+let entregasBanco = {};
 
 let atividadeSelecionadaId = null;
 let filtroAtual = "todos";
@@ -49,47 +14,35 @@ let filtroAtual = "todos";
 // --------------------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", function () {
-    inicializarStorage();
-    renderizarAtividades();
     configurarEventos();
+    renderizarAtividades();
+    carregarDados();
+    window.addEventListener("focus", carregarDados);
 });
 
-function inicializarStorage() {
-    if (!localStorage.getItem(STORAGE_ATIVIDADES)) {
-        localStorage.setItem(STORAGE_ATIVIDADES, JSON.stringify(ATIVIDADES_PADRAO));
-    }
-    if (!localStorage.getItem(STORAGE_ENTREGAS)) {
-        // Inicializa com uma entrega de exemplo na terceira atividade para consistência
-        const entregasIniciais = {
-            "3": {
-                data: "25/08/2026",
-                link: "https://github.com/aluna/exercicios-flexbox",
-                comentario: "Atividade finalizada e testada em desktop e mobile."
-            }
-        };
-        localStorage.setItem(STORAGE_ENTREGAS, JSON.stringify(entregasIniciais));
+async function requisitar(url, opcoes) {
+    const resposta = await fetch(url, opcoes);
+    if (resposta.status === 401) { window.location.href = "/login?erro=sessao"; throw new Error("Sua sessão expirou."); }
+    const dados = await resposta.json();
+    if (!resposta.ok) throw new Error(dados.erro || "Não foi possível salvar os dados.");
+    return dados;
+}
+
+async function carregarDados() {
+    try {
+        const dados = await requisitar("/api/atividades");
+        atividadesBanco = dados.atividades;
+        entregasBanco = dados.entregas;
+        renderizarAtividades();
+    } catch (erro) {
+        const container = document.getElementById("listaAtividades");
+        if (container && !atividadesBanco.length) container.textContent = erro.message;
+        mostrarToast(erro.message);
     }
 }
 
-function obterAtividades() {
-    try {
-        const dados = localStorage.getItem(STORAGE_ATIVIDADES);
-        return dados ? JSON.parse(dados) : ATIVIDADES_PADRAO;
-    } catch (e) {
-        console.error("Erro ao ler atividades do localStorage:", e);
-        return ATIVIDADES_PADRAO;
-    }
-}
-
-function obterEntregas() {
-    try {
-        const dados = localStorage.getItem(STORAGE_ENTREGAS);
-        return dados ? JSON.parse(dados) : {};
-    } catch (e) {
-        console.error("Erro ao ler entregas do localStorage:", e);
-        return {};
-    }
-}
+function obterAtividades() { return atividadesBanco; }
+function obterEntregas() { return entregasBanco; }
 
 // --------------------------------------------------------------------------
 // RENDERIZAÇÃO NA TELA
@@ -228,6 +181,18 @@ function abrirModalVisualizacao(id) {
         secaoMaterial.style.display = "none";
     }
 
+    let anexo = document.getElementById("anexoEntregaRealizada");
+    if (!anexo) {
+        anexo = document.createElement("a");
+        anexo.id = "anexoEntregaRealizada";
+        document.getElementById("blocoEntregaRealizada").appendChild(anexo);
+    }
+    anexo.hidden = !entregaDados?.arquivo;
+    if (entregaDados?.arquivo) {
+        anexo.textContent = "Baixar arquivo: " + entregaDados.arquivo;
+        anexo.href = "/api/atividades/" + atv.id + "/arquivo";
+    }
+
     // Detalhes da entrega já feita
     const blocoEntrega = document.getElementById("blocoEntregaRealizada");
     const btnAcao = document.getElementById("btnModalAcaoEntrega");
@@ -290,36 +255,37 @@ function irParaEntrega() {
     }
 }
 
-function salvarEntrega(event) {
+async function salvarEntrega(event) {
     event.preventDefault();
-
+    const botao = document.getElementById("btnConfirmarEntrega");
+    if (botao.disabled) return;
     const id = document.getElementById("entregaAtividadeId").value;
     const link = document.getElementById("linkRepositorio").value.trim();
     const comentario = document.getElementById("comentarioEntrega").value.trim();
-    const inputArquivo = document.getElementById("arquivoAtividade");
-    const arquivoNome = inputArquivo.files.length > 0 ? inputArquivo.files[0].name : null;
-
-    if (!link && !arquivoNome) {
-        mostrarToast("Por favor, informe o link do projeto ou anexe um arquivo.");
-        return;
-    }
-
-    const agora = new Date();
-    const dataFormatada = agora.toLocaleDateString("pt-BR") + " às " + agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-
-    const entregas = obterEntregas();
-    entregas[String(id)] = {
-        data: dataFormatada,
-        link: link,
-        comentario: comentario,
-        arquivo: arquivoNome
-    };
-
-    localStorage.setItem(STORAGE_ENTREGAS, JSON.stringify(entregas));
-
-    fecharModais();
-    renderizarAtividades();
-    mostrarToast("Atividade entregue com sucesso! Parabéns! 🎉");
+    const selecionado = document.getElementById("arquivoAtividade").files[0];
+    if (!link && !selecionado) return mostrarToast("Informe o link do projeto ou anexe um arquivo.");
+    if (selecionado && selecionado.size > 5 * 1024 * 1024) return mostrarToast("O arquivo deve ter no máximo 5 MB.");
+    botao.disabled = true;
+    try {
+        let arquivo = null;
+        if (selecionado) {
+            const base64 = await new Promise((resolve, reject) => {
+                const leitor = new FileReader();
+                leitor.onload = () => resolve(leitor.result.split(",")[1]);
+                leitor.onerror = () => reject(new Error("Não foi possível ler o arquivo."));
+                leitor.readAsDataURL(selecionado);
+            });
+            arquivo = { nome: selecionado.name, base64 };
+        }
+        await requisitar("/api/atividades/" + id + "/entrega", {
+            method: "PUT", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ link, comentario, arquivo })
+        });
+        fecharModais();
+        await carregarDados();
+        mostrarToast("Atividade entregue com sucesso!");
+    } catch (erro) { mostrarToast(erro.message); }
+    finally { botao.disabled = false; }
 }
 
 // --------------------------------------------------------------------------
@@ -391,12 +357,7 @@ function configurarEventos() {
         });
     }
 
-    // Ouvir alterações de outras abas/páginas (ex: professor adicionou uma atividade)
-    window.addEventListener("storage", function (e) {
-        if (e.key === STORAGE_ATIVIDADES || e.key === STORAGE_ENTREGAS) {
-            renderizarAtividades();
-        }
-    });
+
 }
 
 // --------------------------------------------------------------------------

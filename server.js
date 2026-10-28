@@ -302,7 +302,8 @@ async function excluirAviso(id, professorId) {
 
 // Lê formulários codificados e payloads JSON
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.json({ limit: "8mb" }));
+
 
 // Cria a sessão
 app.use(session({
@@ -312,6 +313,8 @@ app.use(session({
   cookie: { maxAge: 1000 * 60 * 60 * 2 }
 }));
 
+
+require("./atividades-api")(app, banco);
 
 /* --------------------------------------------------------------------------
    6. MIDDLEWARES DE PROTEÇÃO DE PÁGINAS

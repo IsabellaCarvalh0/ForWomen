@@ -17,45 +17,13 @@
 
 <body>
     <%
-      const atividadesIniciais = [
-        {
-          id: 1,
-          titulo: "Introdução à Programação",
-          descricao: "Resolva os exercícios sobre lógica de programação, variáveis e estruturas condicionais em JavaScript.",
-          professor: "Pierre Vinícius",
-          prazo: "2026-08-30",
-          prazoFormatado: "30/08/2026",
-          material: "https://developer.mozilla.org/pt-BR/docs/Web/JavaScript",
-          instrucoes: "Implemente as funções solicitadas no arquivo exercicios.js e envie o link do seu repositório no GitHub ou faça o upload do arquivo com a resolução."
-        },
-        {
-          id: 2,
-          titulo: "Criando uma página com CSS",
-          descricao: "Desenvolva uma página utilizando HTML e CSS seguindo os conceitos de semântica e estilização apresentados em aula.",
-          professor: "Isabella Carvalho",
-          prazo: "2026-09-02",
-          prazoFormatado: "02/09/2026",
-          material: "https://developer.mozilla.org/pt-BR/docs/Learn/CSS",
-          instrucoes: "Crie a estrutura básica com tags semânticas (<nav>, <main>, <section>, <footer>) e aplique cores, fontes e espaçamentos adequados."
-        },
-        {
-          id: 3,
-          titulo: "Exercícios de Flexbox",
-          descricao: "Pratique a utilização de Flexbox criando diferentes layouts para uma página responsiva e moderna.",
-          professor: "Isabella Carvalho",
-          prazo: "2026-08-25",
-          prazoFormatado: "25/08/2026",
-          material: "https://css-tricks.com/snippets/css/a-guide-to-flexbox/",
-          instrucoes: "Utilize display: flex, justify-content, align-items e flex-wrap para organizar os cards da página."
-        }
-      ];
-      const lista = typeof atividades !== 'undefined' ? atividades : atividadesIniciais;
+      const lista = [];
     %>
 
     <!-- ================= BARRA DE NAVEGAÇÃO ================= -->
     <nav class="nav">
         <div class="nav-left">
-            <a href="/chamada/chamada.html" class="logo">
+            <a href="/Inicio/index.html" class="logo">
                 <div class="logo-mark">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                         <path d="M12 6.5c0-2.2 1.6-3.6 3.3-4" stroke="#B9F0C8" stroke-width="1.6" stroke-linecap="round" />

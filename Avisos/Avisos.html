@@ -1,27 +1,26 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>For Women — Avisos</title>
 
     <link rel="stylesheet" href="avisos.css">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
-
 </head>
 
-
 <body>
-
 
     <!-- ================= NAV ================= -->
 
@@ -29,14 +28,15 @@
 
         <div class="nav-left">
 
-
             <!-- LOGO -->
-
             <div class="logo">
 
                 <div class="logo-mark">
 
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <svg width="20"
+                         height="20"
+                         viewBox="0 0 24 24"
+                         fill="none">
 
                         <path
                             d="M12 6.5c0-2.2 1.6-3.6 3.3-4"
@@ -78,37 +78,30 @@
 
             </div>
 
-
             <!-- MENU -->
+            <div class="nav-links">
 
-          
-            <div class="nav-links"> 
- 
-                <a href="/Inicio/index.html"> 
-                    Início 
-                </a> 
- 
-                <a href="/aulas/videoPlayer.html"> 
-                    Aulas 
-                </a> 
- 
-                <a href="/atividades"> 
-                    Atividades 
-                </a> 
- 
-                <a href="Avisos.html" class="active"> 
-                    Avisos 
-                </a> 
- 
-</div>
+                <a href="/Inicio/index.html">
+                    Início
+                </a>
 
+                <a href="/aulas/videoPlayer.html">
+                    Aulas
+                </a>
 
+                <a href="/atividades">
+                    Atividades
+                </a>
+
+                <a href="Avisos.html" class="active">
+                    Avisos
+                </a>
+
+            </div>
 
         </div>
 
-
         <!-- BUSCA + PERFIL -->
-
         <div class="nav-right">
 
             <div class="search-box">
@@ -119,10 +112,13 @@
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="2"
-                >
+                    stroke-width="2">
 
-                    <circle cx="11" cy="11" r="7"/>
+                    <circle
+                        cx="11"
+                        cy="11"
+                        r="7"
+                    />
 
                     <line
                         x1="21"
@@ -137,117 +133,79 @@
 
             </div>
 
-
             <div class="avatar">
                 IC
             </div>
-            <a href="/sair" title="Encerrar sessão" style="font-size:13px; font-weight:600; color:var(--eggplant-500); padding:6px 12px; border-radius:8px; border:1px solid var(--lilac-300); text-decoration:none; margin-left:10px;">Sair</a>
+
+            <a
+                href="/sair"
+                title="Encerrar sessão"
+                style="
+                    font-size:13px;
+                    font-weight:600;
+                    color:var(--eggplant-500);
+                    padding:6px 12px;
+                    border-radius:8px;
+                    border:1px solid var(--lilac-300);
+                    text-decoration:none;
+                    margin-left:10px;
+                ">
+                Sair
+            </a>
 
         </div>
 
-
     </nav>
-
 
     <!-- ================= PÁGINA ================= -->
 
     <main class="page">
 
-
         <!-- CABEÇALHO -->
-
         <div class="page-head">
 
             <div>
-
-                
-
 
                 <h1 class="page-title">
                     Avisos
                 </h1>
 
-
                 <p class="page-sub">
-                    Confira as  informações importantes do programa.
+                    Confira as informações importantes
+                    do programa.
                 </p>
 
             </div>
 
+            <!-- CONTADOR DINÂMICO -->
+            <div
+                class="notice-count"
+                id="contadorAvisos"
+                aria-live="polite">
 
-            <div class="notice-count">
-                4 avisos
+                Carregando avisos...
+
             </div>
-
 
         </div>
 
+        <!-- ================= AVISOS FIXADOS ================= -->
 
-        <!-- ================= AVISO FIXADO ================= -->
+        <!--
+            Os avisos fixados serão carregados
+            automaticamente pelo AvisosAluno.js.
 
-        <section class="pinned-card">
+            Cada aviso utilizará a classe pinned-card,
+            preservando o estilo do avisos.css.
+        -->
 
-
-            <div class="pinned-header">
-
-                <div class="pinned-label">
-                    📌 FIXADO
-                </div>
-
-
-                <div class="pinned-date">
-                    07/09/2026
-                </div>
-
-
-            </div>
-
-
-            <div class="pinned-content">
-
-
-        
-
-
-                <h2>
-                    Bem-vindas ao For Women!
-                </h2>
-
-
-                <p>
-                    Sejam bem-vindas ao nosso ambiente de aprendizado!
-                    Nossas aulas acontecem nas quartas feiras de 13:30 às 15:30.
-                    Precencialmente no campus Sabará do IFMG, sala 308
-                </p>
-
-
-                <div class="notice-author">
-
-                    <div class="mini-avatar">
-                        FW
-                    </div>
-
-                    <span>
-                        Coordenação For Women
-                    </span>
-
-                </div>
-
-
-            </div>
-
-
-        </section>
-
+        <div id="avisosFixados"></div>
 
         <!-- ================= LISTA DE AVISOS ================= -->
 
         <section class="notice-section">
 
-
             <div class="section-title">
-
-                
 
                 <h2>
                     Últimos avisos
@@ -255,141 +213,33 @@
 
             </div>
 
+            <!-- LISTA DINÂMICA -->
+            <div
+                class="notice-grid"
+                id="listaAvisos"
+                aria-live="polite">
 
-            <div class="notice-grid">
-
-
-                <!-- AVISO 1 -->
-
-                <article class="notice-card">
-
-
-                    <div class="notice-card-top">
-
-                        <span class="notice-type">
-                            📚 AULAS(professor marca o tipo na hora de criar)
-                        </span>
-
-                        <span class="notice-date">
-                            06/09/2026
-                        </span>
-
-                    </div>
-
-
-                    <h3>
-                        Aula cancelada 05/11
-                    </h3>
-
-
-                    <p>
-                        Por motivos de saúde o Professor não podera ministrar a aula do dia 05/11.
-                         A aula será remarcada para o dia 12/11.
-                    </p>
-
-
-                    <div class="notice-footer">
-
-                        <span>
-                            👩‍🏫 Coordenação
-                        </span>
-
-                    </div>
-
-
-                </article>
-
-
-                <!-- AVISO 2 -->
-
-                <article class="notice-card">
-
-
-                    <div class="notice-card-top">
-
-                        <span class="notice-type">
-                            📝 ATIVIDADES
-                        </span>
-
-                        <span class="notice-date">
-                            05/09/2026
-                        </span>
-
-                    </div>
-
-
-                    <h3>
-                        Nova atividade disponível
-                    </h3>
-
-
-                    <p>
-                        Uma nova atividade foi adicionada.
-                        Confira os detalhes e o prazo de entrega.
-                    </p>
-
-
-                    <div class="notice-footer">
-
-                        <span>
-                            👩‍🏫 Professores
-                        </span>
-
-                    </div>
-
-
-                </article>
-
-
-                <!-- AVISO 3 -->
-
-                <article class="notice-card">
-
-
-                    <div class="notice-card-top">
-
-                        <span class="notice-type">
-                            📅 Frequencia
-                        </span>
-
-                        <span class="notice-date">
-                            03/09/2026
-                        </span>
-
-                    </div>
-
-
-                    <h3>
-                       Cuidados com a frequência
-                    </h3>
-
-
-                    <p>
-                         Meninas, é imprecindvel que todas compareçam as aulas presenciais,
-                        pois o diploma só sera entregue para quem tiver 75% de presença nas aulas.
-                    </p>
-
-
-                    <div class="notice-footer">
-
-                        <span>
-                            👩‍🏫 Coordenação
-                        </span>
-
-                    </div>
-
-
-                </article>
-
+                <p>
+                    Carregando avisos...
+                </p>
 
             </div>
 
-
         </section>
-
 
     </main>
 
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <!--
+        Busca os avisos no Supabase por meio
+        da rota GET /api/avisos do Node.js.
+
+        O servidor controla quais avisos
+        cada aluna pode visualizar.
+    -->
+
+    <script src="Avisos.js"></script>
 
 </body>
 

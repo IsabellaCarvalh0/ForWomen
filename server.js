@@ -7,7 +7,7 @@
 
      1. entregar as páginas HTML e estáticos do site para o navegador;
      2. autenticar o usuário (conferir e-mail e senha);
-     3. direcionar cada usuário para a sua área conforme o perfil;
+     3. direcionar cada usuário para a sua área conforme o perfil;Get-Location
      4. fornecer APIs para dados de usuários, turmas e videoaulas.
 
    Como executar:   node server.js
@@ -50,7 +50,7 @@ app.set("views", [
    -------------------------------------------------------------------------- */
 
 const PAGINA_DA_ALUNA = "/Inicio/index.html";        // área da aluna
-const PAGINA_DO_PROFESSOR = "/chamada/chamada.html"; // área do professor
+const PAGINA_DO_PROFESSOR = "/Inicio/index.html"; // área do professor
 const CAMINHO_AULAS_JSON = path.join(__dirname, "banco", "aulas.json");
 
 
@@ -212,6 +212,91 @@ async function excluirAula(id) {
 
 
 /* --------------------------------------------------------------------------
+   4.2. FUNÇÕES DE PERSISTÊNCIA DOS AVISOS
+   -------------------------------------------------------------------------- */
+
+// Busca os avisos no banco de dados.
+async function obterAvisos() {
+  const resultado = await banco.query(`
+    SELECT
+      a.id,
+      a.titulo,
+      a.mensagem,
+      a.publico,
+      a.fixado,
+      a.professor_id,
+      a.criado_em,
+      a.atualizado_em,
+      u.nome AS professor_nome
+    FROM avisos a
+    LEFT JOIN usuarios u ON u.id = a.professor_id
+    ORDER BY a.fixado DESC, a.criado_em DESC
+  `);
+
+  return resultado.rows;
+}
+
+// Cadastra um aviso criado pelo professor autenticado.
+async function salvarAviso(aviso) {
+  const resultado = await banco.query(`
+    INSERT INTO avisos (
+      titulo,
+      mensagem,
+      publico,
+      fixado,
+      professor_id
+    )
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING *
+  `, [
+    aviso.titulo,
+    aviso.mensagem,
+    aviso.publico,
+    aviso.fixado,
+    aviso.professor_id
+  ]);
+
+  return resultado.rows[0];
+}
+
+// Atualiza um aviso existente, pertencente ao professor que o criou.
+async function editarAviso(id, aviso, professorId) {
+  const resultado = await banco.query(`
+    UPDATE avisos
+    SET
+      titulo = $1,
+      mensagem = $2,
+      publico = $3,
+      fixado = $4,
+      atualizado_em = NOW()
+    WHERE id = $5 AND professor_id = $6
+    RETURNING *
+  `, [
+    aviso.titulo,
+    aviso.mensagem,
+    aviso.publico,
+    aviso.fixado,
+    id,
+    professorId
+  ]);
+
+  return resultado.rows[0];
+}
+
+// Exclui somente um aviso pertencente ao professor autenticado.
+async function excluirAviso(id, professorId) {
+  const resultado = await banco.query(`
+    DELETE FROM avisos
+    WHERE id = $1 AND professor_id = $2
+    RETURNING id
+  `, [id, professorId]);
+
+  return resultado.rowCount > 0;
+}
+
+
+
+/* --------------------------------------------------------------------------
    5. MIDDLEWARES GERAIS
    -------------------------------------------------------------------------- */
 
@@ -348,6 +433,183 @@ app.get("/sair", function (req, res) {
 app.get("/api/usuario", exigirLogin, function (req, res) {
   res.json(req.session.usuario);
 });
+
+
+/* --------------------------------------------------------------------------
+   API DE AVISOS
+   -------------------------------------------------------------------------- */
+
+// Lista avisos visíveis para o usuário logado.
+// Para a Área Inicial, pode ser usado: /api/avisos?fixados=true
+app.get("/api/avisos", exigirLogin, async function (req, res) {
+  console.log("ROTA GET /api/avisos FOI ACESSADA");
+  try {
+    const usuario = req.session.usuario;
+    const turma = (usuario.turma || "").trim().toLowerCase();
+    const somenteFixados = req.query.fixados === "true";
+
+    const resultado = await banco.query(`
+      SELECT
+        a.id,
+        a.titulo,
+        a.mensagem,
+        a.publico,
+        a.fixado,
+        a.professor_id,
+        a.criado_em,
+        a.atualizado_em,
+        u.nome AS professor_nome
+      FROM avisos a
+      LEFT JOIN usuarios u ON u.id = a.professor_id
+      WHERE
+        ($1 = 'professor'
+          OR a.publico = 'todas'
+          OR (a.publico = 'turma_a' AND $2 = 'turma a')
+          OR (a.publico = 'turma_b' AND $2 = 'turma b'))
+        AND ($3::boolean = FALSE OR a.fixado = TRUE)
+      ORDER BY a.fixado DESC, a.criado_em DESC
+    `, [usuario.tipo, turma, somenteFixados]);
+
+    res.json(resultado.rows);
+  } catch (erro) {
+    console.error("Erro ao listar avisos:", erro.message);
+    res.status(500).json({ erro: "Não foi possível carregar os avisos." });
+  }
+});
+
+
+// Cadastra um aviso. Somente professores podem usar esta rota.
+app.post("/api/avisos", exigirProfessor, async function (req, res) {
+  try {
+    const titulo = typeof req.body.titulo === "string"
+      ? req.body.titulo.trim()
+      : "";
+
+    const mensagem = typeof req.body.mensagem === "string"
+      ? req.body.mensagem.trim()
+      : "";
+
+    const publico = req.body.publico;
+    const fixado = req.body.fixado === true ||
+      req.body.fixado === "true";
+
+    const publicosPermitidos = ["todas", "turma_a", "turma_b"];
+
+    if (!titulo || !mensagem) {
+      return res.status(400).json({
+        erro: "O título e a mensagem são obrigatórios."
+      });
+    }
+
+    if (!publicosPermitidos.includes(publico)) {
+      return res.status(400).json({
+        erro: "Selecione um público válido."
+      });
+    }
+
+    const aviso = await salvarAviso({
+      titulo,
+      mensagem,
+      publico,
+      fixado,
+      professor_id: req.session.usuario.id
+    });
+
+    res.status(201).json(aviso);
+  } catch (erro) {
+  console.error("ERRO COMPLETO AO LISTAR AVISOS:", erro);
+  res.status(500).json({ erro: "Não foi possível carregar os avisos." });
+}
+});
+
+
+// Edita um aviso criado pelo professor logado.
+app.put("/api/avisos/:id", exigirProfessor, async function (req, res) {
+  
+  try {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ erro: "ID de aviso inválido." });
+    }
+
+    const titulo = typeof req.body.titulo === "string"
+      ? req.body.titulo.trim()
+      : "";
+
+    const mensagem = typeof req.body.mensagem === "string"
+      ? req.body.mensagem.trim()
+      : "";
+
+    const publico = req.body.publico;
+    const fixado = req.body.fixado === true ||
+      req.body.fixado === "true";
+
+    const publicosPermitidos = ["todas", "turma_a", "turma_b"];
+
+    if (!titulo || !mensagem) {
+      return res.status(400).json({
+        erro: "O título e a mensagem são obrigatórios."
+      });
+    }
+
+    if (!publicosPermitidos.includes(publico)) {
+      return res.status(400).json({
+        erro: "Selecione um público válido."
+      });
+    }
+
+    const aviso = await editarAviso(
+      id,
+      { titulo, mensagem, publico, fixado },
+      req.session.usuario.id
+    );
+
+    if (!aviso) {
+      return res.status(404).json({
+        erro: "Aviso não encontrado ou não pertence a você."
+      });
+    }
+
+    res.json(aviso);
+  } catch (erro) {
+    console.error("Erro ao editar aviso:", erro.message);
+    res.status(500).json({
+      erro: "Não foi possível editar o aviso."
+    });
+  }
+});
+
+
+// Exclui um aviso criado pelo professor logado.
+app.delete("/api/avisos/:id", exigirProfessor, async function (req, res) {
+  try {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ erro: "ID de aviso inválido." });
+    }
+
+    const excluido = await excluirAviso(
+      id,
+      req.session.usuario.id
+    );
+
+    if (!excluido) {
+      return res.status(404).json({
+        erro: "Aviso não encontrado ou não pertence a você."
+      });
+    }
+
+    res.json({ sucesso: true });
+  } catch (erro) {
+    console.error("Erro ao excluir aviso:", erro.message);
+    res.status(500).json({
+      erro: "Não foi possível excluir o aviso."
+    });
+  }
+});
+
 
 /** Lista as aulas de acordo com o perfil e turma */
 app.get("/api/aulas", exigirLogin, async function (req, res) {
@@ -493,7 +755,7 @@ app.use("/atividade-professor", exigirProfessor, express.static(path.join(__dirn
 
 // Compatibilidade e fallbacks estáticos para arquivos de atividades
 app.use(exigirLogin, express.static(path.join(__dirname, "atividades")));
-app.use(exigirProfessor, express.static(path.join(__dirname, "atividade professor")));
+
 
 
 /* --------------------------------------------------------------------------

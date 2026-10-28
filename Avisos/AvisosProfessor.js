@@ -9,16 +9,62 @@ const listaAvisos = document.getElementById("listaAvisos");
 const totalAvisos = document.getElementById("totalAvisos");
 const totalFixados = document.getElementById("totalFixados");
 
-// Dados temporários para testar a página.
-// Depois, os avisos virão do Supabase.
 let avisos = [];
-
-let proximoId = 1;
 let idEmEdicao = null;
+let carregando = false;
 
-// Cadastra um aviso ou salva uma edição.
-formAviso.addEventListener("submit", function (evento) {
+// Converte os valores recebidos do banco para um formato consistente.
+function normalizarAviso(aviso) {
+    return {
+        ...aviso,
+        id: Number(aviso.id),
+        fixado: aviso.fixado === true,
+        criadoEm: aviso.criado_em || aviso.criadoEm,
+        atualizadoEm: aviso.atualizado_em || aviso.atualizadoEm
+    };
+}
+
+// Faz requisições para a API do servidor.
+async function requisitarAPI(url, opcoes = {}) {
+    const resposta = await fetch(url, {
+        ...opcoes,
+        headers: {
+            "Content-Type": "application/json",
+            ...opcoes.headers
+        }
+    });
+
+    const dados = await resposta.json().catch(() => ({}));
+
+    if (!resposta.ok) {
+        throw new Error(dados.erro || "Não foi possível concluir a operação.");
+    }
+
+    return dados;
+}
+
+// Busca os avisos armazenados no banco.
+async function carregarAvisos() {
+    if (carregando) return;
+    carregando = true;
+
+    try {
+        const dados = await requisitarAPI("/api/avisos");
+        avisos = dados.map(normalizarAviso);
+        renderizarAvisos();
+    } catch (erro) {
+        console.error("Erro ao carregar avisos:", erro);
+        alert("Não foi possível carregar os avisos. Verifique sua conexão com o servidor.");
+    } finally {
+        carregando = false;
+    }
+}
+
+// Cadastra um aviso ou salva uma edição no banco.
+formAviso.addEventListener("submit", async function (evento) {
     evento.preventDefault();
+
+    if (carregando) return;
 
     const titulo = campoTitulo.value.trim();
     const mensagem = campoMensagem.value.trim();
@@ -30,44 +76,49 @@ formAviso.addEventListener("submit", function (evento) {
         return;
     }
 
-    if (idEmEdicao !== null) {
-        // Procura o aviso que está sendo editado.
-        const aviso = avisos.find(function (item) {
-            return item.id === idEmEdicao;
-        });
+    console.log("Público selecionado:", publico);
 
-        if (!aviso) {
-            alert("Não foi possível encontrar esse aviso.");
-            return;
+    const dadosAviso = { titulo, mensagem, publico, fixado };
+    const editando = idEmEdicao !== null;
+
+    try {
+        const botaoEnviar = formAviso.querySelector(
+            'button[type="submit"], input[type="submit"]'
+        );
+
+        if (botaoEnviar) botaoEnviar.disabled = true;
+
+        if (editando) {
+            await requisitarAPI("/api/avisos/" + idEmEdicao, {
+                method: "PUT",
+                body: JSON.stringify(dadosAviso)
+            });
+        } else {
+            await requisitarAPI("/api/avisos", {
+                method: "POST",
+                body: JSON.stringify(dadosAviso)
+            });
         }
 
-        aviso.titulo = titulo;
-        aviso.mensagem = mensagem;
-        aviso.publico = publico;
-        aviso.fixado = fixado;
-        aviso.atualizadoEm = new Date();
-
+        formAviso.reset();
         idEmEdicao = null;
-        alert("Aviso atualizado com sucesso!");
-    } else {
-        // Cria um novo aviso.
-        const novoAviso = {
-            id: proximoId++,
-            titulo: titulo,
-            mensagem: mensagem,
-            publico: publico,
-            fixado: fixado,
-            criadoEm: new Date(),
-            atualizadoEm: new Date()
-        };
+        restaurarBotaoFormulario();
 
-        avisos.push(novoAviso);
-        alert("Aviso cadastrado com sucesso!");
+        await carregarAvisos();
+
+        alert(editando
+            ? "Aviso atualizado com sucesso!"
+            : "Aviso cadastrado com sucesso!");
+    } catch (erro) {
+        console.error("Erro ao salvar aviso:", erro);
+        alert(erro.message);
+    } finally {
+        const botaoEnviar = formAviso.querySelector(
+            'button[type="submit"], input[type="submit"]'
+        );
+
+        if (botaoEnviar) botaoEnviar.disabled = false;
     }
-
-    formAviso.reset();
-    restaurarBotaoFormulario();
-    renderizarAvisos();
 });
 
 // Mostra os avisos na página.
@@ -85,11 +136,13 @@ function renderizarAvisos() {
         mensagem.textContent = aviso.mensagem;
 
         const publico = document.createElement("p");
-        publico.textContent = "Público: " + aviso.publico;
-
-        const data = document.createElement("small");
-        data.textContent =
-            "Publicado em: " + aviso.criadoEm.toLocaleString("pt-BR");
+        const nomesPublico = {
+            todas: "Todas as turmas",
+            turma_a: "Turma A",
+            turma_b: "Turma B"
+        };
+        publico.textContent = "Público: " +
+            (nomesPublico[aviso.publico] || aviso.publico);
 
         card.append(titulo, mensagem, publico);
 
@@ -99,6 +152,15 @@ function renderizarAvisos() {
             etiqueta.textContent = "📌 Aviso fixado";
             card.appendChild(etiqueta);
         }
+
+        const data = document.createElement("small");
+        const dataCriacao = aviso.criadoEm
+            ? new Date(aviso.criadoEm)
+            : null;
+
+        data.textContent = dataCriacao && !Number.isNaN(dataCriacao.getTime())
+            ? "Publicado em: " + dataCriacao.toLocaleString("pt-BR")
+            : "Data de publicação indisponível";
 
         card.appendChild(data);
 
@@ -133,9 +195,7 @@ function editarAviso(id) {
         return item.id === id;
     });
 
-    if (!aviso) {
-        return;
-    }
+    if (!aviso) return;
 
     campoTitulo.value = aviso.titulo;
     campoMensagem.value = aviso.mensagem;
@@ -158,31 +218,34 @@ function editarAviso(id) {
     });
 }
 
-// Exclui um aviso após confirmação.
-function excluirAviso(id) {
+// Exclui um aviso do banco após confirmação.
+async function excluirAviso(id) {
     const confirmar = confirm(
         "Tem certeza de que deseja excluir este aviso?"
     );
 
-    if (!confirmar) {
-        return;
+    if (!confirmar) return;
+
+    try {
+        await requisitarAPI("/api/avisos/" + id, {
+            method: "DELETE"
+        });
+
+        if (idEmEdicao === id) {
+            formAviso.reset();
+            idEmEdicao = null;
+            restaurarBotaoFormulario();
+        }
+
+        await carregarAvisos();
+        alert("Aviso excluído com sucesso!");
+    } catch (erro) {
+        console.error("Erro ao excluir aviso:", erro);
+        alert(erro.message);
     }
-
-    avisos = avisos.filter(function (item) {
-        return item.id !== id;
-    });
-
-    if (idEmEdicao === id) {
-        formAviso.reset();
-        idEmEdicao = null;
-        restaurarBotaoFormulario();
-    }
-
-    renderizarAvisos();
-    alert("Aviso excluído com sucesso!");
 }
 
-// Atualiza os números apresentados na página.
+// Atualiza os contadores da página.
 function atualizarContadores() {
     totalAvisos.textContent = avisos.length;
 
@@ -202,5 +265,5 @@ function restaurarBotaoFormulario() {
     }
 }
 
-// Inicializa a página.
-renderizarAvisos();
+// Carrega os dados quando a página abre.
+carregarAvisos();

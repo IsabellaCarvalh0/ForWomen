@@ -132,3 +132,70 @@ function nomePublico(publico) {
 
     return nomes[publico] || "📢 Aviso";
 }
+
+/* ==========================================
+   MENU RESPONSIVO — FOR WOMEN
+   ========================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const botaoMenu = document.getElementById("menuToggle");
+    const menu = document.getElementById("menuNavegacao");
+
+    if (!botaoMenu || !menu) return;
+
+    function fecharMenu() {
+        menu.classList.remove("open");
+        botaoMenu.classList.remove("active");
+
+        botaoMenu.setAttribute("aria-expanded", "false");
+        botaoMenu.setAttribute("aria-label", "Abrir menu");
+    }
+
+    function alternarMenu() {
+        const aberto = menu.classList.toggle("open");
+
+        botaoMenu.classList.toggle("active", aberto);
+
+        botaoMenu.setAttribute(
+            "aria-expanded",
+            String(aberto)
+        );
+
+        botaoMenu.setAttribute(
+            "aria-label",
+            aberto ? "Fechar menu" : "Abrir menu"
+        );
+    }
+
+    // Abre ou fecha o menu
+    botaoMenu.addEventListener("click", alternarMenu);
+
+    // Fecha ao selecionar uma página
+    menu.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", fecharMenu);
+    });
+
+    // Fecha ao clicar fora da navegação
+    document.addEventListener("click", (evento) => {
+        if (!evento.target.closest(".nav")) {
+            fecharMenu();
+        }
+    });
+
+    // Fecha ao pressionar Escape
+    document.addEventListener("keydown", (evento) => {
+        if (evento.key === "Escape") {
+            fecharMenu();
+        }
+    });
+
+    // Fecha quando a tela volta ao tamanho desktop
+    window.addEventListener("resize", () => {
+        if (window.innerWidth > 980) {
+            fecharMenu();
+        }
+    });
+
+});
+

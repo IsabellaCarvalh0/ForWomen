@@ -1,107 +1,303 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+    <!-- Configurações gerais -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Women — Início</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="Inicio.css">
+
+    <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <!-- ================= BARRA DE NAVEGAÇÃO ================= -->
-    <nav class="nav">
+
+    <!-- Navbar -->
+    <nav class="nav" aria-label="Navegação principal">
+
+        <!-- Logo e links -->
         <div class="nav-left">
-            <a href="index.html" class="logo">
+
+            <!-- Logo -->
+            <a href="/Inicio/index.html" class="logo">
                 <div class="logo-mark">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 6.5c0-2.2 1.6-3.6 3.3-4" stroke="#B9F0C8" stroke-width="1.6" stroke-linecap="round"/>
-                        <ellipse cx="15.6" cy="2.6" rx="1.9" ry="1.1" fill="#7ED89A" transform="rotate(-28 15.6 2.6)"/>
-                        <circle cx="12" cy="14" r="7.2" fill="#F1E9FB"/>
-                        <path d="M8.7 18.4l3.3-2.1 3.3 2.1" stroke="#6423C7" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 6.5c0-2.2 1.6-3.6 3.3-4"
+                              stroke="#B9F0C8"
+                              stroke-width="1.6"
+                              stroke-linecap="round"/>
+
+                        <ellipse cx="15.6" cy="2.6"
+                                 rx="1.9" ry="1.1"
+                                 fill="#7ED89A"
+                                 transform="rotate(-28 15.6 2.6)"/>
+
+                        <circle cx="12" cy="14" r="7.2"
+                                fill="#F1E9FB"/>
+
+                        <path d="M8.7 18.4l3.3-2.1 3.3 2.1"
+                              stroke="#6423C7"
+                              stroke-width="1.4"
+                              fill="none"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"/>
                     </svg>
                 </div>
+
                 For<span class="dim">Women</span>
             </a>
-            <div class="nav-links">
-                <a href="index.html" class="active">Início</a>
-                <a href="/aulas/videoPlayer.html">Aulas</a>
-                <a href="/atividades">Atividades</a>
-                <a href="/Avisos/Avisos.html">Avisos</a>
-                <a href="/chamada/chamada.html" id="linkChamada" style="display: none;">Chamada</a>
+
+            <!-- Links de navegação -->
+            <div class="nav-links" id="menuNavegacao">
+
+                <a href="/Inicio/index.html" class="active">
+                    Início
+                </a>
+
+                <a href="/aulas/videoPlayer.html">
+                    Aulas
+                </a>
+
+                <a href="/atividades">
+                    Atividades
+                </a>
+
+                <a href="/Avisos/Avisos.html">
+                    Avisos
+                </a>
+
+                <!-- Link exclusivo para professores -->
+                <a href="/chamada/chamada.html"
+                   id="linkChamada"
+                   style="display: none;">
+                    Chamada
+                </a>
+
             </div>
         </div>
+
+        <!-- Botão do menu mobile -->
+        <button
+            type="button"
+            class="menu-toggle"
+            id="menuToggle"
+            aria-label="Abrir menu"
+            aria-expanded="false"
+            aria-controls="menuNavegacao">
+            ☰
+        </button>
+
+        <!-- Área direita da navbar -->
         <div class="nav-right">
+
+            <!-- Busca -->
             <div class="search-box">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="15" height="15"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2">
+
                     <circle cx="11" cy="11" r="7"/>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    <line x1="21" y1="21"
+                          x2="16.65" y2="16.65"/>
                 </svg>
+
                 buscar...
             </div>
+
+            <!-- Avatar -->
             <div class="avatar">IC</div>
-            <a href="/sair" title="Encerrar sessão" style="font-size:13px; font-weight:600; color:var(--eggplant-500); padding:6px 12px; border-radius:8px; border:1px solid var(--lilac-300); text-decoration:none; margin-left:10px;">Sair</a>
+
+            <!-- Botão sair -->
+            <a href="/sair"
+               title="Encerrar sessão"
+               style="
+                   font-size:13px;
+                   font-weight:600;
+                   color:var(--eggplant-500);
+                   padding:6px 12px;
+                   border-radius:8px;
+                   border:1px solid var(--lilac-300);
+                   text-decoration:none;
+                   margin-left:10px;
+               ">
+                Sair
+            </a>
+
         </div>
     </nav>
 
-    <!-- ================= PÁGINA ================= -->
+    <!-- Página principal -->
     <div class="page">
-        <div class="page-head">
+
+        <!-- Cabeçalho da página -->
+        <header class="page-head">
             <div>
                 <h1 class="page-title">Bem-vinda!</h1>
-                <p class="page-sub">Continue sua jornada de aprendizado e acompanhe todas as novidades do programa.</p>
+
+                <p class="page-sub">
+                    Continue sua jornada de aprendizado e acompanhe
+                    todas as novidades do programa.
+                </p>
             </div>
-        </div>
+        </header>
+
+        <!-- Divisão entre conteúdo e sidebar -->
         <div class="content-grid">
+
+            <!-- Conteúdo principal -->
             <main class="main-content">
-                <!-- ================= AVISOS FIXADOS DINÂMICOS ================= -->
-                <div id="avisosFixadosInicio" aria-live="polite">
+
+                <!-- Avisos fixados -->
+                <section id="avisosFixadosInicio"
+                         aria-label="Avisos fixados"
+                         aria-live="polite">
+
                     <div class="pinned-card">
-                        <div class="pinned-content"><p>Carregando avisos fixados...</p></div>
+                        <div class="pinned-content">
+                            <p>Carregando avisos fixados...</p>
+                        </div>
                     </div>
+
+                </section>
+
+                <!-- Cards de acesso rápido -->
+                <section class="quick-grid"
+                         aria-label="Acessos rápidos">
+
+                    <!-- Card de aulas -->
+                    <a href="/aulas/videoPlayer.html"
+                       class="quick-card">
+
+                        <div class="quick-icon">▶</div>
+
+                        <h3>Aulas</h3>
+
+                        <p>
+                            Acesse suas aulas e continue aprendendo.
+                        </p>
+                    </a>
+
+                    <!-- Card de atividades -->
+                    <a href="/atividades"
+                       class="quick-card">
+
+                        <div class="quick-icon">📝</div>
+
+                        <h3>Atividades</h3>
+
+                        <p>
+                            Confira suas atividades e os prazos de entrega.
+                        </p>
+                    </a>
+
+                    <!-- Card de avisos -->
+                    <a href="/Avisos/Avisos.html"
+                       class="quick-card">
+
+                        <div class="quick-icon">🔔</div>
+
+                        <h3>Avisos</h3>
+
+                        <p>
+                            Veja os comunicados e novidades do programa.
+                        </p>
+                    </a>
+
+                </section>
+
+            </main>
+
+            <!-- Sidebar -->
+            <aside aria-label="Informações do programa">
+
+                <!-- Card dos professores -->
+                <div class="sidebar-card">
+
+                    <div class="sidebar-title">
+                        👩‍🏫 seus professores
+                    </div>
+
+                    <!-- Professor Pierre -->
+                    <div class="instructor-row">
+
+                        <div class="instructor-avatar">PV</div>
+
+                        <div>
+                            <div class="instructor-name">
+                                Pierre Vinícius
+                            </div>
+
+                            <div class="instructor-role">
+                                Estudante de Sistemas de Informação
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Professora Mariela -->
+                    <div class="instructor-row">
+
+                        <div class="instructor-avatar">M</div>
+
+                        <div>
+                            <div class="instructor-name">
+                                Mariela
+                            </div>
+
+                            <div class="instructor-role">
+                                Coordenadora
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <!-- ================= ACESSOS RÁPIDOS ================= -->
-                <div class="quick-grid">
-                    <a href="/aulas/videoPlayer.html" class="quick-card">
-                        <div class="quick-icon">▶</div>
-                        <h3>Aulas</h3>
-                        <p>Acesse suas aulas e continue aprendendo.</p>
-                    </a>
-                    <a href="/atividades" class="quick-card">
-                        <div class="quick-icon">📝</div>
-                        <h3>Atividades</h3>
-                        <p>Confira suas atividades e os prazos de entrega.</p>
-                    </a>
-                    <a href="/Avisos/Avisos.html" class="quick-card">
-                        <div class="quick-icon">🔔</div>
-                        <h3>Avisos</h3>
-                        <p>Veja os comunicados e novidades do programa.</p>
-                    </a>
-                </div>
-            </main>
-            <!-- ================= SIDEBAR ================= -->
-            <aside>
-                <div class="sidebar-card">
-                    <div class="sidebar-title">👩‍🏫 seus professores</div>
-                    <div class="instructor-row">
-                        <div class="instructor-avatar">PV</div>
-                        <div>
-                            <div class="instructor-name">Pierre Vinícius</div>
-                            <div class="instructor-role">Estudante de Sistemas de Informação</div>
-                        </div>
+                <!-- Card do próximo encontro -->
+                <div class="cta-card">
+
+                    <span class="eyebrow" style="color:#C9AEEE;">
+                        // próximo encontro
+                    </span>
+
+                    <div class="instructor-name"
+                         style="color:#fff; font-size:15px;">
+                        Aula presencial
                     </div>
-                    <div class="instructor-row">
-                        <div class="instructor-avatar">M</div>
-                        <div>
-                            <div class="instructor-name">Mariela</div>
-                            <div class="instructor-role">Coordenadora</div>
-                        </div>
-                    </div>
+
+                    <p>
+                        Toda terça e quinta, encontre os professores
+                        e outras alunas do programa pessoalmente
+                        para praticar juntas.
+                    </p>
+
+                    <!-- Botão de endereço e horário -->
+                    <button
+                        type="button"
+                        class="btn-ghost"
+                        onclick="window.location.href='/aulas/endereco-horario.html'">
+                        Ver endereço e horário →
+                    </button>
+
                 </div>
+
             </aside>
+
         </div>
     </div>
+
+    <!-- JavaScript principal -->
     <script src="/Inicio/Inicio.js"></script>
+
 </body>
 </html>
+
+

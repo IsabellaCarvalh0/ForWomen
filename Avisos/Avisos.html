@@ -1,246 +1,150 @@
 
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>For Women — Avisos</title>
 
     <link rel="stylesheet" href="avisos.css">
 
-    <link rel="preconnect"
-          href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-    <!-- ================= NAV ================= -->
-
-    <nav class="nav">
+    <!-- NAVEGAÇÃO -->
+    <nav class="nav" aria-label="Navegação principal">
 
         <div class="nav-left">
 
-            <!-- LOGO -->
             <div class="logo">
-
                 <div class="logo-mark">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M12 6.5c0-2.2 1.6-3.6 3.3-4"
+                              stroke="#B9F0C8"
+                              stroke-width="1.6"
+                              stroke-linecap="round"/>
 
-                    <svg width="20"
-                         height="20"
-                         viewBox="0 0 24 24"
-                         fill="none">
+                        <ellipse cx="15.6" cy="2.6" rx="1.9" ry="1.1"
+                                 fill="#7ED89A"
+                                 transform="rotate(-28 15.6 2.6)"/>
 
-                        <path
-                            d="M12 6.5c0-2.2 1.6-3.6 3.3-4"
-                            stroke="#B9F0C8"
-                            stroke-width="1.6"
-                            stroke-linecap="round"
-                        />
+                        <circle cx="12" cy="14" r="7.2"
+                                fill="#F1E9FB"/>
 
-                        <ellipse
-                            cx="15.6"
-                            cy="2.6"
-                            rx="1.9"
-                            ry="1.1"
-                            fill="#7ED89A"
-                            transform="rotate(-28 15.6 2.6)"
-                        />
-
-                        <circle
-                            cx="12"
-                            cy="14"
-                            r="7.2"
-                            fill="#F1E9FB"
-                        />
-
-                        <path
-                            d="M8.7 18.4l3.3-2.1 3.3 2.1"
-                            stroke="#6423C7"
-                            stroke-width="1.4"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        />
-
+                        <path d="M8.7 18.4l3.3-2.1 3.3 2.1"
+                              stroke="#6423C7"
+                              stroke-width="1.4"
+                              fill="none"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"/>
                     </svg>
-
                 </div>
 
                 For<span class="dim">Women</span>
-
             </div>
 
-            <!-- MENU -->
-            <div class="nav-links">
+            <div class="nav-links" id="menuNavegacao">
 
-                <a href="/Inicio/index.html">
-                    Início
-                </a>
+                <a href="/Inicio/index.html">Início</a>
 
-                <a href="/aulas/videoPlayer.html">
-                    Aulas
-                </a>
+                <a href="/aulas/videoPlayer.html">Aulas</a>
 
-                <a href="/atividades">
-                    Atividades
-                </a>
+                <a href="/atividades">Atividades</a>
 
-                <a href="Avisos.html" class="active">
+                <a href="Avisos.html" class="active" aria-current="page">
                     Avisos
                 </a>
 
             </div>
-
         </div>
 
-        <!-- BUSCA + PERFIL -->
         <div class="nav-right">
 
             <div class="search-box">
-
-                <svg
-                    width="15"
-                    height="15"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2">
-
-                    <circle
-                        cx="11"
-                        cy="11"
-                        r="7"
-                    />
-
-                    <line
-                        x1="21"
-                        y1="21"
-                        x2="16.65"
-                        y2="16.65"
-                    />
-
+                <svg width="15" height="15" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor"
+                     stroke-width="2" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7"/>
+                    <line x1="21" y1="21"
+                          x2="16.65" y2="16.65"/>
                 </svg>
 
-                buscar aviso...
-
+                <span>buscar aviso...</span>
             </div>
 
-            <div class="avatar">
-                IC
-            </div>
+            <div class="avatar">IC</div>
 
-            <a
-                href="/sair"
-                title="Encerrar sessão"
-                style="
-                    font-size:13px;
-                    font-weight:600;
-                    color:var(--eggplant-500);
-                    padding:6px 12px;
-                    border-radius:8px;
-                    border:1px solid var(--lilac-300);
-                    text-decoration:none;
-                    margin-left:10px;
-                ">
+            <a href="/sair" class="logout-btn"
+               title="Encerrar sessão">
                 Sair
             </a>
+
+            <!-- BOTÃO PARA CELULAR -->
+            <button
+                class="menu-toggle"
+                id="menuToggle"
+                type="button"
+                aria-label="Abrir menu"
+                aria-expanded="false"
+                aria-controls="menuNavegacao">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
 
         </div>
 
     </nav>
 
-    <!-- ================= PÁGINA ================= -->
-
+    <!-- CONTEÚDO -->
     <main class="page">
 
-        <!-- CABEÇALHO -->
         <div class="page-head">
 
             <div>
-
-                <h1 class="page-title">
-                    Avisos
-                </h1>
+                <h1 class="page-title">Avisos</h1>
 
                 <p class="page-sub">
-                    Confira as informações importantes
-                    do programa.
+                    Confira as informações importantes do programa.
                 </p>
-
             </div>
 
-            <!-- CONTADOR DINÂMICO -->
-            <div
-                class="notice-count"
-                id="contadorAvisos"
-                aria-live="polite">
-
+            <div class="notice-count"
+                 id="contadorAvisos"
+                 aria-live="polite">
                 Carregando avisos...
-
             </div>
 
         </div>
 
-        <!-- ================= AVISOS FIXADOS ================= -->
-
-        <!--
-            Os avisos fixados serão carregados
-            automaticamente pelo AvisosAluno.js.
-
-            Cada aviso utilizará a classe pinned-card,
-            preservando o estilo do avisos.css.
-        -->
-
+        <!-- AVISOS FIXADOS -->
         <div id="avisosFixados"></div>
 
-        <!-- ================= LISTA DE AVISOS ================= -->
-
+        <!-- ÚLTIMOS AVISOS -->
         <section class="notice-section">
 
             <div class="section-title">
-
-                <h2>
-                    Últimos avisos
-                </h2>
-
+                <h2>Últimos avisos</h2>
             </div>
 
-            <!-- LISTA DINÂMICA -->
-            <div
-                class="notice-grid"
-                id="listaAvisos"
-                aria-live="polite">
+            <div class="notice-grid"
+                 id="listaAvisos"
+                 aria-live="polite">
 
-                <p>
-                    Carregando avisos...
-                </p>
+                <p>Carregando avisos...</p>
 
             </div>
-
         </section>
 
     </main>
 
-    <!-- ================= JAVASCRIPT ================= -->
-
-    <!--
-        Busca os avisos no Supabase por meio
-        da rota GET /api/avisos do Node.js.
-
-        O servidor controla quais avisos
-        cada aluna pode visualizar.
-    -->
-
     <script src="Avisos.js"></script>
 
 </body>
-
 </html>

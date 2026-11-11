@@ -106,5 +106,29 @@
     "professor_avatar": "GL",
     "materiais": "projeto_agenda_completo.zip, documentacao_projeto.pdf",
     "criado_em": "2026-09-01T14:00:00.000Z"
+  },
+  {
+    "titulo": "AULA 13-Programação Basica",
+    "video_url": "http://localhost:3000",
+    "descricao": "Logica de programação",
+    "turma": "Todas as turmas",
+    "duracao_minutos": 30,
+    "professor_nome": "Pierre Vinícius",
+    "professor_avatar": "PV",
+    "materiais": "",
+    "id": 10,
+    "criado_em": "2026-10-28T00:44:58.495Z"
+  },
+  {
+    "titulo": "AULA 13-Programação Basica",
+    "video_url": "http://localhost:3000",
+    "descricao": "aula de programação",
+    "turma": "Todas as turmas",
+    "duracao_minutos": 20,
+    "professor_nome": "Pierre Vinícius",
+    "professor_avatar": "PV",
+    "materiais": "",
+    "id": 11,
+    "criado_em": "2026-10-28T11:46:02.792Z"
   }
 ]

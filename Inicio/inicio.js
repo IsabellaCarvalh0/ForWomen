@@ -1,34 +1,92 @@
+
+/* Configuração do menu conforme o usuário */
+
 async function configurarMenu() {
     try {
-        const resposta = await fetch("/api/usuario");
-        if (!resposta.ok) return;
+        const resposta = await fetch("/api/usuario", {
+            credentials: "same-origin"
+        });
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao identificar usuário");
+        }
 
         const usuario = await resposta.json();
 
         if (usuario.tipo === "professor") {
-            document.getElementById("linkChamada").style.display = "";
 
+            // Mostra a opção Chamada
+            const linkChamada = document.getElementById("linkChamada");
+
+            if (linkChamada) {
+                linkChamada.style.display = "inline-block";
+            }
+
+            // Direciona os avisos para a página do professor
             document.querySelectorAll(
                 'a[href="/Avisos/Avisos.html"]'
             ).forEach(link => {
                 link.href = "/Avisos/AvisosProfessor.html";
             });
         }
+
+        return usuario;
+
     } catch (erro) {
         console.error("Erro ao configurar menu:", erro);
+        return null;
     }
 }
 
-document.addEventListener("DOMContentLoaded", configurarMenu);
-document.addEventListener("DOMContentLoaded", carregarAvisosFixados);
+/* Menu responsivo */
 
-async function carregarAvisosFixados() {
+function configurarMenuMobile() {
+    const botao = document.getElementById("menuToggle");
+    const menu = document.getElementById("menuNavegacao");
+
+    if (!botao || !menu) {
+        console.error("Elementos do menu não encontrados");
+        return;
+    }
+
+    // Abre e fecha o menu
+    botao.addEventListener("click", () => {
+        const aberto = menu.classList.toggle("menu-aberto");
+
+        botao.textContent = aberto ? "✕" : "☰";
+
+        botao.setAttribute(
+            "aria-expanded",
+            String(aberto)
+        );
+
+        botao.setAttribute(
+            "aria-label",
+            aberto ? "Fechar menu" : "Abrir menu"
+        );
+    });
+
+    // Fecha o menu ao clicar em um link
+    menu.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            menu.classList.remove("menu-aberto");
+
+            botao.textContent = "☰";
+            botao.setAttribute("aria-expanded", "false");
+            botao.setAttribute("aria-label", "Abrir menu");
+        });
+    });
+}
+
+/* Carregamento dos avisos fixados */
+
+async function carregarAvisosFixados(usuario) {
     const container = document.getElementById("avisosFixadosInicio");
 
     if (!container) return;
 
     try {
-        // Busca somente os avisos fixados
+        // Busca os avisos fixados
         const resposta = await fetch("/api/avisos?fixados=true", {
             credentials: "same-origin"
         });
@@ -37,12 +95,13 @@ async function carregarAvisosFixados() {
             throw new Error("Erro ao buscar avisos: " + resposta.status);
         }
 
-        const avisos = await resposta.json();
+        const dados = await resposta.json();
+        const avisos = Array.isArray(dados) ? dados : [];
 
         // Limpa os avisos anteriores
         container.innerHTML = "";
 
-        // Caso não existam avisos fixados
+        // Mostra mensagem quando não existem avisos
         if (avisos.length === 0) {
             const card = document.createElement("div");
             card.className = "pinned-card";
@@ -60,8 +119,15 @@ async function carregarAvisosFixados() {
             return;
         }
 
-        // Cria um card para cada aviso fixado
+        // Define a página conforme o perfil
+        const paginaAvisos = usuario?.tipo === "professor"
+            ? "/Avisos/AvisosProfessor.html"
+            : "/Avisos/Avisos.html";
+
+        // Cria os cards de avisos
         avisos.forEach(aviso => {
+
+            // Card
             const card = document.createElement("div");
             card.className = "pinned-card";
 
@@ -75,15 +141,15 @@ async function carregarAvisosFixados() {
 
             cabecalho.appendChild(etiqueta);
 
-            // Conteúdo do aviso
+            // Conteúdo
             const conteudo = document.createElement("div");
             conteudo.className = "pinned-content";
 
             const titulo = document.createElement("h2");
-            titulo.textContent = aviso.titulo;
+            titulo.textContent = aviso.titulo || "Sem título";
 
             const mensagem = document.createElement("p");
-            mensagem.textContent = aviso.mensagem;
+            mensagem.textContent = aviso.mensagem || "";
 
             conteudo.appendChild(titulo);
             conteudo.appendChild(mensagem);
@@ -96,7 +162,7 @@ async function carregarAvisosFixados() {
             origem.textContent = "🔔 Avisos";
 
             const link = document.createElement("a");
-            link.href = "/Avisos/Avisos.html";
+            link.href = paginaAvisos;
             link.textContent = "Ver avisos →";
 
             rodape.appendChild(origem);
@@ -107,7 +173,7 @@ async function carregarAvisosFixados() {
             card.appendChild(conteudo);
             card.appendChild(rodape);
 
-            // Adiciona o aviso à Página Inicial
+            // Adiciona o card à página
             container.appendChild(card);
         });
 
@@ -116,45 +182,33 @@ async function carregarAvisosFixados() {
 
         container.innerHTML = "";
 
+        const card = document.createElement("div");
+        card.className = "pinned-card";
+
+        const conteudo = document.createElement("div");
+        conteudo.className = "pinned-content";
+
         const mensagem = document.createElement("p");
-        mensagem.textContent = "Não foi possível carregar os avisos fixados.";
+        mensagem.textContent =
+            "Não foi possível carregar os avisos fixados.";
 
-        container.appendChild(mensagem);
-    }
-}
-async function configurarMenuProfessor() {
-    try {
-        const resposta = await fetch("/api/usuario", {
-            credentials: "same-origin"
-        });
-
-        if (!resposta.ok) {
-            throw new Error("Erro ao identificar usuário");
-        }
-
-        const usuario = await resposta.json();
-
-        console.log("Tipo de usuário:", usuario.tipo);
-
-        if (usuario.tipo === "professor") {
-            // Exibe a opção Chamada
-            const linkChamada = document.getElementById("linkChamada");
-
-            if (linkChamada) {
-                linkChamada.style.display = "inline-block";
-            }
-
-            // Direciona os avisos para a página do professor
-            document.querySelectorAll(
-                'a[href="/Avisos/Avisos.html"]'
-            ).forEach(link => {
-                link.href = "/Avisos/AvisosProfessor.html";
-            });
-        }
-
-    } catch (erro) {
-        console.error("Erro ao configurar menu:", erro);
+        conteudo.appendChild(mensagem);
+        card.appendChild(conteudo);
+        container.appendChild(card);
     }
 }
 
-document.addEventListener("DOMContentLoaded", configurarMenuProfessor);
+/* Inicialização da página */
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    // Configura o menu responsivo
+    configurarMenuMobile();
+
+    // Identifica o usuário
+    const usuario = await configurarMenu();
+
+    // Carrega os avisos fixados
+    await carregarAvisosFixados(usuario);
+});
+

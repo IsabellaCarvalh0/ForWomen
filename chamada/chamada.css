@@ -200,11 +200,31 @@ body{
     border-radius: 10px;
 }
 
-.info-item span{
+.info-item span,
+.info-item label{
     display: block;
     font-size: 13px;
     color: #777;
     margin-bottom: 5px;
+}
+
+.campo-chamada{
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #d9cbf2;
+    border-radius: 8px;
+    background-color: white;
+    color: #5f35b5;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.campo-chamada:focus,
+.painel-alunas textarea:focus{
+    outline: 2px solid var(--violet-500);
+    outline-offset: 1px;
 }
 
 .info-item strong{
@@ -235,4 +255,620 @@ body{
     color: #5f35b5;
     border-radius: 8px;
     font-weight: bold;
+}
+
+/* ---------- mensagens ---------- */
+
+#mensagemChamada.erro{
+    background-color: #fdecec;
+    color: #b42318;
+}
+
+.aviso-chamada{
+    display: none;
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    background-color: #fff8e6;
+    color: #8a5a00;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+
+/* ---------- cadastro das alunas ---------- */
+
+.painel-alunas{
+    margin-bottom: 24px;
+    border: 1px solid #e4d9f7;
+    border-radius: 10px;
+    background-color: #fbf9ff;
+}
+
+.painel-alunas summary{
+    padding: 14px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #5f35b5;
+}
+
+.contador-alunas{
+    margin-left: 6px;
+    font-weight: normal;
+    color: #777;
+}
+
+.painel-conteudo{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 0 20px 20px;
+}
+
+.ajuda-painel{
+    font-size: 14px;
+    color: #666;
+}
+
+.painel-alunas textarea{
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d9cbf2;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.botao-secundario{
+    padding: 10px 20px;
+    border: 1px solid #6c4ab6;
+    border-radius: 8px;
+    background-color: white;
+    color: #6c4ab6;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.botao-secundario:hover{
+    background-color: #f3edff;
+}
+
+.lista-cadastro{
+    width: 100%;
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.lista-cadastro li{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.lista-cadastro li span{
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.botao-mini{
+    padding: 5px 10px;
+    border: 1px solid #d9cbf2;
+    border-radius: 6px;
+    background-color: white;
+    color: #5f35b5;
+    font-size: 12.5px;
+    cursor: pointer;
+}
+
+.botao-mini:hover{
+    background-color: #f3edff;
+}
+
+.botao-mini.perigo{
+    color: #b42318;
+    border-color: #f2c4c0;
+}
+
+.botao-mini.perigo:hover{
+    background-color: #fdecec;
+}
+
+
+/* ---------- lista da chamada ---------- */
+
+label.aluna{
+    cursor: pointer;
+}
+
+.lista-vazia{
+    padding: 24px 0;
+    text-align: center;
+    color: #777;
+}
+
+.botao-salvar:disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.contador-presentes{
+    grid-column: 3;
+    justify-self: end;
+    font-size: 14px;
+    color: #5f35b5;
+    font-weight: bold;
+}
+
+
+/* ---------- sub-menu: Chamada | Frequência | Conclusão ---------- */
+
+.subnav{
+    width: 760px;
+    margin: 0 auto 14px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.subnav a{
+    padding: 8px 16px;
+    border: 1px solid #d9cbf2;
+    border-radius: 999px;
+    background-color: white;
+    color: #5f35b5;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.subnav a:hover{
+    background-color: #f3edff;
+}
+
+.subnav a.ativo{
+    background-color: #6c4ab6;
+    border-color: #6c4ab6;
+    color: white;
+}
+
+/* Páginas com tabela usam uma largura maior. */
+.largo{
+    width: min(1000px, calc(100% - 32px));
+}
+
+.dica-chamada{
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #6e5a88;
+}
+
+
+/* ---------- total de aulas e cálculo ---------- */
+
+.linha-total{
+    display: flex;
+    gap: 10px;
+}
+
+.linha-total .campo-chamada{
+    flex: 1;
+    min-width: 0;
+}
+
+.calculo{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.cartao-calculo{
+    flex: 1 1 170px;
+    padding: 12px 16px;
+    background-color: #fbf9ff;
+    border: 1px solid #e4d9f7;
+    border-radius: 10px;
+}
+
+.cartao-calculo .rotulo{
+    display: block;
+    font-size: 12.5px;
+    color: #777;
+    margin-bottom: 4px;
+}
+
+.cartao-calculo .valor{
+    color: #5f35b5;
+    font-size: 16px;
+}
+
+.calculo-vazio,
+.calculo-alerta{
+    flex-basis: 100%;
+    font-size: 14px;
+    color: #6e5a88;
+}
+
+.calculo-alerta{
+    color: #8a5a00;
+}
+
+
+/* ---------- tabela de frequência ---------- */
+
+.tabela-rolagem{
+    overflow-x: auto;
+}
+
+.tabela-frequencia{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.tabela-frequencia th{
+    text-align: left;
+    padding: 10px 8px;
+    border-bottom: 2px solid #ddd;
+    white-space: nowrap;
+}
+
+.tabela-frequencia td{
+    padding: 10px 8px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.tabela-frequencia .num{
+    text-align: center;
+}
+
+.nome-aluna{
+    overflow-wrap: anywhere;
+}
+
+.celula-frequencia{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 170px;
+}
+
+.barra{
+    position: relative;
+    flex: 1;
+    height: 10px;
+    background-color: #eee6fa;
+    border-radius: 999px;
+}
+
+.preenchimento{
+    height: 100%;
+    border-radius: 999px;
+}
+
+.preenchimento.ok{ background-color: #3f9b5f; }
+.preenchimento.abaixo{ background-color: #d9534f; }
+
+.marca-minimo{
+    position: absolute;
+    top: -3px;
+    width: 2px;
+    height: 16px;
+    background-color: #4c1d8c;
+}
+
+.percentual{
+    min-width: 52px;
+    text-align: right;
+    font-weight: bold;
+    color: #4c1d8c;
+}
+
+.selo{
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.selo.ok{ background-color: #e6f4ea; color: #1e6b3a; }
+.selo.limite{ background-color: #fff3d6; color: #8a5a00; }
+.selo.abaixo{ background-color: #fdecec; color: #b42318; }
+.selo.neutro{ background-color: #eee; color: #666; }
+
+.campo-login{
+    max-width: 230px;
+    padding: 6px 8px;
+    border: 1px solid #d9cbf2;
+    border-radius: 6px;
+    background-color: white;
+    font-family: inherit;
+    font-size: 13px;
+    color: #4a3563;
+}
+
+.tabela-frequencia .lista-vazia{
+    text-align: center;
+}
+
+
+/* ---------- conclusão e liberação do certificado ---------- */
+
+.faixa-liberacao{
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #f3edff;
+    color: #5f35b5;
+}
+
+.faixa-liberacao.liberado{ background-color: #e6f4ea; color: #1e6b3a; font-weight: bold; }
+.faixa-liberacao.bloqueado{ background-color: #fff8e6; color: #8a5a00; }
+.faixa-liberacao.aviso{ background-color: #fff8e6; color: #8a5a00; }
+.faixa-liberacao a{ text-decoration: underline; font-weight: bold; }
+
+.acoes-conclusao{
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.acoes-conclusao [hidden]{
+    display: none;
+}
+
+.duas-listas{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.titulo-lista{
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    font-size: 16px;
+    border-bottom: 2px solid #ddd;
+}
+
+.titulo-lista span{
+    font-weight: normal;
+    color: #777;
+}
+
+.titulo-lista.apta{ color: #1e6b3a; }
+.titulo-lista.nao-apta{ color: #b42318; }
+
+.lista-conclusao li{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 9px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.lista-conclusao .nome-aluna{
+    flex: 1 1 140px;
+}
+
+.lista-conclusao .detalhe{
+    font-size: 13px;
+    color: #6e5a88;
+}
+
+
+/* ==========================================================================
+   RESPONSIVO
+   ========================================================================== */
+
+/* ---------- responsivo: menu ---------- */
+
+.nav-links a{
+    white-space: nowrap;
+    flex: 0 0 auto;
+}
+
+@media (max-width: 1100px){
+    .nav{ padding: 16px 24px; }
+    .nav-left{ gap: 28px; }
+    .nav-links{ gap: 20px; }
+    .search-box{ width: 160px; }
+}
+
+@media (max-width: 900px){
+    .search-box{ display: none; }
+}
+
+/* Celular: logo e avatar em cima; os links ficam numa linha própria, rolando para o lado. */
+@media (max-width: 720px){
+    .nav{
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 12px;
+        padding: 10px 16px;
+    }
+    .nav-left{ display: contents; }
+    .logo{ order: 1; }
+    .nav-right{ order: 2; margin-left: auto; gap: 12px; }
+    .nav-links{
+        order: 3;
+        flex: 0 0 100%;
+        gap: 22px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        border-top: 1px solid var(--lilac-300);
+        padding-top: 4px;
+    }
+    .nav-links::-webkit-scrollbar{ display: none; }
+    .nav-links a{ padding: 10px 2px; }
+}
+
+
+/* ---------- larguras fluidas (antes eram fixas em 760px) ---------- */
+
+.titulo-pagina,
+.subnav,
+.container-chamada{
+    width: min(760px, calc(100% - 32px));
+}
+
+.largo{
+    width: min(1000px, calc(100% - 32px));
+}
+
+@media (max-width: 720px){
+    .titulo-pagina{ margin-top: 24px; }
+    .titulo-pagina h1{ font-size: 24px; }
+
+    .container-chamada{
+        padding: 20px 16px;
+        margin-bottom: 24px;
+    }
+
+    .info-chamada{
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .info-item{ padding: 12px 14px; }
+
+    /* campos e botões fáceis de tocar */
+    .campo-chamada,
+    .campo-login{
+        min-height: 44px;
+        font-size: 16px;      /* evita o zoom automático do iPhone ao tocar */
+    }
+    .botao-secundario,
+    .botao-salvar,
+    .botao-mini{
+        min-height: 44px;
+    }
+    .painel-alunas textarea{ font-size: 16px; }
+
+    .subnav a{ padding: 10px 14px; }
+
+    /* chamada: lista maior e botões em coluna */
+    .cabecalho-chamada,
+    .aluna{
+        grid-template-columns: 1fr 72px;
+    }
+    .aluna{ padding: 14px 0; }
+    .aluna span{ overflow-wrap: anywhere; padding-right: 8px; }
+    .presenca,
+    #marcarTodas{
+        width: 22px;
+        height: 22px;
+    }
+
+    .acoes-chamada{
+        grid-template-columns: 1fr;
+        gap: 14px;
+        justify-items: stretch;
+    }
+    .marcar-todas{
+        grid-column: 1;
+        padding: 6px 0;
+    }
+    .botao-salvar{
+        grid-column: 1;
+        width: 100%;
+    }
+    .contador-presentes{
+        grid-column: 1;
+        justify-self: center;
+    }
+
+    /* cadastro de alunas */
+    .painel-conteudo{ padding: 0 14px 16px; }
+    .painel-conteudo .botao-secundario{ width: 100%; }
+    .lista-cadastro li{ flex-wrap: wrap; }
+    .lista-cadastro li span{ flex: 1 1 100%; }
+    .lista-cadastro .botao-mini{ flex: 1; }
+
+    /* frequência */
+    .linha-total{ flex-wrap: wrap; }
+    .linha-total .botao-secundario{ flex: 1 1 100%; }
+    .cartao-calculo{ flex: 1 1 140px; }
+
+    /* conclusão */
+    .duas-listas{ grid-template-columns: 1fr; gap: 20px; }
+    .acoes-conclusao{ flex-direction: column; }
+    .acoes-conclusao .botao-salvar,
+    .acoes-conclusao .botao-secundario{ width: 100%; }
+
+    /* tabela de frequência vira uma lista de cartões */
+    .tabela-frequencia,
+    .tabela-frequencia tbody,
+    .tabela-frequencia tr,
+    .tabela-frequencia td{
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .tabela-frequencia thead{ display: none; }
+    .tabela-frequencia tr{
+        margin-bottom: 12px;
+        padding: 12px 14px;
+        border: 1px solid #e4d9f7;
+        border-radius: 12px;
+        background-color: #fbf9ff;
+    }
+    .tabela-frequencia td{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 6px 0;
+        border-bottom: none;
+        text-align: right;
+    }
+    .tabela-frequencia td::before{
+        content: attr(data-rotulo);
+        flex: 0 0 auto;
+        font-size: 12.5px;
+        color: #777;
+        text-align: left;
+    }
+    .tabela-frequencia td.nome-aluna{
+        justify-content: flex-start;
+        padding-bottom: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: left;
+    }
+    .tabela-frequencia td.nome-aluna::before{ display: none; }
+    .tabela-frequencia .num{ text-align: right; }
+    .tabela-frequencia td.lista-vazia{
+        display: block;
+        text-align: center;
+    }
+    .tabela-frequencia td.lista-vazia::before{ display: none; }
+    .tabela-frequencia tr:has(td.lista-vazia){
+        background: none;
+        border: none;
+    }
+    .celula-frequencia{
+        min-width: 0;
+        flex: 1;
+    }
+    .celula-frequencia .barra{ min-width: 60px; }
+    .campo-login{
+        max-width: none;
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 380px){
+    .nav-right .avatar{ display: none; }
 }

@@ -1,0 +1,117 @@
+/* Certificado: prévia na tela e página A4 na horizontal para imprimir/PDF. */
+
+.acoes{
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}
+
+.acoes[hidden],
+.folha-certificado[hidden],
+.acoes .botao[hidden]{
+    display: none;
+}
+
+.folha-certificado{
+    width: min(1000px, calc(100% - 32px));
+    aspect-ratio: 297 / 210;
+    margin: 0 auto 40px;
+    padding: 18px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    color: #241533;
+}
+
+.moldura{
+    height: 100%;
+    padding: 4% 6%;
+    border: 6px double #6c4ab6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    container-type: inline-size;
+}
+
+.moldura .marca{
+    font-size: 4.2cqw;
+    font-weight: bold;
+    color: #241533;
+}
+
+.moldura .marca span{
+    color: #7c3aed;
+    margin-left: 0.5ch;
+}
+
+.moldura h2{
+    font-size: 7.2cqw;
+    letter-spacing: 0.4cqw;
+    color: #4c1d8c;
+}
+
+.moldura .texto{
+    font-size: 2.4cqw;
+    color: #4a3563;
+    max-width: 85%;
+}
+
+.moldura .nome{
+    font-size: 5.2cqw;
+    font-weight: bold;
+    color: #6423c7;
+    border-bottom: 2px solid #c9aeee;
+    padding: 0 3cqw 1cqw;
+    overflow-wrap: anywhere;
+}
+
+.rodape{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 3cqw;
+}
+
+.assinatura{
+    min-width: 30cqw;
+    font-size: 2cqw;
+}
+
+.assinatura .linha{
+    display: block;
+    border-top: 1px solid #241533;
+    margin-bottom: 0.6cqw;
+}
+
+.emissao{
+    font-size: 2cqw;
+    color: #4a3563;
+}
+
+@media print{
+    @page{
+        size: A4 landscape;
+        margin: 0;
+    }
+
+    body{
+        background: white;
+    }
+
+    .nav,
+    #areaAcoes{
+        display: none;
+    }
+
+    .folha-certificado{
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        box-shadow: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

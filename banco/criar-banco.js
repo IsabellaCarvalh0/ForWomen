@@ -50,6 +50,7 @@ async function prepararBanco() {
 
     await banco.query(comandosSQL);
     await banco.query(fs.readFileSync(path.join(__dirname, "atividades.sql"), "utf8"));
+    await banco.query(fs.readFileSync(path.join(__dirname, "chamada.sql"), "utf8"));
     await banco.query(fs.readFileSync(path.join(__dirname, "turmas.sql"), "utf8"));
     console.log("Tabelas criadas ou já existentes.");
 

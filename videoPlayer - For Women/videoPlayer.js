@@ -70,6 +70,7 @@ function renderizarBarraNavegacao() {
                 <a href="/aulas/videoPlayer.html" class="active">Aulas</a>
                 <a href="/atividades">Atividades</a>
                 <a href="/Avisos/Avisos.html">Avisos</a>
+                <a href="/frequencia/">Frequência</a>
             `;
         }
     }

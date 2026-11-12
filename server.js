@@ -359,6 +359,7 @@ app.use(session({
 
 
 require("./atividades-api")(app, banco);
+require("./chamada-api")(app, banco);
 require("./cadastros-api")(app, banco);
 
 /* --------------------------------------------------------------------------

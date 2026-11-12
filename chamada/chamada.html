@@ -49,18 +49,31 @@
         <h1>Controle de presença</h1>
         <p>Registre a presença das alunas da turma</p>
     </div>
+    <div class="subnav">
+        <a href="chamada.html" class="ativo">Chamada</a>
+        <a href="frequencia.html">Frequência</a>
+        <a href="conclusao.html">Conclusão</a>
+    </div>
     <div class="container-chamada">
         <div class="info-chamada">
             <div class="info-item">
-                <span>Turma:</span>
-                <strong>For Women 2026</strong>
+                <label for="selecionarTurma">Turma:</label>
+                <select id="selecionarTurma" class="campo-chamada">
+                    <option value="" disabled selected>Selecione a turma</option>
+                </select>
             </div>
 
             <div class="info-item">
-                <span>Data:</span>
-                <strong>27/08/2026</strong>
+                <label for="dataChamada">Data:</label>
+                <input type="date" id="dataChamada" class="campo-chamada">
             </div>
         </div>
+
+
+        <p id="avisoChamada" class="aviso-chamada" role="status"></p>
+
+        <p class="dica-chamada">Todas as alunas começam como presentes. Desmarque quem faltou. As alunas vêm do cadastro: para incluir alguém, use <a href="/cadastros/alunas.html">Alunas</a>.</p>
+
         <div class="lista-alunas">
 
             <div class="cabecalho-chamada">
@@ -68,59 +81,22 @@
                 <span>Presença</span>
             </div>
 
-            <div class="aluna">
-                <span>Ana Clara Ferreira</span>
-                <input type="checkbox" class="presenca">
-            </div>
-
-            <div class="aluna">
-                <span>Ana Julia Santos</span>
-                <input type="checkbox" class="presenca">
-            </div>
-
-            <div class="aluna">
-                <span>Beatriz Miranda</span>
-                <input type="checkbox" class="presenca">
-            </div>
-
-            <div class="aluna">
-                <span>Camila Lellis</span>
-                <input type="checkbox" class="presenca">
-            </div>
-
-            <div class="aluna">
-                <span>Isabela Amadeu</span>
-                <input type="checkbox" class="presenca">
-            </div>
-
-            <div class="aluna">
-                <span>Laura Andrade</span>
-                <input type="checkbox" class="presenca">
-            </div>
-
-            <div class="aluna">
-                <span>Maria Isabelly</span>
-                <input type="checkbox" class="presenca">
-            </div>
-
-            <div class="aluna">
-                <span>Vitória Rodrigues</span>
-                <input type="checkbox" class="presenca">
-            </div>
+            <div id="listaChamada"></div>
 
         </div>
 
         <div class="acoes-chamada">
             <div class="marcar-todas">
-                <input type="checkbox" id="marcarTodas">
+                <input type="checkbox" id="marcarTodas" disabled>
                 <label for="marcarTodas"> Marcar Todas</label>
             </div>
-            <button class="botao-salvar" id="salvarChamada">
+            <button class="botao-salvar" id="salvarChamada" disabled>
                 Salvar Chamada
             </button>
+            <span class="contador-presentes" id="contadorPresentes"></span>
         </div>
 
-        <p id="mensagemChamada"></p>
+        <p id="mensagemChamada" role="status"></p>
 
     </div>
 

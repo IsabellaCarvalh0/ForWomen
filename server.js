@@ -6,7 +6,7 @@
    (fora do navegador) e tem as seguintes responsabilidades:
 
      1. entregar as páginas HTML e estáticos do site para o navegador;
-     2. autenticar o usuário (conferir e-mail e senha);
+     2. autenticar o usuário (conferir e-mail ou login e senha);
      3. direcionar cada usuário para a sua área conforme o perfil;Get-Location
      4. fornecer APIs para dados de usuários, turmas e videoaulas.
 
@@ -66,7 +66,8 @@ const USUARIOS_TESTE = [
     email: "aluna@forwomen.com",
     senha_hash: bcrypt.hashSync("aluna123", 10),
     tipo: "aluna",
-    turma: "Turma A"
+    turma: "Turma A",
+    turma_id: null
   },
   {
     id: 2,
@@ -74,7 +75,8 @@ const USUARIOS_TESTE = [
     email: "professor@forwomen.com",
     senha_hash: bcrypt.hashSync("professor123", 10),
     tipo: "professor",
-    turma: null
+    turma: null,
+    turma_id: null
   },
   {
     id: 3,
@@ -82,17 +84,22 @@ const USUARIOS_TESTE = [
     email: "aluna.turmab@forwomen.com",
     senha_hash: bcrypt.hashSync("aluna123", 10),
     tipo: "aluna",
-    turma: "Turma B"
+    turma: "Turma B",
+    turma_id: null
   }
 ];
 
-async function buscarUsuarioPorEmail(email) {
-  const emailLimpo = email.toLowerCase().trim();
+// Procura pelo e-mail (professores) ou pelo login (alunas cadastradas pelo professor).
+async function buscarUsuario(identificacao) {
+  const emailLimpo = identificacao.toLowerCase().trim();
 
   // Tenta consultar o banco de dados PostgreSQL (Supabase)
   try {
     const resultado = await banco.query(
-      "SELECT id, nome, email, senha_hash, tipo, turma FROM usuarios WHERE email = $1",
+      `SELECT u.id, u.nome, u.email, u.senha_hash, u.tipo, u.turma_id, t.nome AS turma
+       FROM usuarios u
+       LEFT JOIN turmas t ON t.id = u.turma_id
+       WHERE u.email = $1 OR u.login = $1`,
       [emailLimpo]
     );
 
@@ -109,6 +116,41 @@ async function buscarUsuarioPorEmail(email) {
 
 
 /* --------------------------------------------------------------------------
+   4.0. TURMAS
+   turma_id vazio (null) significa "todas as turmas".
+   -------------------------------------------------------------------------- */
+
+// Confere o turma_id recebido do formulário. Vazio vale como "todas".
+async function lerTurmaId(valor) {
+  if (valor === undefined || valor === null || valor === "") {
+    return { valido: true, turmaId: null };
+  }
+  const turmaId = Number(valor);
+  if (!Number.isInteger(turmaId) || turmaId <= 0) {
+    return { valido: false };
+  }
+  const resultado = await banco.query("SELECT id FROM turmas WHERE id = $1", [turmaId]);
+  return { valido: resultado.rows.length > 0, turmaId };
+}
+
+// Acrescenta o nome da turma em cada aula (as aulas guardam só o turma_id).
+async function incluirNomeDaTurma(aulas) {
+  let nomes = new Map();
+  try {
+    const resultado = await banco.query("SELECT id, nome FROM turmas");
+    nomes = new Map(resultado.rows.map(t => [t.id, t.nome]));
+  } catch (erroBanco) {
+    // Banco indisponível: as aulas aparecem sem o nome da turma
+  }
+  return aulas.map(a => ({
+    ...a,
+    turma_id: a.turma_id ?? null,
+    turma: a.turma_id ? (nomes.get(a.turma_id) || "Turma removida") : "Todas as turmas"
+  }));
+}
+
+
+/* --------------------------------------------------------------------------
    4.1. FUNÇÕES DE PERSISTÊNCIA DAS VIDEOAULAS
    -------------------------------------------------------------------------- */
 
@@ -116,7 +158,7 @@ async function obterAulas() {
   // 1. Tenta obter do banco de dados relacional
   try {
     const resultado = await banco.query(
-      "SELECT id, titulo, video_url, descricao, turma, duracao_minutos, professor_nome, professor_avatar, materiais, criado_em FROM aulas ORDER BY id ASC"
+      "SELECT id, titulo, video_url, descricao, turma_id, duracao_minutos, professor_nome, professor_avatar, materiais, criado_em FROM aulas ORDER BY id ASC"
     );
     if (resultado && resultado.rows && resultado.rows.length > 0) {
       return resultado.rows;
@@ -165,14 +207,14 @@ async function salvarAula(novaAula) {
   // 2. Tenta salvar no PostgreSQL
   try {
     await banco.query(
-      `INSERT INTO aulas (id, titulo, video_url, descricao, turma, duracao_minutos, professor_nome, professor_avatar, materiais, criado_em)
+      `INSERT INTO aulas (id, titulo, video_url, descricao, turma_id, duracao_minutos, professor_nome, professor_avatar, materiais, criado_em)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
       [
         novaAula.id,
         novaAula.titulo,
         novaAula.video_url,
         novaAula.descricao,
-        novaAula.turma,
+        novaAula.turma_id,
         novaAula.duracao_minutos,
         novaAula.professor_nome,
         novaAula.professor_avatar,
@@ -222,7 +264,8 @@ async function obterAvisos() {
       a.id,
       a.titulo,
       a.mensagem,
-      a.publico,
+      a.turma_id,
+      t.nome AS turma_nome,
       a.fixado,
       a.professor_id,
       a.criado_em,
@@ -230,6 +273,7 @@ async function obterAvisos() {
       u.nome AS professor_nome
     FROM avisos a
     LEFT JOIN usuarios u ON u.id = a.professor_id
+    LEFT JOIN turmas t ON t.id = a.turma_id
     ORDER BY a.fixado DESC, a.criado_em DESC
   `);
 
@@ -242,7 +286,7 @@ async function salvarAviso(aviso) {
     INSERT INTO avisos (
       titulo,
       mensagem,
-      publico,
+      turma_id,
       fixado,
       professor_id
     )
@@ -251,7 +295,7 @@ async function salvarAviso(aviso) {
   `, [
     aviso.titulo,
     aviso.mensagem,
-    aviso.publico,
+    aviso.turma_id,
     aviso.fixado,
     aviso.professor_id
   ]);
@@ -266,7 +310,7 @@ async function editarAviso(id, aviso, professorId) {
     SET
       titulo = $1,
       mensagem = $2,
-      publico = $3,
+      turma_id = $3,
       fixado = $4,
       atualizado_em = NOW()
     WHERE id = $5 AND professor_id = $6
@@ -274,7 +318,7 @@ async function editarAviso(id, aviso, professorId) {
   `, [
     aviso.titulo,
     aviso.mensagem,
-    aviso.publico,
+    aviso.turma_id,
     aviso.fixado,
     id,
     professorId
@@ -315,6 +359,7 @@ app.use(session({
 
 
 require("./atividades-api")(app, banco);
+require("./cadastros-api")(app, banco);
 
 /* --------------------------------------------------------------------------
    6. MIDDLEWARES DE PROTEÇÃO DE PÁGINAS
@@ -391,7 +436,7 @@ app.post("/entrar", async function (req, res) {
   }
 
   try {
-    const usuario = await buscarUsuarioPorEmail(email);
+    const usuario = await buscarUsuario(email);
 
     if (!usuario) {
       return res.redirect("/login?erro=invalido");
@@ -408,7 +453,8 @@ app.post("/entrar", async function (req, res) {
       nome: usuario.nome,
       email: usuario.email,
       tipo: usuario.tipo,
-      turma: usuario.turma || "Turma A"
+      turma: usuario.turma || null,
+      turma_id: usuario.turma_id || null
     };
 
     if (usuario.tipo === "professor") {
@@ -448,15 +494,16 @@ app.get("/api/avisos", exigirLogin, async function (req, res) {
   console.log("ROTA GET /api/avisos FOI ACESSADA");
   try {
     const usuario = req.session.usuario;
-    const turma = (usuario.turma || "").trim().toLowerCase();
     const somenteFixados = req.query.fixados === "true";
 
+    // A aluna vê os avisos para todas as turmas e os da turma dela.
     const resultado = await banco.query(`
       SELECT
         a.id,
         a.titulo,
         a.mensagem,
-        a.publico,
+        a.turma_id,
+        t.nome AS turma_nome,
         a.fixado,
         a.professor_id,
         a.criado_em,
@@ -464,14 +511,14 @@ app.get("/api/avisos", exigirLogin, async function (req, res) {
         u.nome AS professor_nome
       FROM avisos a
       LEFT JOIN usuarios u ON u.id = a.professor_id
+      LEFT JOIN turmas t ON t.id = a.turma_id
       WHERE
         ($1 = 'professor'
-          OR a.publico = 'todas'
-          OR (a.publico = 'turma_a' AND $2 = 'turma a')
-          OR (a.publico = 'turma_b' AND $2 = 'turma b'))
+          OR a.turma_id IS NULL
+          OR a.turma_id = $2)
         AND ($3::boolean = FALSE OR a.fixado = TRUE)
       ORDER BY a.fixado DESC, a.criado_em DESC
-    `, [usuario.tipo, turma, somenteFixados]);
+    `, [usuario.tipo, usuario.turma_id || null, somenteFixados]);
 
     res.json(resultado.rows);
   } catch (erro) {
@@ -492,11 +539,8 @@ app.post("/api/avisos", exigirProfessor, async function (req, res) {
       ? req.body.mensagem.trim()
       : "";
 
-    const publico = req.body.publico;
     const fixado = req.body.fixado === true ||
       req.body.fixado === "true";
-
-    const publicosPermitidos = ["todas", "turma_a", "turma_b"];
 
     if (!titulo || !mensagem) {
       return res.status(400).json({
@@ -504,16 +548,18 @@ app.post("/api/avisos", exigirProfessor, async function (req, res) {
       });
     }
 
-    if (!publicosPermitidos.includes(publico)) {
+    const publico = await lerTurmaId(req.body.turma_id);
+
+    if (!publico.valido) {
       return res.status(400).json({
-        erro: "Selecione um público válido."
+        erro: "Selecione uma turma cadastrada."
       });
     }
 
     const aviso = await salvarAviso({
       titulo,
       mensagem,
-      publico,
+      turma_id: publico.turmaId,
       fixado,
       professor_id: req.session.usuario.id
     });
@@ -544,11 +590,8 @@ app.put("/api/avisos/:id", exigirProfessor, async function (req, res) {
       ? req.body.mensagem.trim()
       : "";
 
-    const publico = req.body.publico;
     const fixado = req.body.fixado === true ||
       req.body.fixado === "true";
-
-    const publicosPermitidos = ["todas", "turma_a", "turma_b"];
 
     if (!titulo || !mensagem) {
       return res.status(400).json({
@@ -556,15 +599,17 @@ app.put("/api/avisos/:id", exigirProfessor, async function (req, res) {
       });
     }
 
-    if (!publicosPermitidos.includes(publico)) {
+    const publico = await lerTurmaId(req.body.turma_id);
+
+    if (!publico.valido) {
       return res.status(400).json({
-        erro: "Selecione um público válido."
+        erro: "Selecione uma turma cadastrada."
       });
     }
 
     const aviso = await editarAviso(
       id,
-      { titulo, mensagem, publico, fixado },
+      { titulo, mensagem, turma_id: publico.turmaId, fixado },
       req.session.usuario.id
     );
 
@@ -617,28 +662,21 @@ app.delete("/api/avisos/:id", exigirProfessor, async function (req, res) {
 /** Lista as aulas de acordo com o perfil e turma */
 app.get("/api/aulas", exigirLogin, async function (req, res) {
   try {
-    const todasAulas = await obterAulas();
+    const todasAulas = await incluirNomeDaTurma(await obterAulas());
     const usuario = req.session.usuario;
 
-    // Se for professor: retorna todas as aulas ou filtra por parâmetro de query
+    // Se for professor: retorna todas as aulas ou filtra por ?turma_id=
     if (usuario.tipo === "professor") {
-      if (req.query.turma && req.query.turma.toLowerCase() !== "todas") {
-        const turmaFiltro = req.query.turma.toLowerCase().trim();
-        const filtradas = todasAulas.filter(a => {
-          const t = (a.turma || "").toLowerCase().trim();
-          return t === turmaFiltro || t === "todas" || t === "todas as turmas";
-        });
+      if (req.query.turma_id) {
+        const turmaFiltro = Number(req.query.turma_id);
+        const filtradas = todasAulas.filter(a => a.turma_id === null || a.turma_id === turmaFiltro);
         return res.json(filtradas);
       }
       return res.json(todasAulas);
     }
 
     // Se for aluna: exibe estritamente as aulas da sua turma + aulas de "Todas as turmas"
-    const turmaAluna = (usuario.turma || "Turma A").toLowerCase().trim();
-    const aulasAluna = todasAulas.filter(a => {
-      const t = (a.turma || "").toLowerCase().trim();
-      return t === "todas" || t === "todas as turmas" || t === turmaAluna;
-    });
+    const aulasAluna = todasAulas.filter(a => a.turma_id === null || a.turma_id === usuario.turma_id);
 
     return res.json(aulasAluna);
   } catch (erro) {
@@ -651,7 +689,7 @@ app.get("/api/aulas", exigirLogin, async function (req, res) {
 app.get("/api/aulas/:id", exigirLogin, async function (req, res) {
   try {
     const id = parseInt(req.params.id, 10);
-    const todasAulas = await obterAulas();
+    const todasAulas = await incluirNomeDaTurma(await obterAulas());
     const aula = todasAulas.find(a => a.id === id);
 
     if (!aula) {
@@ -667,10 +705,15 @@ app.get("/api/aulas/:id", exigirLogin, async function (req, res) {
 /** Cadastro de nova aula pelo professor */
 app.post("/api/aulas", exigirProfessor, async function (req, res) {
   try {
-    const { titulo, video_url, descricao, turma, duracao_minutos, materiais } = req.body;
+    const { titulo, video_url, descricao, duracao_minutos, materiais } = req.body;
 
     if (!titulo || !video_url) {
       return res.status(400).json({ erro: "O título e o link do vídeo são obrigatórios." });
+    }
+
+    const turma = await lerTurmaId(req.body.turma_id);
+    if (!turma.valido) {
+      return res.status(400).json({ erro: "Selecione uma turma cadastrada." });
     }
 
     // Iniciais do professor
@@ -684,7 +727,7 @@ app.post("/api/aulas", exigirProfessor, async function (req, res) {
       titulo: titulo.trim(),
       video_url: video_url.trim(),
       descricao: (descricao || "").trim(),
-      turma: turma && turma.trim() ? turma.trim() : "Todas as turmas",
+      turma_id: turma.turmaId,
       duracao_minutos: parseInt(duracao_minutos, 10) || 15,
       professor_nome: req.session.usuario.nome,
       professor_avatar: iniciais,
@@ -749,6 +792,9 @@ app.use("/atividades", exigirLogin, express.static(path.join(__dirname, "ativida
 
 // Área exclusiva do professor (Chamada)
 app.use("/chamada", exigirProfessor, express.static(path.join(__dirname, "chamada")));
+
+// Área exclusiva do professor (Cadastro de turmas e alunas)
+app.use("/cadastros", exigirProfessor, express.static(path.join(__dirname, "cadastros")));
 
 // Atividades do Professor (renderização dinâmica em EJS)
 app.get(["/atividade-professor", "/atividade-professor/", "/atividade-professor/atividadeProfessor.html", "/atividade-professor/atividadeProfessor.ejs"], exigirProfessor, function (req, res) {

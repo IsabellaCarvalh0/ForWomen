@@ -22,6 +22,11 @@ async function configurarMenu() {
                 linkChamada.style.display = "inline-block";
             }
 
+            // Mostra os links de cadastro de turmas e alunas
+            document.querySelectorAll(".link-professor").forEach(link => {
+                link.style.display = "inline-block";
+            });
+
             // Direciona os avisos para a página do professor
             document.querySelectorAll(
                 'a[href="/Avisos/Avisos.html"]'

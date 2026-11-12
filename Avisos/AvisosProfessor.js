@@ -65,6 +65,35 @@ async function requisitarAPI(url, opcoes = {}) {
 }
 
 /* ==========================================
+   CARREGAR TURMAS NO CAMPO PÚBLICO
+   ========================================== */
+
+async function carregarTurmas() {
+
+    try {
+
+        const turmas = await requisitarAPI("/api/turmas");
+
+        turmas.forEach(function (turma) {
+
+            const opcao = document.createElement("option");
+
+            opcao.value = turma.id;
+
+            opcao.textContent = turma.nome;
+
+            campoPublico.appendChild(opcao);
+
+        });
+
+    } catch (erro) {
+
+        console.error("Erro ao carregar turmas:", erro);
+
+    }
+}
+
+/* ==========================================
    CARREGAR AVISOS
    ========================================== */
 
@@ -111,20 +140,21 @@ if (formAviso) {
 
         const titulo = campoTitulo.value.trim();
         const mensagem = campoMensagem.value.trim();
-        const publico = campoPublico.value;
+        const turmaId = campoPublico.value;
         const fixado = campoFixado.checked;
 
-        if (!titulo || !mensagem || !publico) {
+        if (!titulo || !mensagem) {
 
             alert("Preencha todos os campos obrigatórios.");
 
             return;
         }
 
+        /* turma_id vazio = todas as turmas */
         const dadosAviso = {
             titulo,
             mensagem,
-            publico,
+            turma_id: turmaId,
             fixado
         };
 
@@ -244,14 +274,8 @@ function renderizarAvisos() {
 
         const publico = document.createElement("p");
 
-        const nomesPublico = {
-            todas: "Todas as turmas",
-            turma_a: "Turma A",
-            turma_b: "Turma B"
-        };
-
         publico.textContent = "Público: " +
-            (nomesPublico[aviso.publico] || aviso.publico);
+            (aviso.turma_nome || "Todas as turmas");
 
         card.append(titulo, mensagem, publico);
 
@@ -343,7 +367,7 @@ function editarAviso(id) {
 
     campoTitulo.value = aviso.titulo;
     campoMensagem.value = aviso.mensagem;
-    campoPublico.value = aviso.publico;
+    campoPublico.value = aviso.turma_id || "";
     campoFixado.checked = aviso.fixado;
 
     idEmEdicao = id;
@@ -569,6 +593,8 @@ function iniciarPagina() {
         totalAvisos &&
         totalFixados
     ) {
+
+        carregarTurmas();
 
         carregarAvisos();
 

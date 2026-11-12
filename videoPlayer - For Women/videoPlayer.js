@@ -5,11 +5,15 @@
 
 let usuarioAtual = null;
 let todasAulas = [];
-let filtroTurmaProfessor = "todas";
+let filtroTurmaProfessor = "todas"; // "todas" ou o id da turma
+let turmasCadastradas = [];
 let termoBusca = "";
 
 document.addEventListener("DOMContentLoaded", async function () {
     await carregarDadosUsuario();
+    if (usuarioAtual && usuarioAtual.tipo === "professor") {
+        await carregarTurmas();
+    }
     await carregarAulas();
     configurarEventos();
 });
@@ -57,6 +61,8 @@ function renderizarBarraNavegacao() {
                 <a href="/aulas/videoPlayer.html" class="active">Aulas</a>
                 <a href="/atividade-professor">Atividades</a>
                 <a href="/Avisos/AvisosProfessor.html">Avisos</a>
+                <a href="/cadastros/turmas.html">Turmas</a>
+                <a href="/cadastros/alunas.html">Alunas</a>
             `;
         } else {
             navLinks.innerHTML = `
@@ -137,10 +143,8 @@ function renderizarBarraNavegacao() {
         if (containerFiltros) {
             containerFiltros.style.display = "flex";
             containerFiltros.innerHTML = `
-                <div class="turma-filters">
+                <div class="turma-filters" id="filtrosTurma">
                     <button type="button" class="turma-pill active" data-turma="todas" onclick="filtrarPorTurma('todas')">Todas as turmas</button>
-                    <button type="button" class="turma-pill" data-turma="Turma A" onclick="filtrarPorTurma('Turma A')">Turma A</button>
-                    <button type="button" class="turma-pill" data-turma="Turma B" onclick="filtrarPorTurma('Turma B')">Turma B</button>
                 </div>
             `;
         }
@@ -173,10 +177,53 @@ async function carregarAulas() {
     }
 }
 
+/* Turmas cadastradas: viram botões de filtro e opções do formulário */
+async function carregarTurmas() {
+    try {
+        const resposta = await fetch("/api/turmas");
+        if (!resposta.ok) return;
+        turmasCadastradas = await resposta.json();
+    } catch (erro) {
+        console.error("Erro ao carregar turmas:", erro);
+        return;
+    }
+
+    const filtros = document.getElementById("filtrosTurma");
+    const selectTurma = document.getElementById("aulaTurma");
+
+    turmasCadastradas.forEach(turma => {
+        if (filtros) {
+            const botao = document.createElement("button");
+            botao.type = "button";
+            botao.className = "turma-pill";
+            botao.dataset.turma = turma.id;
+            botao.textContent = turma.nome;
+            botao.addEventListener("click", () => filtrarPorTurma(turma.id));
+            filtros.appendChild(botao);
+        }
+        if (selectTurma) {
+            const opcao = document.createElement("option");
+            opcao.value = turma.id;
+            opcao.textContent = turma.nome;
+            selectTurma.appendChild(opcao);
+        }
+    });
+}
+
+function nomeTurmaFiltro() {
+    const turma = turmasCadastradas.find(t => t.id === filtroTurmaProfessor);
+    return turma ? turma.nome : "Todas as turmas";
+}
+
+// Aulas sem turma (turma_id vazio) aparecem em todos os filtros
+function aulaNoFiltro(aula) {
+    return filtroTurmaProfessor === "todas" || aula.turma_id === null || aula.turma_id === filtroTurmaProfessor;
+}
+
 function filtrarPorTurma(turma) {
     filtroTurmaProfessor = turma;
     document.querySelectorAll(".turma-pill").forEach(p => {
-        if (p.dataset.turma === turma) {
+        if (p.dataset.turma === String(turma)) {
             p.classList.add("active");
         } else {
             p.classList.remove("active");
@@ -195,12 +242,8 @@ function renderizarAulas() {
     let aulasFiltradas = todasAulas.slice();
 
     // Filtro de turma para professor
-    if (usuarioAtual && usuarioAtual.tipo === "professor" && filtroTurmaProfessor !== "todas") {
-        aulasFiltradas = aulasFiltradas.filter(a => {
-            const t = (a.turma || "").toLowerCase().trim();
-            const f = filtroTurmaProfessor.toLowerCase().trim();
-            return t === f || t === "todas" || t === "todas as turmas";
-        });
+    if (usuarioAtual && usuarioAtual.tipo === "professor") {
+        aulasFiltradas = aulasFiltradas.filter(aulaNoFiltro);
     }
 
     // Filtro por busca de texto
@@ -220,7 +263,7 @@ function renderizarAulas() {
 
     if (moduleTitle) {
         if (usuarioAtual && usuarioAtual.tipo === "professor") {
-            const nomeTurmaExibida = filtroTurmaProfessor === "todas" ? "Todas as turmas" : filtroTurmaProfessor;
+            const nomeTurmaExibida = nomeTurmaFiltro();
             moduleTitle.innerHTML = `${nomeTurmaExibida} <b>Lista de videoaulas</b>`;
         } else {
             const turmaNome = (usuarioAtual && usuarioAtual.turma) ? usuarioAtual.turma : "Turma A";
@@ -300,17 +343,13 @@ function renderizarSidebar() {
     if (!treeAulas) return;
 
     let aulasSidebar = todasAulas.slice();
-    if (usuarioAtual && usuarioAtual.tipo === "professor" && filtroTurmaProfessor !== "todas") {
-        aulasSidebar = aulasSidebar.filter(a => {
-            const t = (a.turma || "").toLowerCase().trim();
-            const f = filtroTurmaProfessor.toLowerCase().trim();
-            return t === f || t === "todas" || t === "todas as turmas";
-        });
+    if (usuarioAtual && usuarioAtual.tipo === "professor") {
+        aulasSidebar = aulasSidebar.filter(aulaNoFiltro);
     }
 
     const pad = n => String(n).padStart(2, '0');
     const pastaNome = usuarioAtual && usuarioAtual.tipo === "professor"
-        ? (filtroTurmaProfessor === "todas" ? "todas_as_turmas" : filtroTurmaProfessor.toLowerCase().replace(" ", "_"))
+        ? nomeTurmaFiltro().toLowerCase().replace(/ /g, "_")
         : (usuarioAtual && usuarioAtual.turma ? usuarioAtual.turma.toLowerCase().replace(" ", "_") : "turma_01");
 
     treeAulas.innerHTML = `
@@ -356,7 +395,7 @@ function configurarEventos() {
 
             const titulo = document.getElementById("aulaTitulo").value.trim();
             const video_url = document.getElementById("aulaUrl").value.trim();
-            const turma = document.getElementById("aulaTurma").value;
+            const turma_id = document.getElementById("aulaTurma").value;
             const duracao_minutos = document.getElementById("aulaDuracao").value.trim();
             const descricao = document.getElementById("aulaDescricao").value.trim();
             const materiais = document.getElementById("aulaMateriais").value.trim();
@@ -369,7 +408,7 @@ function configurarEventos() {
             const dados = {
                 titulo,
                 video_url,
-                turma,
+                turma_id,
                 duracao_minutos: parseInt(duracao_minutos, 10) || 15,
                 descricao,
                 materiais

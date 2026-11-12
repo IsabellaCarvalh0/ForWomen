@@ -51,6 +51,8 @@ function renderizarBarraNavegacao() {
                 <a href="/aulas/videoPlayer.html" class="active">Aulas</a>
                 <a href="/atividade-professor">Atividades</a>
                 <a href="/Avisos/AvisosProfessor.html">Avisos</a>
+                <a href="/cadastros/turmas.html">Turmas</a>
+                <a href="/cadastros/alunas.html">Alunas</a>
             `;
         } else {
             navLinks.innerHTML = `

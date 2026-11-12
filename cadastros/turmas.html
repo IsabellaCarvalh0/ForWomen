@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>For Women — Gerenciar Turmas</title>
+
+    <!-- Mesmo visual da área de avisos do professor -->
+    <link rel="stylesheet" href="/Avisos/AvisosProfessor.css">
+
+    <link rel="stylesheet" href="cadastros.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- NAVEGAÇÃO -->
+
+    <nav class="nav" aria-label="Navegação principal">
+
+        <div class="nav-left">
+
+            <a href="/Inicio/index.html" class="logo">
+
+                <div class="logo-mark">
+
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 6.5c0-2.2 1.6-3.6 3.3-4" stroke="#B9F0C8" stroke-width="1.6" stroke-linecap="round" />
+                        <ellipse cx="15.6" cy="2.6" rx="1.9" ry="1.1" fill="#7ED89A" transform="rotate(-28 15.6 2.6)" />
+                        <circle cx="12" cy="14" r="7.2" fill="#F1E9FB" />
+                        <path d="M8.7 18.4l3.3-2.1 3.3 2.1" stroke="#6423C7" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+
+                </div>
+
+                For<span class="dim">Women</span>
+
+            </a>
+
+            <div class="nav-links" id="menuNavegacao">
+
+                <a href="/Inicio/index.html">Início</a>
+
+                <a href="/chamada/chamada.html">Chamada</a>
+
+                <a href="/aulas/videoPlayer.html">Aulas</a>
+
+                <a href="/atividade-professor">Atividades</a>
+
+                <a href="/Avisos/AvisosProfessor.html">Avisos</a>
+
+                <a href="/cadastros/turmas.html" class="active" aria-current="page">Turmas</a>
+
+                <a href="/cadastros/alunas.html">Alunas</a>
+
+            </div>
+
+        </div>
+
+        <div class="nav-right">
+
+            <div class="profile-type">PROFESSOR</div>
+
+            <div class="avatar">PV</div>
+
+            <a href="/sair" title="Encerrar sessão" class="logout-btn">Sair</a>
+
+            <button type="button" class="menu-toggle" id="menuToggle"
+                    aria-label="Abrir menu" aria-expanded="false"
+                    aria-controls="menuNavegacao">
+                <span></span><span></span><span></span>
+            </button>
+
+        </div>
+
+    </nav>
+
+    <main class="page">
+
+        <div class="page-head">
+
+            <div>
+
+                <span class="eyebrow">CADASTROS</span>
+
+                <h1 class="page-title">Gerenciar turmas</h1>
+
+                <p class="page-sub">
+                    Cadastre as turmas do programa para vincular alunas, avisos e aulas.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="content-grid">
+
+            <!-- FORMULÁRIO -->
+
+            <section class="create-notice-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="card-label" id="rotuloFormulario">NOVA TURMA</span>
+
+                        <h2 id="tituloFormulario">Cadastrar turma</h2>
+
+                    </div>
+
+                    <div class="create-icon">✎</div>
+
+                </div>
+
+                <form id="formTurma">
+
+                    <div class="form-group">
+
+                        <label for="nomeTurma">Nome da turma</label>
+
+                        <input type="text" id="nomeTurma" maxlength="120"
+                               placeholder="Ex: Programa Sabará 2026" required>
+
+                    </div>
+
+                    <button type="submit" class="publish-button">Cadastrar turma →</button>
+
+                    <button type="button" class="cancelar-edicao" id="cancelarEdicao" hidden>
+                        Cancelar edição
+                    </button>
+
+                </form>
+
+            </section>
+
+            <!-- SIDEBAR -->
+
+            <aside>
+
+                <div class="sidebar-card">
+
+                    <div class="sidebar-title">🎓 Sobre as turmas</div>
+
+                    <p class="sidebar-text">
+                        Cada aluna fica vinculada a uma turma.
+                    </p>
+
+                    <div class="info-item">
+                        <span>📢</span>
+                        <p>Avisos e aulas podem ser direcionados para uma turma específica.</p>
+                    </div>
+
+                    <div class="info-item">
+                        <span>🔒</span>
+                        <p>Só é possível excluir uma turma sem alunas, avisos ou aulas vinculados.</p>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-card">
+
+                    <div class="sidebar-title">📊 Resumo</div>
+
+                    <div class="stat-row">
+                        <span>Turmas cadastradas</span>
+                        <strong id="totalTurmas">0</strong>
+                    </div>
+
+                    <div class="stat-row">
+                        <span>Alunas vinculadas</span>
+                        <strong id="totalAlunas">0</strong>
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+        <!-- TURMAS CADASTRADAS -->
+
+        <section class="published-section">
+
+            <div class="section-head">
+
+                <div>
+
+                    <span class="eyebrow">LISTA</span>
+
+                    <h2 class="section-title">Turmas cadastradas</h2>
+
+                </div>
+
+            </div>
+
+            <div class="lista-cadastros" id="listaTurmas">
+
+                <p class="lista-vazia">Carregando turmas...</p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="cadastros.js"></script>
+
+    <script src="turmas.js"></script>
+
+</body>
+
+</html>

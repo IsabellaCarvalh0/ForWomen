@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>For Women — Gerenciar Alunas</title>
+
+    <!-- Mesmo visual da área de avisos do professor -->
+    <link rel="stylesheet" href="/Avisos/AvisosProfessor.css">
+
+    <link rel="stylesheet" href="cadastros.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- NAVEGAÇÃO -->
+
+    <nav class="nav" aria-label="Navegação principal">
+
+        <div class="nav-left">
+
+            <a href="/Inicio/index.html" class="logo">
+
+                <div class="logo-mark">
+
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 6.5c0-2.2 1.6-3.6 3.3-4" stroke="#B9F0C8" stroke-width="1.6" stroke-linecap="round" />
+                        <ellipse cx="15.6" cy="2.6" rx="1.9" ry="1.1" fill="#7ED89A" transform="rotate(-28 15.6 2.6)" />
+                        <circle cx="12" cy="14" r="7.2" fill="#F1E9FB" />
+                        <path d="M8.7 18.4l3.3-2.1 3.3 2.1" stroke="#6423C7" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+
+                </div>
+
+                For<span class="dim">Women</span>
+
+            </a>
+
+            <div class="nav-links" id="menuNavegacao">
+
+                <a href="/Inicio/index.html">Início</a>
+
+                <a href="/chamada/chamada.html">Chamada</a>
+
+                <a href="/aulas/videoPlayer.html">Aulas</a>
+
+                <a href="/atividade-professor">Atividades</a>
+
+                <a href="/Avisos/AvisosProfessor.html">Avisos</a>
+
+                <a href="/cadastros/turmas.html">Turmas</a>
+
+                <a href="/cadastros/alunas.html" class="active" aria-current="page">Alunas</a>
+
+            </div>
+
+        </div>
+
+        <div class="nav-right">
+
+            <div class="profile-type">PROFESSOR</div>
+
+            <div class="avatar">PV</div>
+
+            <a href="/sair" title="Encerrar sessão" class="logout-btn">Sair</a>
+
+            <button type="button" class="menu-toggle" id="menuToggle"
+                    aria-label="Abrir menu" aria-expanded="false"
+                    aria-controls="menuNavegacao">
+                <span></span><span></span><span></span>
+            </button>
+
+        </div>
+
+    </nav>
+
+    <main class="page">
+
+        <div class="page-head">
+
+            <div>
+
+                <span class="eyebrow">CADASTROS</span>
+
+                <h1 class="page-title">Gerenciar alunas</h1>
+
+                <p class="page-sub">
+                    Cadastre as alunas, defina o login de acesso e vincule cada uma à sua turma.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="content-grid">
+
+            <!-- FORMULÁRIO -->
+
+            <section class="create-notice-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="card-label" id="rotuloFormulario">NOVA ALUNA</span>
+
+                        <h2 id="tituloFormulario">Cadastrar aluna</h2>
+
+                    </div>
+
+                    <div class="create-icon">✎</div>
+
+                </div>
+
+                <form id="formAluna">
+
+                    <div class="form-group">
+
+                        <label for="nome">Nome completo</label>
+
+                        <input type="text" id="nome" maxlength="120"
+                               placeholder="Ex: Maria Aparecida Souza" required>
+
+                    </div>
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="login">Login</label>
+
+                            <input type="text" id="login" maxlength="60" autocomplete="off"
+                                   placeholder="Ex: maria.souza" required>
+
+                            <span class="form-dica">Letras sem acento, números, ponto, hífen ou sublinhado.</span>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="senha">Senha</label>
+
+                            <input type="password" id="senha" minlength="6" autocomplete="new-password"
+                                   placeholder="Mínimo de 6 caracteres" required>
+
+                            <span class="form-dica" id="dicaSenha">A aluna usa essa senha para entrar.</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="dataNascimento">Data de nascimento</label>
+
+                            <input type="date" id="dataNascimento" required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="turma">Turma</label>
+
+                            <!-- As turmas cadastradas são carregadas pelo JavaScript -->
+                            <select id="turma" required>
+                                <option value="">Selecione a turma</option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="filiacao">Filiação</label>
+
+                        <input type="text" id="filiacao" maxlength="200"
+                               placeholder="Ex: Ana Souza e José Souza" required>
+
+                    </div>
+
+                    <button type="submit" class="publish-button">Cadastrar aluna →</button>
+
+                    <button type="button" class="cancelar-edicao" id="cancelarEdicao" hidden>
+                        Cancelar edição
+                    </button>
+
+                </form>
+
+            </section>
+
+            <!-- SIDEBAR -->
+
+            <aside>
+
+                <div class="sidebar-card">
+
+                    <div class="sidebar-title">👩‍💻 Sobre o cadastro</div>
+
+                    <p class="sidebar-text">
+                        A aluna entra na plataforma com o login e a senha definidos aqui.
+                    </p>
+
+                    <div class="info-item">
+                        <span>🎓</span>
+                        <p>A turma define quais avisos e aulas a aluna vê.</p>
+                    </div>
+
+                    <div class="info-item">
+                        <span>🔑</span>
+                        <p>Na edição, deixe a senha em branco para manter a atual.</p>
+                    </div>
+
+                    <div class="info-item">
+                        <span>➕</span>
+                        <p>Ainda não tem turma? <a href="/cadastros/turmas.html">Cadastre uma turma</a>.</p>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-card">
+
+                    <div class="sidebar-title">📊 Resumo</div>
+
+                    <div class="stat-row">
+                        <span>Alunas cadastradas</span>
+                        <strong id="totalAlunas">0</strong>
+                    </div>
+
+                    <div class="stat-row">
+                        <span>Turmas</span>
+                        <strong id="totalTurmas">0</strong>
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+        <!-- ALUNAS CADASTRADAS -->
+
+        <section class="published-section">
+
+            <div class="section-head">
+
+                <div>
+
+                    <span class="eyebrow">LISTA</span>
+
+                    <h2 class="section-title">Alunas cadastradas</h2>
+
+                </div>
+
+                <div class="filtro-lista">
+
+                    <label for="filtroTurma">Filtrar por turma</label>
+
+                    <select id="filtroTurma">
+                        <option value="">Todas as turmas</option>
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="lista-cadastros" id="listaAlunas">
+
+                <p class="lista-vazia">Carregando alunas...</p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="cadastros.js"></script>
+
+    <script src="alunas.js"></script>
+
+</body>
+
+</html>

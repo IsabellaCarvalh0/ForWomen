@@ -42,16 +42,13 @@ CREATE TABLE IF NOT EXISTS usuarios (
     -- caso algum código tente gravar um tipo diferente por engano.
     tipo VARCHAR(20) NOT NULL CHECK (tipo IN ('aluna', 'professor')),
 
-    -- Turma à qual a aluna pertence (ex: 'Turma A', 'Turma B').
-    turma VARCHAR(50) DEFAULT 'Turma A',
-
     -- Data e hora do cadastro, preenchida sozinha pelo banco.
     criado_em TIMESTAMP NOT NULL DEFAULT NOW()
 
 );
 
--- Garante a coluna turma caso a tabela já tenha sido criada anteriormente
-ALTER TABLE usuarios ADD COLUMN IF NOT EXISTS turma VARCHAR(50) DEFAULT 'Turma A';
+-- A turma da aluna (turma_id), o login, a data de nascimento e a filiação
+-- são acrescentados pelo arquivo banco/turmas.sql.
 
 
 -- --------------------------------------------------------------------------
@@ -64,7 +61,6 @@ CREATE TABLE IF NOT EXISTS aulas (
     titulo VARCHAR(180) NOT NULL,
     video_url VARCHAR(500) NOT NULL,
     descricao TEXT,
-    turma VARCHAR(50) NOT NULL DEFAULT 'Todas as turmas',
     duracao_minutos INTEGER NOT NULL DEFAULT 15,
     professor_nome VARCHAR(120) NOT NULL,
     professor_avatar VARCHAR(10) DEFAULT 'PV',

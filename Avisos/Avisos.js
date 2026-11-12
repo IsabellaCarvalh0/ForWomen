@@ -80,7 +80,7 @@ async function carregarAvisosAluno() {
 
             const publico = document.createElement("span");
             publico.className = "notice-type";
-            publico.textContent = nomePublico(aviso.publico);
+            publico.textContent = nomePublico(aviso.turma_nome);
 
             const data = document.createElement("span");
             data.className = "notice-date";
@@ -123,14 +123,9 @@ function formatarData(data) {
         : valor.toLocaleDateString("pt-BR");
 }
 
-function nomePublico(publico) {
-    const nomes = {
-        todas: "📢 Todas as alunas",
-        turma_a: "📚 Turma A",
-        turma_b: "📚 Turma B"
-    };
-
-    return nomes[publico] || "📢 Aviso";
+// Avisos sem turma são para todas as alunas.
+function nomePublico(turmaNome) {
+    return turmaNome ? "📚 " + turmaNome : "📢 Todas as alunas";
 }
 
 /* ==========================================

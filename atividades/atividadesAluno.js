@@ -79,7 +79,7 @@ function renderizarAtividades() {
         // Aplica busca
         if (termoBusca) {
             const matchTitulo = atv.titulo.toLowerCase().includes(termoBusca);
-            const matchDesc = atv.descricao.toLowerCase().includes(termoBusca);
+            const matchDesc = TextoAtividade.texto(atv.descricao).toLowerCase().includes(termoBusca);
             const matchProf = atv.professor.toLowerCase().includes(termoBusca);
             if (!matchTitulo && !matchDesc && !matchProf) return;
         }
@@ -105,7 +105,7 @@ function renderizarAtividades() {
                 </span>
             </div>
 
-            <p class="atividade-descricao">${escapeHtml(atv.descricao)}</p>
+            <div class="atividade-descricao texto-formatado">${TextoAtividade.html(atv.descricao)}</div>
 
             <div class="informacoes">
                 <span class="info-item">
@@ -164,8 +164,8 @@ function abrirModalVisualizacao(id) {
     document.getElementById("modalVisualizarTitulo").textContent = atv.titulo;
     document.getElementById("modalVisualizarProfessor").textContent = atv.professor;
     document.getElementById("modalVisualizarPrazo").textContent = atv.prazoFormatado || formatarData(atv.prazo);
-    document.getElementById("modalVisualizarDescricao").textContent = atv.descricao;
-    document.getElementById("modalVisualizarInstrucoes").textContent = atv.instrucoes || "Siga as orientações passadas em aula e entregue a tarefa no prazo.";
+    document.getElementById("modalVisualizarDescricao").innerHTML = TextoAtividade.html(atv.descricao);
+    document.getElementById("modalVisualizarInstrucoes").innerHTML = TextoAtividade.html(atv.instrucoes || "Siga as orientações passadas em aula e entregue a tarefa no prazo.");
 
     const statusBadge = document.getElementById("modalVisualizarStatus");
     statusBadge.className = `status ${jaEntregue ? "concluida" : "pendente"}`;

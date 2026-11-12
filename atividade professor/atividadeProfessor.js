@@ -6,6 +6,7 @@
 let atividadesBanco = [];
 let entregasBanco = {};
 
+let editoresAtividade = {};
 let idParaExcluir = null;
 let professorLogadoNome = "Pierre Vinícius";
 
@@ -14,6 +15,7 @@ let professorLogadoNome = "Pierre Vinícius";
 // --------------------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", function () {
+    for (const id of ["descricaoAtividade", "instrucoesAtividade"]) editoresAtividade[id] = TextoAtividade.editor(id);
     configurarEventos();
     requisitar("/api/usuario").then(u => { professorLogadoNome = u.nome; }).catch(erro => mostrarToast(erro.message));
     renderizarPainel();
@@ -71,7 +73,7 @@ function renderizarPainel() {
         // Filtro de busca
         if (termoBusca) {
             const matchTitulo = atv.titulo.toLowerCase().includes(termoBusca);
-            const matchDesc = atv.descricao.toLowerCase().includes(termoBusca);
+            const matchDesc = TextoAtividade.texto(atv.descricao).toLowerCase().includes(termoBusca);
             const matchProf = atv.professor.toLowerCase().includes(termoBusca);
             if (!matchTitulo && !matchDesc && !matchProf) return;
         }
@@ -93,7 +95,7 @@ function renderizarPainel() {
                     ${temEntrega ? `<span class="badge-contador" style="background:#E4F6E9; color:#2E7D47;">✓ Possui entrega</span>` : ""}
                 </div>
 
-                <p class="card-professor-desc">${escapeHtml(atv.descricao)}</p>
+                <div class="card-professor-desc texto-formatado">${TextoAtividade.html(atv.descricao)}</div>
 
                 <div class="card-professor-meta">
                     <span>👩‍🏫 Responsável: <strong>${escapeHtml(atv.professor)}</strong></span>
@@ -145,6 +147,7 @@ function abrirModalCriar() {
     fecharModais();
 
     document.getElementById("formAtividade").reset();
+    Object.values(editoresAtividade).forEach(editor => editor.definir(""));
     document.getElementById("atividadeId").value = "";
     document.getElementById("modalFormSubtitulo").textContent = "Cadastro de Tarefa";
     document.getElementById("modalFormTitulo").textContent = "Nova Atividade";
@@ -173,8 +176,8 @@ function abrirModalEditar(id) {
 
     document.getElementById("tituloAtividade").value = atv.titulo || "";
     document.getElementById("professorResponsavel").value = atv.professor || "";
-    document.getElementById("descricaoAtividade").value = atv.descricao || "";
-    document.getElementById("instrucoesAtividade").value = atv.instrucoes || "";
+    editoresAtividade.descricaoAtividade.definir(atv.descricao || "");
+    editoresAtividade.instrucoesAtividade.definir(atv.instrucoes || "");
     document.getElementById("materialApoio").value = atv.material || "";
 
     // Converte prazo para formato YYYY-MM-DD
@@ -197,8 +200,8 @@ async function salvarAtividade(event) {
     const titulo = document.getElementById("tituloAtividade").value.trim();
     const professor = document.getElementById("professorResponsavel").value.trim();
     const prazoRaw = document.getElementById("prazoEntrega").value;
-    const descricao = document.getElementById("descricaoAtividade").value.trim();
-    const instrucoes = document.getElementById("instrucoesAtividade").value.trim();
+    const descricao = editoresAtividade.descricaoAtividade.obter();
+    const instrucoes = editoresAtividade.instrucoesAtividade.obter();
     const material = document.getElementById("materialApoio").value.trim();
 
     if (!titulo || !professor || !prazoRaw || !descricao) {

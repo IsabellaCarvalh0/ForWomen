@@ -1,0 +1,55 @@
+
+/* Ajustes compartilhados das atividades para tablet, celular e texto formatado. */
+.nav-left, .nav-right, .page-header > *, .card-professor-conteudo, .atividade-card { min-width: 0; }
+.page, .modal-dialog { overflow-wrap: anywhere; }
+.modal-dialog { max-height: calc(100dvh - 32px); }
+.modal-dialog > form { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.modal-body { min-height: 0; }
+.modal-header, .modal-footer { flex-shrink: 0; }
+.texto-formatado { line-height: 1.65; overflow-wrap: anywhere; white-space: normal; }
+.texto-formatado ul { list-style: disc; padding-left: 24px; }
+.texto-formatado ol { list-style: decimal; padding-left: 24px; }
+.texto-formatado p, .texto-formatado ul, .texto-formatado ol { margin-bottom: 8px; }
+.editor-grupo { border: 1px solid var(--lilac-300); border-radius: 10px; overflow: hidden; }
+.editor-grupo:focus-within { outline: 2px solid var(--violet-500); outline-offset: 2px; }
+.editor-barra { display: flex; flex-wrap: wrap; gap: 4px; padding: 8px; background: var(--paper); border-bottom: 1px solid var(--lilac-300); }
+.editor-barra button { min-width: 40px; min-height: 40px; border: 1px solid var(--lilac-300); border-radius: 6px; background: white; color: var(--eggplant-900); padding: 6px 10px; cursor: pointer; }
+.editor-barra button:hover, .editor-barra button:focus-visible { background: var(--lilac-100); outline: 2px solid var(--violet-500); }
+.editor-barra button:nth-child(1) { font-weight: bold; }
+.editor-barra button:nth-child(2) { font-style: italic; }
+.editor-barra button:nth-child(3) { text-decoration: underline; }
+.editor-barra button:nth-child(4) { text-decoration: line-through; }
+.editor-texto { min-height: 130px; padding: 12px; outline: none; font-size: 16px; }
+.editor-texto:empty::before { content: attr(data-placeholder); color: var(--eggplant-500); pointer-events: none; }
+@media (max-width: 1100px) {
+    .nav { flex-wrap: wrap; gap: 16px; padding: 16px 24px; }
+    .nav-left { flex: 1 1 100%; flex-wrap: wrap; gap: 16px; }
+    .nav-links { display: flex; flex-wrap: wrap; gap: 12px 24px; }
+    .nav-right { width: 100%; gap: 12px; }
+    .search-box { flex: 1; width: auto; min-width: 0; }
+}
+@media (max-width: 600px) {
+    .nav { position: relative; padding: 14px 16px; }
+    .nav-links { width: 100%; gap: 8px 16px; }
+    .nav-links a { min-height: 40px; display: inline-flex; align-items: center; }
+    .page { padding: 24px 16px 48px; }
+    .page-header { gap: 16px; }
+    .stats-grid { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; }
+    .stat-card { flex: 1 1 120px; min-width: 0; }
+    .filtros, .filtros-container, .painel-topo, .card-professor-header, .atividade-topo { flex-wrap: wrap; gap: 10px; }
+    .filtro-btn { min-height: 44px; }
+    .card-professor, .atividade-card { padding: 18px; }
+    .card-professor-meta, .informacoes { flex-wrap: wrap; }
+    .card-professor-acoes { justify-content: stretch; }
+    .card-professor-acoes button { flex: 1; min-height: 44px; }
+    .status, .prazo-tag { white-space: normal; }
+    .modal-backdrop { padding: 8px; height: 100dvh; width: 100%; }
+    .modal-dialog { max-height: calc(100dvh - 16px); border-radius: 14px; }
+    .modal-header, .modal-body, .modal-footer { padding: 16px; }
+    .modal-header h2 { font-size: 20px; }
+    .modal-footer { flex-wrap: wrap; }
+    .modal-footer button { flex: 1 1 120px; min-height: 44px; }
+    .form-linha { flex-direction: column; }
+    .form-grupo input, .form-grupo textarea { min-width: 0; max-width: 100%; font-size: 16px; }
+    .toast { left: 16px; right: 16px; bottom: 16px; width: auto; }
+}

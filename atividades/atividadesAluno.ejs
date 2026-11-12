@@ -13,6 +13,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="/atividades/atividades-comum.css">
 </head>
 
 <body>
@@ -168,12 +169,12 @@
 
                 <div class="detalhe-secao">
                     <h3>Descrição e Enunciado</h3>
-                    <p id="modalVisualizarDescricao"></p>
+                    <div class="texto-formatado" id="modalVisualizarDescricao"></div>
                 </div>
 
                 <div class="detalhe-secao">
                     <h3>Orientações e Critérios</h3>
-                    <p id="modalVisualizarInstrucoes">Siga as boas práticas ensinadas em aula, organize seu código com clareza e comente partes relevantes para avaliação.</p>
+                    <div class="texto-formatado" id="modalVisualizarInstrucoes">Siga as boas práticas ensinadas em aula, organize seu código com clareza e comente partes relevantes para avaliação.</div>
                 </div>
 
                 <div class="detalhe-secao" id="secaoMaterial">
@@ -254,6 +255,7 @@
     <!-- TOAST DE NOTIFICAÇÃO -->
     <div class="toast" id="toastNotificacao" role="alert" aria-live="polite"></div>
 
+    <script src="/atividades/texto-formatado.js"></script>
     <script src="/atividades/atividadesAluno.js"></script>
 </body>
 </html>
